@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea tu Quiz: Conoce quienes saben más de ti!</title> 
+    <script src="https://kit.fontawesome.com/b15ad0e7fc.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <section class="main">
+        <div class="div-name">
+            <form action="">
+                <input type="text" placeholder="Ingresa tu nombre" name="" id="name">
+                <input type="submit" value="Enviar" id="send">
+                <div><span class="err"></span></div>
+            </form>
+        </div>
+        <article class="container">
+            <div class="container-content">
+                <div class="load2"></div>
+
+                <div class="content">
+                    <div class="title"><p class="titleQuest"></p></div>
+                    <!-- <div class="load-content">
+                        <div class="load"></div>
+                    </div> -->
+                    <div class="question-answer">
+                       
+                    </div>
+                    <div>
+                        <button id="next"> <i class="fas fa-chevron-right"aria-hidden="true"></i> </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal">
+                <div class="modal-content">
+                    <p id="content-percent"><span id="percent"></span></p>
+                    <p id="content-meet"><span id="meet"></span></p>
+                    <div class="modal-content__btns">
+                        <button id="create">Crear mi Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
