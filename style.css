@@ -6,7 +6,8 @@
 }
 
 :root{
-    --blue: #2af;
+    --blue: #09f;
+    --darkBlue: #00f;
     --white: #fff;
 }
 
@@ -14,7 +15,70 @@ body{
     position: relative;
     transition: all .2s;
 }
+.modal{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .5);
+    z-index: 100;
+    animation: appearModal 1s forwards;
+}
 
+@keyframes appearModal {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+@keyframes disappearModal {
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
+}
+
+
+.select-lang{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    margin: auto;
+    background: #fff;
+    width: 70%;
+    height: 200px;
+}
+.content-lang{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.content-lang > p{
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--blue);
+    text-align: center;
+    flex-basis: 100%;
+    margin-bottom: 20px;
+}
+.content-lang > button{
+    color: var(--white);
+    border: none;
+    padding: 10px 15px;
+    margin: 10px;
+    background: var(--blue);
+    transition: all .2s;
+}
+.content-lang > button:hover{
+    cursor: pointer;
+    background: var(--darkBlue);
+}
 .main{
     position: relative;
     display: flex;
@@ -27,7 +91,7 @@ body{
     width: 100%;
     height: 30%;
     top: 0;
-    background: var(--blue);
+    background: -webkit-linear-gradient(rgb(1, 38, 253), rgb(29, 201, 231) );
 }
 .main .content-wave .wave1{
     position: absolute;
@@ -81,7 +145,7 @@ body{
 
 .container{
     position: absolute;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
     left: 50%;
     top: 60%;
 }
@@ -92,16 +156,20 @@ body{
 }
 .content button{
     border: none;
-    background: rgb(166, 229, 245);
-    color: var(--blue);
+    background: -webkit-linear-gradient(left, var(--blue), #00f);
+    color: var(--white);
     width: 100%;
     font-size: 23px;
     margin-top: 10px;   
     font-weight: bold;
     padding: 10px;
+    transition: all .5s;
 }
 .content button:hover{
     cursor: pointer;
+    background: #fff;
+    color: #00f;
+    outline: 1px solid #00f;
 }
 
 .content h1{
@@ -123,18 +191,26 @@ body{
     }
     100%{
         opacity: 0;
+        transform: translate(-50%, -50%) scale(2);
         user-select: none;
     }
 }
 
+.title-quest{
+    color: var(--blue);
+}
 /* div quiz sugerido  */
 
 @keyframes appear{
     0%{
         opacity: 0;
+        transform: translate(-50%, -50%) rotateX(100deg);
+    }
+    5%{
+        opacity: 1;
     }
     100%{
-        opacity: 1;
+        transform: translate(-50%, -50%) rotateX(0deg);
     }
 }
 
@@ -148,14 +224,14 @@ body{
     transition: width 1s;
 }
 .u-qz:hover > span, .p-qz:hover > span{
+    background: -webkit-linear-gradient(left, var(--blue), rgb(34, 111, 255));
     font-size: 25px;
+    color: #fff;
 }
 
 .u-qz > span{
-    background: var(--blue);
-    color: var(--white);
+    color: var(--blue);
     overflow: hidden;
-    border-radius: 5px;
     opacity: 1;
     transition: opacity, font-size .2s;
     font-size: 20px;
@@ -172,7 +248,7 @@ body{
     align-items: center;
     overflow: hidden;
     width: 0%;
-    transition: witdth 1s;
+    transition: width 1s;
 }
 
 .p-qz > span{
@@ -181,7 +257,28 @@ body{
     color: var(--blue);
     opacity: 1;
     overflow: hidden;
-    transition: opacity, font-size .2s;
+    transition: opacity, font-size .4s;
+}
+.q{
+    display: flex;
+    flex-direction: column;
+}
+.q:hover > i{
+    color: #fff;
+    background: -webkit-radial-gradient(var(--blue), rgb(0, 81, 255));
+    background-clip: content-box;
+    border-radius: 50%;
+}
+.q > span{
+    border-radius: 5px;
+    background: transparent;
+    transition: all .4s;
+}
+.q > i{
+    padding: 15px;
+    font-size: 80px;
+    color: #ccc;
+    transition: color .4s;
 }
 
 @keyframes hidden {
@@ -194,12 +291,22 @@ body{
         opacity: 0;
     }
 }
+
+@keyframes hidden2 {
+    from{
+        width: 100%;
+        opacity: 1;
+    }
+    to{
+        transform: translate(100%);
+        opacity: 0;
+    }
+}
 /* Seccion de agregar preguntas */
 
 .c-ur-q{
     overflow: auto;
     position: absolute;
-    transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
     width: 60%;
@@ -208,8 +315,6 @@ body{
     background: rgba(255, 255, 255, 1);
     z-index: 10;
 }
-
-
 
 .c-ur-q > .more-quest{
     opacity: .5;
@@ -230,7 +335,9 @@ body{
     font-weight: bold;
 }
 .questions2{
-    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     text-align: center;
     transition: all 1s;
@@ -242,6 +349,9 @@ body{
     outline: none;
     padding: 15px;
     border-bottom: 3px solid var(--blue);  
+}
+.questions2 > input::placeholder{
+    color: var(--blue);
 }
 .answers{
     display: flex;
@@ -256,23 +366,24 @@ body{
     margin: 20px 0;
 }
 .contentInput .answ{
+    color: var(--darkBlue);
     width: 100%;
     border: none;
     outline: none;
     padding: 15px;
     border: 1px solid var(--blue);
+    border-right-color: transparent;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
+    transition: all .3s;
 }
 
 .contentInput .answ:focus{
-    color: var(--white);
-    
-    border-color: var(--white);
-    background-color: rgba(34, 170, 255, .4);
+    border-color: var(--darkBlue);
+    border-right-color: transparent;
 }
-.contentInput .answ:focus::placeholder{
-    color: var(--white);
+.contentInput .answ::placeholder{
+    color: var(--blue);
 }
 
 .contentInput > i{
@@ -359,7 +470,7 @@ body{
 .content-quest select{
     margin: 5px;
     padding: 10px;
-    border: 1px solid #2af;
+    border: 1px solid var(--blue);
     border-radius: 5px;
     outline: none;
 }
@@ -368,7 +479,7 @@ body{
 
     .input-color{
         width: 100%;
-        border: 1px solid #2af;
+        border: 1px solid var(--blue);
         border-radius: 5px;
         height: 45px;
     }
@@ -376,7 +487,8 @@ body{
 /* FOOTER  */
 
 footer{
-    background: #2af;
+    border-top: 1px solid var(--blue);
+    background: #fff;
 }
 .contact-section, #copy-section{
     text-align: center;
@@ -385,20 +497,21 @@ footer{
 
 #contact{
     display: flex;
+    flex-direction: column;
     padding: 20px;
-    color: #fff;
+    color: var(--blue);
     justify-content: center;
     flex-wrap: wrap;
 }
 
 #contact > span{
+    text-align: center;
     text-transform: uppercase;
     font-size: 20px;
     padding: 15px;
 }
 
 #contact-list{
-    border-top: 1px solid #fff;
     padding: 8px;
     display: inline-flex;
     flex-wrap: wrap;
@@ -409,7 +522,7 @@ footer{
     list-style: none;
 }
 #contact-list li a{
-    color: #fff;
+    color: var(--blue);
     font-size: 25px;
     padding: 20px;
     transition: color, font-size .1s ease-in;
@@ -419,7 +532,7 @@ footer{
     color: rgb(219, 93, 20);
 }
 #contact-list li:nth-child(2):hover > a{
-    color: #af0;
+    color: rgb(12, 194, 52);
 }
 #contact-list li:nth-child(3):hover > a{
     color: #0cf;
@@ -434,7 +547,7 @@ footer{
     color: #00c0f9;
 }
 #contact-list li:nth-child(7):hover > a{
-    color: #ee9e;
+    color: rgba(100, 100, 77, 0.933);
 }
 
 /* media query  */
@@ -445,6 +558,10 @@ footer{
     }
     .content{   
         font-size: 17px;
+    }
+    .main{
+        flex-direction: column;
+        justify-content: center;
     }
     .main .content-wave{    
         height: 30%;
