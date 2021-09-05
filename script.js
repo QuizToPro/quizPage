@@ -15,6 +15,8 @@ let numAns = 0; //La seleccion de la cantidad de respuestas que podrá realizar 
 let id = 0; //Es el contador de id de cada div question
 let contador = 1; //Contador que me permite identificar la respuesta seleccionada
 const idioma = localStorage.getItem('lang') // Podría ser inglés u español
+let cantidad_de_respuestas = undefined;
+
 
 if(idioma === null){
     document.querySelector('.es').addEventListener('click', () => {
@@ -63,7 +65,7 @@ const createQuestSugered = (title, a, b, c) => { //Title seria la pregunta, las 
         divContentQuest.classList.add('content-quest');
     const select = document.createElement('SELECT');
     const span = document.createElement('SPAN');
-   
+    console.log("a")
 
     span.textContent = title;
     if(a != undefined && b != undefined || c != undefined){ //Aquí comparo si se le pasaron algunos parametros como las opciones
@@ -117,7 +119,7 @@ const checkIcon = () => {
                     }
                 }
             }())
-                        
+            console.log("b")
             iconClick[i].style.backgroundColor = '#2af' //Establezco el color al icono después de haber sido clickeado
             iconClick[i].parentNode.id = `selected-answer${contador - 1}`   //Con esta linea establezco un id unico a cada selección hecha por el usuario (para poder ser identificable en la base de datos y hacer las comprobaciones en el frontend cuando se estén respondiendo los quiz)   
         });
@@ -165,7 +167,7 @@ const createQuest = (entity, entries, p) => {
 
             iconCheck.classList.add('fas');
             iconCheck.classList.add('fa-check');
-            inputQuest.classList.add('answ')
+            inputQuest.classList.add('answ')///////////////////////////////
             inputQuest.setAttribute('spellcheck', 'false');
             inputQuest.setAttribute('placeholder', 'Escribe la posible respuesta'); 
             inputQuest.setAttribute('minlenght', '5');
@@ -176,6 +178,7 @@ const createQuest = (entity, entries, p) => {
             fragmentQuest.appendChild(contentInput);
         };
         containDivQuest.appendChild(fragmentQuest)
+        console.log("c")
         return containDivQuest;
     }        
 };
@@ -189,6 +192,7 @@ const addQuestInput = node => { //Ésta funcion me crea divs por separado cada v
     contentAnswer.appendChild(createQuest());
     fragment.appendChild(contentAnswer);
     node.appendChild(fragment)
+    console.log("d")
     return node;
 };
 
@@ -287,6 +291,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     inputSend.id = 'send';
     inputSend.setAttribute('type', 'submit');
 
+    
+    console.log("e")
     if(idioma == 'en'){
         inputSend.value = 'Submit'
         buttonAdd.textContent = 'Add other question';
@@ -313,7 +319,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
             checkIcon();
             contador++;
             id++;
-            divSelectHowAns.removeChild(p);
+            cantidad_de_respuestas = entity[i].textContent.slice(0, 1);
+            // divSelectHowAns.removeChild(p);
         });
     };
        
@@ -332,9 +339,13 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     document.getElementById('send').addEventListener('click', e => {
         if(contador < 3 && showBtn == true){
             alert('Debes completar al menos dos preguntas');
-            e.preventDefault();
         };
+        e.preventDefault()
+         /////////////////////////////////////////////////////////////////////////
+        upToFirebase() //Luego de haberse presionado el boton submit, y validado que no hayna espacios en blanco y que las checkbox estan correctas,entonces Ejecuto la funcion que realizara la subida del codigo a firebase
+        /////////////////////////////////////////////////////////////////////////
     });
+
 };
 
 const createQuiz = selected => {
@@ -346,6 +357,7 @@ const createQuiz = selected => {
         if(idioma != 'en') contentHTML('¡Estás creando tu quiz sugerido!', false, idioma);
         else contentHTML("You're creating a suggered quiz!", false, idioma);
     };
+    console.log("f")
 };
 
 for(let i = 0; i < $q.length; i++){
@@ -357,3 +369,63 @@ for(let i = 0; i < $q.length; i++){
         createQuiz($q[i].children[0]);
     });
 };
+
+
+function upToFirebase(){
+    const preguntas = document.querySelectorAll('.question'); //traigo todas las clases.question
+    const answers = document.querySelectorAll('.answ');//traigo todas las clases.answ
+    const Array_preguntas_answers = new Array; //Creo el array donde guardaré los valores de las preguntas y respuestas
+    let duqueisnotreadingthis = 0; //sé que duquenoestaleyendoesto
+
+
+        for (let i = 0; i < preguntas.length; i++) { //creo un for sayayin
+
+            let obj_pregunta_y_respuestas = new Object;//creo el objeto, y dependiendo de la cantidad de respuestas lo lleno
+            const correctAnswer = document.querySelector(`#selected-answer${i+1} > input`).value //traigo el valor de la respuesta correcta
+            console.log(correctAnswer)//Si falta por seleccionar alguna respuesta correcta, se llama igual la funcion, error: Uncaught TypeError: Cannot read property 'value' of null
+
+                if (cantidad_de_respuestas === "2"  ) {
+                    obj_pregunta_y_respuestas = {
+                        pregunta:preguntas[i].value,
+                        A:answers[duqueisnotreadingthis].value,
+                        B:answers[duqueisnotreadingthis+1].value,
+                        niceValue:correctAnswer
+                    }
+                }
+                else if (cantidad_de_respuestas === "3"  ) {
+                    obj_pregunta_y_respuestas = {
+                        pregunta:preguntas[i].value,
+                        A:answers[duqueisnotreadingthis].value,
+                        B:answers[duqueisnotreadingthis+1].value,
+                        C:answers[duqueisnotreadingthis+2].value,
+                        niceValue:correctAnswer
+                    }
+                }
+                else if (cantidad_de_respuestas === "4"  ) {
+                    obj_pregunta_y_respuestas = {
+                        pregunta:preguntas[i].value,
+                        A:answers[duqueisnotreadingthis].value,
+                        B:answers[duqueisnotreadingthis+1].value,
+                        C:answers[duqueisnotreadingthis+2].value,
+                        D:answers[duqueisnotreadingthis+3].value,
+                        niceValue:correctAnswer
+                    }
+                }
+                else{
+                    console.error("error en la cantidad de respuestas")
+                }
+                Array_preguntas_answers.push(obj_pregunta_y_respuestas) //una vez llenado el objeto de preguntasyrespuestas, lo guardo en el array
+                duqueisnotreadingthis = duqueisnotreadingthis + parseInt(cantidad_de_respuestas) //como duque no esta leyendo esto le sumo un numero
+            //  preguntas.forEach((pregunta) => {
+            //      let obj_pregunta_y_respuestas;
+            //      if (cantidad_de_respuestas === 2  ) {
+            //         obj_pregunta_y_respuestas = {
+            //             pregunta:pregunta,
+            //             A:
+
+            //         }
+            //      }
+             } //traer respuestas
+        const Game = { ...Array_preguntas_answers } //por ultimo, tenemos el objeto del juego
+        console.info(Game)
+}
