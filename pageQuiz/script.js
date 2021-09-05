@@ -1,6 +1,11 @@
 'use strict'
 
+const modal = document.querySelector('.modal');
+const titleQuiz = document.querySelector('.title-quiz');
+const concept = document.querySelector('.concept');
 const $btnStart = document.getElementById('btn-start'); //Obtengo el boton de inicio 'Comenzar'
+const $sugered = document.getElementById('s');
+const $personalized = document.getElementById('p');
 const $container = document.querySelector('.container'); //El article
 const $main = document.querySelector('.main'); //section main
 const $uQz = document.querySelector('.u-qz'); //La seccion de preguntas sugeridas
@@ -9,6 +14,37 @@ const $q = document.querySelectorAll('.q'); //Aquí me traigo ambas secciones de
 let numAns = 0; //La seleccion de la cantidad de respuestas que podrá realizar el usuario
 let id = 0; //Es el contador de id de cada div question
 let contador = 1; //Contador que me permite identificar la respuesta seleccionada
+const idioma = localStorage.getItem('lang') // Podría ser inglés u español
+
+if(idioma === null){
+    document.querySelector('.es').addEventListener('click', () => {
+        localStorage.setItem('lang', 'es');
+        modal.style.animation = 'disappearModal 1s forwards';
+        setTimeout(() => modal.style.display = 'none', 1000);
+        window.history.go();
+    });
+    
+    document.querySelector('.en').addEventListener('click', () => {
+        localStorage.setItem('lang', 'en');
+        modal.style.animation = 'disappearModal 1s forwards';
+        setTimeout(() => modal.style.display = 'none', 1000);
+        window.history.go();
+    });
+}else modal.style.display = 'none';
+
+if(idioma == 'es'){
+    titleQuiz.textContent = 'Crea tu Quiz';
+    concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
+    $btnStart.textContent = '¡Comenzar!';
+    $sugered.textContent = 'Crea un quiz con nuestras preguntas sugeridas!'
+    $personalized.textContent = 'Crea un quiz con tus preguntas personalizadas!';
+}else{
+    titleQuiz.textContent = 'Create your Quiz';
+    concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great test!';
+    $btnStart.textContent = '¡Start!';
+    $sugered.textContent = 'Create a quiz with our suggested questions!'
+    $personalized.textContent = 'Create a quiz with your persolanized questions!';
+}
 
 //Evento para aparecer los apartados de que tipo de quiz prefieres
 
@@ -73,8 +109,7 @@ const checkIcon = () => {
     for(let i = 0; i < iconClick.length; i ++){
         iconClick[i].addEventListener('click', e => {
 
-            (function(){ //Creo una función anonima autoejecutable para no gastar lineas llamandola después de ejecutarla
-        
+            (function(){ //Creo una función anonima autoejecutable para no gastar lineas llamandola después de ejecutarla      
                 for(const t of e.path[2].children){ //Ésta funcion me permite identificar si ya hay una opcion escogida, en caso de cambiar se borra el id y es colocado en la otra opción escogida
                     if(t.id == `selected-answer${contador - 1}`){               
                         t.removeAttribute('id');
@@ -96,7 +131,7 @@ const createQuest = (entity, entries, p) => {
     const containDivQuest = document.createElement('DIV');
     containDivQuest.classList.add(`questions2`);
     const span = document.createElement('span');
-    span.textContent = `Pregunta #${contador}` 
+    span.textContent = `Pregunta ${contador}°` 
     containDivQuest.id = id;
     const fragmentQuest = document.createDocumentFragment()
 
@@ -131,8 +166,8 @@ const createQuest = (entity, entries, p) => {
             iconCheck.classList.add('fas');
             iconCheck.classList.add('fa-check');
             inputQuest.classList.add('answ')
-            inputQuest.setAttribute('spellcheck', 'true');
-            inputQuest.setAttribute('placeholder', 'Escribe la posible respuesta');
+            inputQuest.setAttribute('spellcheck', 'false');
+            inputQuest.setAttribute('placeholder', 'Escribe la posible respuesta'); 
             inputQuest.setAttribute('minlenght', '5');
             inputQuest.setAttribute('maxlength', '50');
             inputQuest.setAttribute('required', 'true');
@@ -157,9 +192,49 @@ const addQuestInput = node => { //Ésta funcion me crea divs por separado cada v
     return node;
 };
 
+const setLanguaje = lang => {
+    const fragment = document.createDocumentFragment()
+    if(lang == 'es'){
+        console.log(':(')
+        const p = document.createElement('P');
+        const span1 = document.createElement('SPAN');
+        const span2 = document.createElement('SPAN');
+        const span3 = document.createElement('SPAN');
+        p.textContent = 'Selecciona la cantidad de respuestas que los usuarios podrán ingresar';
+        span1.textContent = '2 Respuestas';
+        span2.textContent = '3 Respuestas';
+        span3.textContent = '4 Respuestas';
+        span1.classList.add('entity');
+        span2.classList.add('entity');
+        span3.classList.add('entity');
+        fragment.appendChild(p);
+        fragment.appendChild(span1);
+        fragment.appendChild(span2);
+        fragment.appendChild(span3);
+        return fragment;
+    }else{
+        console.log(':)')
+        const p = document.createElement('P');
+        const span1 = document.createElement('SPAN');
+        const span2 = document.createElement('SPAN');
+        const span3 = document.createElement('SPAN');
+        p.textContent = 'Selected the number of responses that users can enter';
+        span1.textContent = '2 Responses';
+        span2.textContent = '3 Responses';
+        span3.textContent = '4 Responses';
+        span1.classList.add('entity');
+        span2.classList.add('entity');
+        span3.classList.add('entity');
+        fragment.appendChild(p);
+        fragment.appendChild(span1);
+        fragment.appendChild(span2);
+        fragment.appendChild(span3);
+        return fragment;
+    }
+}
 
 //Funcion padre que me crea un tipo de quiz diferente dependiendo de lo que haya seleccionado el usuario
-const contentHTML = (title, showBtn) => { //title es el tipo de quiz que se haya seleccionado, showBtn recibe un booleano que será el que me permita crear la funcion personalizada, si es false se crea el quiz sugerido
+const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz que se haya seleccionado, showBtn recibe un booleano que será el que me permita crear la funcion personalizada, si es false se crea el quiz sugerido
     const divContent = document.createElement('DIV');
     const form = document.createElement('FORM');
     const divTitle = document.createElement('DIV');
@@ -169,19 +244,20 @@ const contentHTML = (title, showBtn) => { //title es el tipo de quiz que se haya
     const inputSend = document.createElement('INPUT');
     const buttonAdd = document.createElement('BUTTON');
     const pTitle = document.createElement('P');
+    const p = document.createElement('P');
     const fragment = document.createDocumentFragment();
     const divSelectHowAns = document.createElement('DIV');
-    const span1 = document.createElement('SPAN');
-    const span2 = document.createElement('SPAN');
-    const span3 = document.createElement('SPAN');
-    const p = document.createElement('P');
+   
 
     form.classList.add('flex-form');
 
     divContent.classList.add('c-ur-q');
     divTitle.classList.add('title');
     pTitle.textContent = title;
-
+    if(languaje != 'es') {
+        
+    }
+    pTitle.classList.add('title-quest')
     divTitle.appendChild(pTitle);
 
     divQuestions.classList.add('questions');
@@ -190,17 +266,8 @@ const contentHTML = (title, showBtn) => { //title es el tipo de quiz que se haya
     divSelectHowAns.classList.add('select-ans');
 
     if(showBtn == true){
-        p.textContent = 'Selecciona la cantidad de respuestas que los usuarios podrán ingresar';
-        span1.textContent = '2 Respuestas';
-        span2.textContent = '3 Respuestas';
-        span3.textContent = '4 Respuestas';
-        span1.classList.add('entity');
-        span2.classList.add('entity');
-        span3.classList.add('entity');
-        divSelectHowAns.appendChild(p);
-        divSelectHowAns.appendChild(span1);
-        divSelectHowAns.appendChild(span2);
-        divSelectHowAns.appendChild(span3);
+        
+        divSelectHowAns.appendChild(setLanguaje(languaje));
         divAnswer.appendChild(divSelectHowAns);
     }else{
         divAnswer.appendChild(createQuestSugered('¿Cuál es mi bebida favorita?', 'Pepsi', 'Coca-Cola'));
@@ -210,16 +277,22 @@ const contentHTML = (title, showBtn) => { //title es el tipo de quiz que se haya
         divAnswer.appendChild(createQuestSugered('¿Cuál comida prefiero?', 'Hamburguesas', 'Perros calientes'));
 
     }
-
+    
+    
     divMoreQuest.classList.add('more-quest');
     buttonAdd.classList.add('add-quest-btn');
     buttonAdd.textContent = 'Agregar otra pregunta';
     buttonAdd.style.display = 'none';
-    divMoreQuest.appendChild(buttonAdd);
 
     inputSend.id = 'send';
     inputSend.setAttribute('type', 'submit');
 
+    if(idioma == 'en'){
+        inputSend.value = 'Submit'
+        buttonAdd.textContent = 'Add other question';
+    }
+
+    divMoreQuest.appendChild(buttonAdd);
     divQuestions.appendChild(divAnswer);
     fragment.appendChild(divTitle);
     fragment.appendChild(divQuestions);
@@ -229,18 +302,18 @@ const contentHTML = (title, showBtn) => { //title es el tipo de quiz que se haya
     divContent.appendChild(form);
     $main.appendChild(divContent);
     divContent.style.animation = 'appear .5s both';
-    divContent.style.animationDelay = '1s';
+    divContent.style.animationDelay = '.5s';
 
     const entity = document.querySelectorAll('.entity');
 
     for(let i = 0; i < entity.length; i++){
-        entity[i].addEventListener('click', () => {    
+        entity[i].addEventListener('click', () => {
+            buttonAdd.style.display = 'inline-block';
             divAnswer.appendChild(createQuest(entity[i].textContent.slice(0, 1), entity));
             checkIcon();
             contador++;
             id++;
             divSelectHowAns.removeChild(p);
-            buttonAdd.style.display = 'inline-block';
         });
     };
        
@@ -267,17 +340,19 @@ const contentHTML = (title, showBtn) => { //title es el tipo de quiz que se haya
 const createQuiz = selected => {
     
     if(selected.id == 'p'){
-        contentHTML('¡Estás creando tu quiz personalizado!', true)
+        if(idioma != 'en') contentHTML('¡Estás creando tu quiz personalizado!', true, idioma);
+        else contentHTML("You're creating your personalized quiz!", true, idioma);
     }else{
-        contentHTML('¡Estás creando tu quiz sugerido!', false)
-    }
-}
+        if(idioma != 'en') contentHTML('¡Estás creando tu quiz sugerido!', false, idioma);
+        else contentHTML("You're creating a suggered quiz!", false, idioma);
+    };
+};
 
 for(let i = 0; i < $q.length; i++){
     $q[i].addEventListener('click', () => {
 
         $uQz.style.animation = 'hidden .7s forwards';
-        $pQz.style.animation = 'hidden .7s forwards';
+        $pQz.style.animation = 'hidden2 .7s forwards';
 
         createQuiz($q[i].children[0]);
     });

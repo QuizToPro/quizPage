@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <title>Crea tu Quiz: Conoce quienes saben más de ti!</title>
+    <title>MiTrivia: Conoce quienes saben más de ti!</title>
     <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!">
 </head>
 <body>
+    <div class="modal">
+        <div class="select-lang">
+            <div class="content-lang">
+                <p>Selecciona el idioma en que quieres ver la página / Select your prefer language</p>
+                <button class="es">Español</button>
+                <button class="en">English</button>
+            </div>  
+        </div>
+    </div>
     <section class="main">
         <div class="content-wave">
             <div class="wave wave1"></div>
@@ -20,30 +29,23 @@
         </div>
         <article class="container">
             <div class="content">
-                <h1>Crea tu Quiz</h1>
-                <p>¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!</p>
-                <button id="btn-start">¡Comenzar!</button>
+                <h1 class="title-quiz"></h1>
+                <p><strong class="concept"></strong></p>
+                <button id="btn-start"></button>
             </div>
-        </article>    
+        </article>
         <div class="u-qz q">
-            <span id="s">Crea un quiz con nuestras preguntas sugeridas!</span>
+            <span id="s"></span>
+            <i class="fas fa-chevron-circle-left"></i>
         </div>
         <div class="p-qz q">
-            <span id="p">Crea un quiz con tus preguntas personalizadas!</span>
-        </div> 
-
-        <!-- <div class="contentQuest">
-            <select name="" id="">
-                <span>¿Que bebida prefiero?</span>
-                <option value="A">Pepsi</option>
-                <option value="B">Coca-Cola</option>
-            </select>
-        </div> -->
-        
+            <span id="p"></span>
+            <i class="fas fa-chevron-circle-right"></i>
+        </div>
     </section>
     <footer>
         <div id="contact">
-            <span class="contact-section"><b>Contact</b> </span>
+            <span class="contact-section"> <b>Contact</b> </span>
             <ul id="contact-list">
                 <li> <a href="http://instagram.com/theapsu3" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 <li> <a href="http://wa.me" target="_blank" ><i class="fab fa-whatsapp" ></i></a></li>
@@ -53,8 +55,7 @@
                 <li> <a href="https://twitter.com/?lang=es" target="_blank"><i class="fab fa-twitter"></i></a></li>
                 <li> <a href="https://workana.com/" target="_blank"><i class="fas fa-user-friends"></i></a></li>
             </ul>
-            <span id="copy-section">@copyright All reserved by R&R</span>
-            <span> <b>Web Designed by</b>: Ricardo Duque fond of technologies and always willing to learn</span>
+            <span> <b>Web Designed by</b>: R&R</span>
         </div>
     </footer>
     <script src="script.js"></script>

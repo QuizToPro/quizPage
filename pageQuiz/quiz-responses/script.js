@@ -33,7 +33,7 @@ const selectAns = (a) => {
                     load.style.width = `${loadBar}%`;
                     load.style.background = '#2af';
                 };  
-            }
+            };
         }; 
         createQuest(content);
     });
@@ -49,7 +49,6 @@ const createQuest = arr => {
     if(loadBar < 100){
 
         if(loadBar > 50){
-            console.log('a')
             document.querySelector('.titleQuest').style.color = '#fff';
         }
 
