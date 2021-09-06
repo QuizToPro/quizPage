@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!">
+    <meta name="keywords" content="amigos, personalidad, descubrir, acercamiento, conocer"/>
+    <meta name="author" content="RicardosA" />
+    <meta name="copyright" content="R&R" />
     <script src="https://kit.fontawesome.com/b15ad0e7fc.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,9 +14,13 @@
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>MiTrivia: Conoce quienes saben más de ti!</title>
-    <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!">
 </head>
 <body>
+    <div class="err">
+        <p></p>
+        <span class="close-err">x</span>
+    </div>
+
     <div class="modal">
         <div class="select-lang">
             <div class="content-lang">
@@ -57,6 +65,15 @@
             </ul>
             <span> <b>Web Designed by</b>: R&R</span>
         </div>
+        <div class="language">
+            <label for="">Selecciona tu idioma</label>
+            <select name="" id="select-language">
+                <option value="">Lenguaje</option>
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+       
     </footer>
     <script src="script.js"></script>
 </body>

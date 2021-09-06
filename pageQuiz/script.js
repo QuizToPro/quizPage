@@ -1,5 +1,7 @@
 'use strict'
 
+const err = document.querySelector('.err');
+const selectLanguage = document.getElementById('select-language');
 const modal = document.querySelector('.modal');
 const titleQuiz = document.querySelector('.title-quiz');
 const concept = document.querySelector('.concept');
@@ -13,26 +15,48 @@ const $pQz = document.querySelector('.p-qz'); //La seccion de preguntas personal
 const $q = document.querySelectorAll('.q'); //Aquí me traigo ambas secciones de arriba 
 let numAns = 0; //La seleccion de la cantidad de respuestas que podrá realizar el usuario
 let id = 0; //Es el contador de id de cada div question
-let contador = 1; //Contador que me permite identificar la respuesta seleccionada
+let contador = 0; //Contador que me permite identificar la respuesta seleccionada
+let checkRes = 1;
 const idioma = localStorage.getItem('lang') // Podría ser inglés u español
+let cantidad_de_respuestas = undefined;
+
+const showErrPop = msg => {    
+    if(err.classList.contains('show')) err.classList.remove('show');
+    setTimeout(() => err.classList.add('show'), 1)
+    err.children[0].textContent = msg;
+}
+
+document.querySelector('.close-err').addEventListener('click', e => {
+    err.classList.remove('show')
+})
+
+selectLanguage.addEventListener('change', e => {
+    localStorage.setItem('lang', selectLanguage.value);
+    history.go();
+});
 
 if(idioma === null){
+    localStorage.setItem('lang', navigator.language);
+    history.go();
+};
+
+if(idioma != "es-ES" && idioma != "en" && idioma != "es"){
     document.querySelector('.es').addEventListener('click', () => {
         localStorage.setItem('lang', 'es');
         modal.style.animation = 'disappearModal 1s forwards';
         setTimeout(() => modal.style.display = 'none', 1000);
-        window.history.go();
+        history.go();
     });
     
     document.querySelector('.en').addEventListener('click', () => {
         localStorage.setItem('lang', 'en');
         modal.style.animation = 'disappearModal 1s forwards';
         setTimeout(() => modal.style.display = 'none', 1000);
-        window.history.go();
+        history.go();
     });
 }else modal.style.display = 'none';
 
-if(idioma == 'es'){
+if(idioma == 'es' || idioma == 'es-ES'){
     titleQuiz.textContent = 'Crea tu Quiz';
     concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
     $btnStart.textContent = '¡Comenzar!';
@@ -85,21 +109,20 @@ const createQuestSugered = (title, a, b, c) => { //Title seria la pregunta, las 
             option3.value = 'c';       
             option3.textContent = c;
             select.appendChild(option3);
-        }
+        };
         fragment.appendChild(select);              
     }else{ 
         //De éste lado, no le paso a proposito un valor de opción para poder crear un input color de la misma funcion y ahorrar código
         const inputColor = document.createElement('INPUT');
         inputColor.setAttribute('type', 'color');
-        inputColor.classList.add('input-color')
+        inputColor.classList.add('input-color');
         fragment.appendChild(span);
         fragment.appendChild(inputColor);
-    }
-    
+    };
     
     divContentQuest.appendChild(fragment);
     return divContentQuest;
-}
+};
 
 
 //Ésta funcion es llamada cuando la parte de cantidad de respuestas es escogida, ésta funcion me permite poner un listener a cada icono de seleccion
@@ -108,30 +131,33 @@ const checkIcon = () => {
 
     for(let i = 0; i < iconClick.length; i ++){
         iconClick[i].addEventListener('click', e => {
-
             (function(){ //Creo una función anonima autoejecutable para no gastar lineas llamandola después de ejecutarla      
                 for(const t of e.path[2].children){ //Ésta funcion me permite identificar si ya hay una opcion escogida, en caso de cambiar se borra el id y es colocado en la otra opción escogida
-                    if(t.id == `selected-answer${contador - 1}`){               
+                    if(t.id.includes('selected-answer')){
                         t.removeAttribute('id');
-                        t.children[1].removeAttribute('style')
-                    }
-                }
-            }())
-                        
+                        t.children[1].removeAttribute('style');
+                    };
+                };
+            }());
+            
+            let idAns = iconClick[i].parentElement.parentElement;
+            idAns.classList.add('selected');
             iconClick[i].style.backgroundColor = '#2af' //Establezco el color al icono después de haber sido clickeado
-            iconClick[i].parentNode.id = `selected-answer${contador - 1}`   //Con esta linea establezco un id unico a cada selección hecha por el usuario (para poder ser identificable en la base de datos y hacer las comprobaciones en el frontend cuando se estén respondiendo los quiz)   
+            iconClick[i].parentElement.id = `selected-answer${idAns.outerText.slice(idAns.outerText.length - 1, idAns.outerText.length)}` //Con esta linea establezco un id unico a cada selección hecha por el usuario (para poder ser identificable en la base de datos y hacer las comprobaciones en el frontend cuando se estén respondiendo los quiz)
         });
-    };                     
+    };
 };
 
 
 //Funcion que crea otra pregunta cuando se le da al boton de agregar otra pregunta
 const createQuest = (entity, entries, p) => {
-    if(contador > 10) return alert('Haz alcanzado el máximo de preguntas')
+    if(contador > 9) {
+        return (idioma != "en") ? showErrPop('Haz alcanzado el máximo de preguntas') : showErrPop('You has been reached the maximun quest');       
+    };
     const containDivQuest = document.createElement('DIV');
     containDivQuest.classList.add(`questions2`);
     const span = document.createElement('span');
-    span.textContent = `Pregunta ${contador}°` 
+    (idioma != "en") ? span.textContent = `Pregunta ${contador + 1}` : span.textContent = `Question ${contador + 1}`;
     containDivQuest.id = id;
     const fragmentQuest = document.createDocumentFragment()
 
@@ -150,7 +176,7 @@ const createQuest = (entity, entries, p) => {
 
         inputQuestion.classList.add('question');
             inputQuestion.setAttribute('spellcheck', 'false');
-            inputQuestion.setAttribute('placeholder', 'Escribe una pregunta');
+            (idioma != "en") ? inputQuestion.setAttribute('placeholder', 'Escribe una pregunta') : inputQuestion.setAttribute('placeholder', 'Write a quest');
             inputQuestion.setAttribute('required', 'true');
             inputQuestion.setAttribute('minlength', '5');
             inputQuestion.setAttribute('maxlength', '50');
@@ -167,7 +193,7 @@ const createQuest = (entity, entries, p) => {
             iconCheck.classList.add('fa-check');
             inputQuest.classList.add('answ')
             inputQuest.setAttribute('spellcheck', 'false');
-            inputQuest.setAttribute('placeholder', 'Escribe la posible respuesta'); 
+            (idioma != "en") ? inputQuest.setAttribute('placeholder', 'Escribe la posible respuesta') : inputQuest.setAttribute('placeholder', 'Write a possible response'); 
             inputQuest.setAttribute('minlenght', '5');
             inputQuest.setAttribute('maxlength', '50');
             inputQuest.setAttribute('required', 'true');
@@ -193,10 +219,9 @@ const addQuestInput = node => { //Ésta funcion me crea divs por separado cada v
 };
 
 const setLanguaje = lang => {
+    const p = document.createElement('P');
     const fragment = document.createDocumentFragment()
-    if(lang == 'es'){
-        console.log(':(')
-        const p = document.createElement('P');
+    if(lang == 'es' || lang == 'es-ES'){
         const span1 = document.createElement('SPAN');
         const span2 = document.createElement('SPAN');
         const span3 = document.createElement('SPAN');
@@ -213,8 +238,6 @@ const setLanguaje = lang => {
         fragment.appendChild(span3);
         return fragment;
     }else{
-        console.log(':)')
-        const p = document.createElement('P');
         const span1 = document.createElement('SPAN');
         const span2 = document.createElement('SPAN');
         const span3 = document.createElement('SPAN');
@@ -254,9 +277,9 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     divContent.classList.add('c-ur-q');
     divTitle.classList.add('title');
     pTitle.textContent = title;
-    if(languaje != 'es') {
+    // if(languaje != 'es') {
         
-    }
+    // }
     pTitle.classList.add('title-quest')
     divTitle.appendChild(pTitle);
 
@@ -308,12 +331,14 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
 
     for(let i = 0; i < entity.length; i++){
         entity[i].addEventListener('click', () => {
+            cantidad_de_respuestas = entity[i].outerText.slice( 0, 1 );
+            let deleteP = document.querySelector('.select-ans')
             buttonAdd.style.display = 'inline-block';
             divAnswer.appendChild(createQuest(entity[i].textContent.slice(0, 1), entity));
             checkIcon();
             contador++;
             id++;
-            divSelectHowAns.removeChild(p);
+            deleteP.removeChild(deleteP.children[0])
         });
     };
        
@@ -330,21 +355,40 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     });
 
     document.getElementById('send').addEventListener('click', e => {
+        e.preventDefault();
+        let empty = false;
+        let inputValue = document.querySelectorAll('.answ')
+        let questionValue = document.querySelectorAll('.question');
         if(contador < 3 && showBtn == true){
-            alert('Debes completar al menos dos preguntas');
-            e.preventDefault();
-        };
+            return (idioma != "en") ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question after continue');  
+        };  
+        
+        inputValue.forEach(item => {
+            if(item.value < 1) {
+                empty = true;
+                return 
+            }else{
+                empty = false;
+            }
+        });
+
+        if(empty == false){
+            if(idioma != "en"){
+                (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : upToFirebase();       
+            }else{
+                (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : upToFirebase();
+            };
+        }else showErrPop('Comprueba que todos los campos estén completos antes de continuar');
     });
 };
 
 const createQuiz = selected => {
     
     if(selected.id == 'p'){
-        if(idioma != 'en') contentHTML('¡Estás creando tu quiz personalizado!', true, idioma);
-        else contentHTML("You're creating your personalized quiz!", true, idioma);
+        (idioma != 'en') ? contentHTML('¡Estás creando tu quiz personalizado!', true, idioma) : contentHTML("You're creating your personalized quiz!", true, idioma);
+        
     }else{
-        if(idioma != 'en') contentHTML('¡Estás creando tu quiz sugerido!', false, idioma);
-        else contentHTML("You're creating a suggered quiz!", false, idioma);
+        (idioma != 'en') ? contentHTML('¡Estás creando tu quiz sugerido!', false, idioma) : contentHTML("You're creating a suggered quiz!", false, idioma);      
     };
 };
 
@@ -356,4 +400,62 @@ for(let i = 0; i < $q.length; i++){
 
         createQuiz($q[i].children[0]);
     });
+};
+
+function upToFirebase(){
+    const preguntas = document.querySelectorAll('.question'); //traigo todas las clases.question
+    let empty = false; // variable que si es true no deja continuar con el script
+    preguntas.forEach(item => {
+        if(item.value < 1) {
+            empty = true; //Se vuelve true si consigue un input sin llenar
+            return showErrPop('Comprueba que todos los campos estén completos antes de continuar');
+        };
+    });
+    if(empty == false){
+        const answers = document.querySelectorAll('.answ');//traigo todas las clases.answ
+        const Array_preguntas_answers = new Array; //Creo el array donde guardaré los valores de las preguntas y respuestas
+        let duqueisnotreadingthis = 0; //sé que duquenoestaleyendoesto
+
+            for(let i = 0; i < preguntas.length; i++) { //creo un for sayayin
+
+            let obj_pregunta_y_respuestas = new Object;//creo el objeto, y dependiendo de la cantidad de respuestas lo lleno
+            const correctAnswer = document.querySelector(`#selected-answer${i+1} > input`).value //traigo el valor de la respuesta correcta
+            console.log(correctAnswer)//Si falta por seleccionar alguna respuesta correcta, se llama igual la funcion, error: Uncaught TypeError: Cannot read property 'value' of null
+
+                if (cantidad_de_respuestas === "2"  ) {
+                    obj_pregunta_y_respuestas = {
+                        pregunta:preguntas[i].value,
+                        A:answers[duqueisnotreadingthis].value,
+                        B:answers[duqueisnotreadingthis+1].value,
+                        niceValue:correctAnswer
+                    }
+                }
+                else if (cantidad_de_respuestas === "3"  ) {
+                    obj_pregunta_y_respuestas = {
+                        pregunta:preguntas[i].value,
+                        A:answers[duqueisnotreadingthis].value,
+                        B:answers[duqueisnotreadingthis+1].value,
+                        C:answers[duqueisnotreadingthis+2].value,
+                        niceValue:correctAnswer
+                    }
+                }
+                else if (cantidad_de_respuestas === "4"  ) {
+                    obj_pregunta_y_respuestas = {
+                        pregunta:preguntas[i].value,
+                        A:answers[duqueisnotreadingthis].value,
+                        B:answers[duqueisnotreadingthis+1].value,
+                        C:answers[duqueisnotreadingthis+2].value,
+                        D:answers[duqueisnotreadingthis+3].value,
+                        niceValue:correctAnswer
+                    }
+                }
+                else{
+                    console.error("error en la cantidad de respuestas")
+                }
+                Array_preguntas_answers.push(obj_pregunta_y_respuestas) //una vez llenado el objeto de preguntasyrespuestas, lo guardo en el array
+                duqueisnotreadingthis = duqueisnotreadingthis + parseInt(cantidad_de_respuestas) //como duque no esta leyendo esto le sumo un numero
+            } //traer respuestas
+            const Game = { ...Array_preguntas_answers } //por ultimo, tenemos el objeto del juego
+            console.info(Game);
+    };
 };

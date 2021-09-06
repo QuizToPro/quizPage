@@ -15,6 +15,50 @@ body{
     position: relative;
     transition: all .2s;
 }
+
+.err{
+    display: flex;
+    width: 300px;
+    border-radius: 5px;
+    position: fixed; 
+    right: 10px;
+    bottom: 10px;
+    z-index: 100;
+    background: -webkit-linear-gradient(left, rgb(29, 201, 231),rgb(1, 38, 253));
+    color: var(--white);
+    transform: translate(100%);
+    opacity: 0;
+}
+.err > p{
+    padding: 15px;
+}
+.err > span{
+    cursor: pointer;
+    margin: 3px 5px;
+}
+
+.show{
+    animation: mostrarErr 5s both;
+}
+
+@keyframes mostrarErr{
+    0%{
+        opacity: 0;
+        transform: translate(100%);
+    }
+    10%{
+        opacity: 1;
+        transform: translate(0);
+    }
+    90%{
+        opacity: 1;
+        transform: translate(0);
+    }
+    100%{
+        opacity: 0;
+        transform: translate(100%);
+    }
+}
 .modal{
     position: absolute;
     display: flex;
@@ -260,6 +304,7 @@ body{
     transition: opacity, font-size .4s;
 }
 .q{
+    text-align: center;
     display: flex;
     flex-direction: column;
 }
@@ -350,6 +395,10 @@ body{
     padding: 15px;
     border-bottom: 3px solid var(--blue);  
 }
+.questions2 > span{
+    text-transform: uppercase;
+    color: #09f;
+}
 .questions2 > input::placeholder{
     color: var(--blue);
 }
@@ -436,6 +485,10 @@ body{
     text-transform: uppercase;
     cursor: pointer;
 }
+#send:active{
+    border-top: 3px solid #05f;
+    font-size: 10px;
+}
 .select-ans{
     display: flex;
     flex-wrap: wrap;
@@ -444,6 +497,7 @@ body{
     margin: 15px;
 }
 .select-ans > p{
+    text-align: center;
     flex-basis: 100%;
 }
 .select-ans > span{
@@ -550,6 +604,22 @@ footer{
     color: rgba(100, 100, 77, 0.933);
 }
 
+.language{
+    padding: 15px;
+    text-align: right;
+}
+.language label{
+    font-size: 15px;
+    color: var(--darkBlue);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.language #select-language{
+    font-size: 15px;
+    color: var(--blue);
+    border: 1px solid var(--darkBlue);
+}
+
 /* media query  */
 
 @media screen and (max-width: 500px){
@@ -566,5 +636,20 @@ footer{
     .main .content-wave{    
         height: 30%;
     }
-   
+    .q{
+        transform: translateY(40px);
+    }
+    .q > i{
+        font-size: 30px;
+    }
+    #btn-start{
+        font-size: 15px;
+    }
+    #contact > span{
+        font-size: 15px;
+    }
+    #contact-list li a{
+        font-size: 15px;
+        padding: 5px;
+    }
 }
