@@ -1,0 +1,15 @@
+{
+    "obj_pregunta_y_respuestas" : {
+            "pregunta" : "Mascota preferida",
+            "A": "Gato",
+            "B": "Perro",
+            "niceValue": "Gato"
+    },
+    "obj_pregunta_y_respuestas2" : {
+        "pregunta" : "Mascotica preferida",
+        "A": "Gatico",
+        "B": "Perrito",
+        "niceValue": "Gatico"
+    }
+}
+  
