@@ -7,13 +7,14 @@
 
 body{
     background: url('https://616688-2000728-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2021/06/question.jpg');
-    background-repeat: repeat;
+    background-repeat: no-repeat;
     background-size: cover;
-    overflow: hidden;
 }
 
 .main{
-    height: 100vh;
+    overflow: hidden;
+    min-height: 100vh;
+    height: 100%;
 }
 
 .div-name{
@@ -28,6 +29,8 @@ body{
     z-index: 1;
 }
 .div-name form{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     padding: 15px;
 }
 .div-name form #name {
@@ -39,6 +42,7 @@ body{
 }
 
 .div-name form #send{
+    width: 100%;
     border: none;
     background: #2af;
     color: #fff;
@@ -50,25 +54,25 @@ body{
 .container{
     position: relative;
     display: flex;
+    
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
-    transform: translate(100%);
+    transform: translate(100%) translateY(50%);
     z-index: 10;
 }
 
 @keyframes aparecer {
     0%{
-        transform: translate(100%);
-
+        transform: translate(100%) translateY(50%);
     }
     50%{
-        transform: translate(-10%);
+        transform: translate(-10%) translateY(50%);
     }
     100%{
-        transform: translate(0);
+        transform: translate(0) translateY(50%);
     }
 }
 
@@ -99,14 +103,22 @@ body{
 
 .load2{
     position: absolute;
-    background: rgb(164, 208, 235);
+    background: #2af;
     top: 0;
     left: 0;
-    width: 0%;
+    width: 100%;
     height: 30%;
     z-index: 1;
-    transition: width .2s;
     opacity: 1;
+}
+.load3{
+    position: absolute;
+    z-index: 100;
+    top: 30%;
+    left: 0;
+    width: 0%;
+    height: 10px;
+    transition: all .2s;
 }
 
 .title-trivia{
@@ -129,7 +141,7 @@ body{
     z-index: 10;
     font-size: 20px;
     padding: 15px;
-    color: #2af;
+    color: #fff;
     font-weight: bold;
     transition: color .2s;
 }
@@ -267,4 +279,81 @@ body{
     cursor: pointer;
     background: #fff;
     color: #2af;
+}
+
+/* /FOOTER  */
+
+footer{
+    border-top: 1px solid var(--blue);
+    background: #fff;
+}
+.contact-section, #copy-section{
+    text-align: center;
+    flex-basis: 100%;
+}
+
+#contact{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    color: var(--blue);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#contact > span{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 20px;
+    padding: 15px;
+}
+
+#contact-list{
+    padding: 8px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+#contact-list li{
+    list-style: none;
+}
+#contact-list li a{
+    color: var(--blue);
+    font-size: 25px;
+    padding: 20px;
+    transition: color, font-size .1s ease-in;
+}
+
+#contact-list li:nth-child(1):hover > a{
+    color: rgb(219, 93, 20);
+}
+#contact-list li:nth-child(2):hover > a{
+    color: rgb(12, 194, 52);
+}
+#contact-list li:nth-child(3):hover > a{
+    color: #0cf;
+}
+#contact-list li:nth-child(4):hover > a{
+    color: #00f;
+}
+#contact-list li:nth-child(5):hover > a{
+    color: #0fc;
+}
+#contact-list li:nth-child(6):hover > a{
+    color: #00c0f9;
+}
+#contact-list li:nth-child(7):hover > a{
+    color: rgba(100, 100, 77, 0.933);
+}
+
+@media screen and (max-width: 500px){
+   
+    #contact > span{
+        font-size: 15px;
+    }
+    #contact-list li a{
+        font-size: 15px;
+        padding: 5px;
+    }
 }

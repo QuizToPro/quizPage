@@ -13,13 +13,24 @@ const $main = document.querySelector('.main'); //section main
 const $uQz = document.querySelector('.u-qz'); //La seccion de preguntas sugeridas
 const $pQz = document.querySelector('.p-qz'); //La seccion de preguntas personalizadas
 const $q = document.querySelectorAll('.q'); //Aquí me traigo ambas secciones de arriba 
+const idioma = localStorage.getItem('lang') // Podría ser inglés u español
+
 let numAns = 0; //La seleccion de la cantidad de respuestas que podrá realizar el usuario
 let id = 0; //Es el contador de id de cada div question
 let contador = 0; //Contador que me permite identificar la respuesta seleccionada
 let checkRes = 1;
-const idioma = localStorage.getItem('lang') // Podría ser inglés u español
 let cantidad_de_respuestas = undefined;
 
+function copyClipboard(){
+    const content = document.getElementById('text-link').innerHTML;
+    const copyText = document.querySelector('.alert-copy');
+    navigator.clipboard.writeText(content)
+    .then(() => {
+        copyText.style.display = 'grid';
+        copyText.style.animation = 'aparecerCopy 2s linear';
+        setTimeout(() => copyText.removeAttribute('style'), 2000)
+    })
+}
 const showErrPop = msg => {    
     if(err.classList.contains('show')) err.classList.remove('show');
     setTimeout(() => err.classList.add('show'), 1)
@@ -264,7 +275,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     const divQuestions = document.createElement('DIV');
     const divAnswer = document.createElement('DIV');
     const divMoreQuest = document.createElement('DIV');
-    const inputSend = document.createElement('INPUT');
+    const iconSend = document.createElement('I');
+    const divLoad = document.createElement('DIV');
     const buttonAdd = document.createElement('BUTTON');
     const pTitle = document.createElement('P');
     const p = document.createElement('P');
@@ -307,11 +319,14 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     buttonAdd.textContent = 'Agregar otra pregunta';
     buttonAdd.style.display = 'none';
 
-    inputSend.id = 'send';
-    inputSend.setAttribute('type', 'submit');
+    iconSend.id = 'send';
+    iconSend.classList.add('fas');
+    iconSend.classList.add('fa-chevron-circle-right');
+    iconSend.setAttribute('title', 'continuar')
+
+    divLoad.classList.add('load-send');
 
     if(idioma == 'en'){
-        inputSend.value = 'Submit'
         buttonAdd.textContent = 'Add other question';
     }
 
@@ -320,7 +335,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     fragment.appendChild(divTitle);
     fragment.appendChild(divQuestions);
     fragment.appendChild(divMoreQuest);
-    fragment.appendChild(inputSend);
+    fragment.appendChild(divLoad)
+    fragment.appendChild(iconSend);
     form.appendChild(fragment);
     divContent.appendChild(form);
     $main.appendChild(divContent);
@@ -355,13 +371,14 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     });
 
     document.getElementById('send').addEventListener('click', e => {
+        console.log(e)
         e.preventDefault();
         let empty = false;
         let inputValue = document.querySelectorAll('.answ')
         let questionValue = document.querySelectorAll('.question');
         if(contador < 3 && showBtn == true){
             return (idioma != "en") ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question after continue');  
-        };  
+        };
         
         inputValue.forEach(item => {
             if(item.value < 1) {
@@ -378,7 +395,35 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
             }else{
                 (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : upToFirebase();
             };
-        }else showErrPop('Comprueba que todos los campos estén completos antes de continuar');
+        }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');
+        const divCopy = document.querySelector('.share-link');
+        const codeCopy = `<div class="content-links">
+        <p>Quiz Creado con éxito!</p>
+        <p>Compartir enlace</p>
+        <div class="grid-content-link">
+            <span id="text-link">TriviaQuiz.app/?=TokenAjUscAbbIpRes</span>
+            <button onclick="copyClipboard()">Copiar</button>
+            <div class="alert-copy">
+                <span>Texto Copiado correctamente</span>
+            </div>
+        </div>
+        
+        <div class="content-icons">
+            <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti triviaQuiz.com/?=hashTrfqAcqust" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+            <div><a href=""><i class="fab fa-facebook"></i></a> </div>
+            <div><a href=""><i class="fab fa-twitter"></i></a> </div>
+            <div><a href=""><i class="fab fa-instagram"></i></a> </div>
+        </div>              
+    </div>`
+    iconSend.style.opacity = '0';  
+    divLoad.style.animation = 'loop 1s infinite'
+    setTimeout(() => {
+        e.path[2].style.animation = 'removeSection 1s forwards';
+        divCopy.innerHTML = codeCopy;
+        iconSend.removeAttribute('style'); 
+        divLoad.removeAttribute('style'); 
+        document.querySelector('.share-link').style.opacity = '1'
+        }, 5000)
     });
 };
 
@@ -452,10 +497,13 @@ function upToFirebase(){
                 else{
                     console.error("error en la cantidad de respuestas")
                 }
+                console.log(obj_pregunta_y_respuestas)
+
                 Array_preguntas_answers.push(obj_pregunta_y_respuestas) //una vez llenado el objeto de preguntasyrespuestas, lo guardo en el array
                 duqueisnotreadingthis = duqueisnotreadingthis + parseInt(cantidad_de_respuestas) //como duque no esta leyendo esto le sumo un numero
             } //traer respuestas
             const Game = { ...Array_preguntas_answers } //por ultimo, tenemos el objeto del juego
             console.info(Game);
+            console.log(Array_preguntas_answers)
     };
 };

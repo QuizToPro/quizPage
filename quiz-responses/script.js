@@ -1,5 +1,6 @@
 'use strict'
 
+let idQuest;
 let content;
 let quest;
 let loadBar = 0;
@@ -17,21 +18,21 @@ const results = {
     eighty: 'Parece que fulanito tiene gente que la conoce muy bien! acertaste en la gran cantidad', // de 80% a 99%
     houndred: 'Perfecto! lograste acertar en todas las preguntas, conoces muy bien a fulanito!' // 100% 
 }
-const load = document.querySelector('.load2');
+const load = document.querySelector('.load3');
 const buttonNext = document.getElementById('next');
 
 const selectAns = (a) => {
 
     buttonNext.addEventListener('click', () => {
-        for(const cl of  quest){
+        for(const cl of quest){
             if(cl.classList.contains('selected')){                    
-                if(cl.id != 1) {        
+                if(cl.id != idQuest) {        
                     load.style.width = `${loadBar}%`;
                     load.style.background = '#F33';
                 }else{
                     meet += progress;                      
                     load.style.width = `${loadBar}%`;
-                    load.style.background = '#2af';
+                    load.style.background = 'rgb(93, 209, 245)';
                 };  
             };
         }; 
@@ -40,9 +41,10 @@ const selectAns = (a) => {
 };
 
 const createQuest = arr => { 
+    let data = Object.values(arr)
     buttonNext.style.opacity = '0';
     if(key == false) {
-        progress = 100 / arr.length;
+        progress = 100 / data.length;
         key = true;
     };
 
@@ -52,23 +54,22 @@ const createQuest = arr => {
             document.querySelector('.titleQuest').style.color = '#fff';
         }
 
+        let data2 = Object.values(data[contador]);
         loadBar = progress + loadBar;
-        document.querySelector('.question-answer').innerHTML = '';
-        let data = Object.values(arr[contador]);
+        document.querySelector('.question-answer').innerHTML = '';     
         const fragment = document.createDocumentFragment();
-        document.querySelector('.titleQuest').textContent = arr[contador].ask;
-        for(let i = 1; i < data.length; i ++){
-            console.log(i);
+        document.querySelector('.titleQuest').textContent = data[contador].pregunta;
+        for(let i = 2; i < data2.length; i ++){
             const div = document.createElement('DIV');
             const span = document.createElement('SPAN');
             div.classList.add('quest');
             span.classList.add('spanColor');
-    
-            if(data[i].includes('1')){
-                div.id = data[i].slice(0, 1);
-                span.textContent = data[i].replace('1', ' ').trim();
-            } else span.textContent = data[i];
-            
+            if(data2[i] == data[contador].niceValue) {
+                div.id = data[contador].niceValue;
+                idQuest =  data[contador].niceValue;
+            };
+
+            span.textContent = data2[i];
             div.appendChild(span);
             fragment.appendChild(div);
         };
@@ -107,7 +108,7 @@ const getQuest = async (fn) => {
     if(content != undefined) return selectAns()
     const data = await fetch('quest.txt');
     const res = await data.json();
-    content = res.quest;
+    content = res;
     fn(content);
     selectAns();
 };

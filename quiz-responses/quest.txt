@@ -1,30 +1,15 @@
 {
-    "quest" : [
-        {
-            "ask" : "¿Qué me gusta más?",
-            "a1" : "1Coca-Cola",
-            "a2" : "Pepsi",
-            "a3" : "Lipton"
-        },
-        {
-            "ask" : "¿Comida favorita?",
-            "a1" : "1Hamburguesa",
-            "a2" : "Perro Caliente"
-        },
-        {
-            "ask" : "¿Color favorito?",
-            "a1" : "Rojo",
-            "a2" : "1Azul"
-        },
-        {
-            "ask" : "¿Genero favorito?",
-            "a1" : "Rock",
-            "a2" : "1Rap"
-        },
-        {
-            "ask" : "¿Mascota favorita?",
-            "a1" : "Gato",
-            "a2" : "1Perro"
-        }
-    ]
+    "obj_pregunta_y_respuestas" : {
+            "pregunta" : "Mascota preferida",
+            "A": "Gato",
+            "B": "Perro",
+            "niceValue": "Gato"
+    },
+    "obj_pregunta_y_respuestas2" : {
+        "pregunta" : "Mascotica preferida",
+        "A": "Gatico",
+        "B": "Perrito",
+        "niceValue": "Gatico"
+    }
 }
+  

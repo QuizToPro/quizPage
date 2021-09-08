@@ -200,20 +200,20 @@ body{
 }
 .content button{
     border: none;
-    background: -webkit-linear-gradient(left, var(--blue), #00f);
-    color: var(--white);
+    background: #fff;
+    color: var(--darkBlue);
     width: 100%;
     font-size: 23px;
     margin-top: 10px;   
     font-weight: bold;
     padding: 10px;
-    transition: all .5s;
+    outline: 1px solid #00f;
+    transition: all .3s;
 }
 .content button:hover{
     cursor: pointer;
-    background: #fff;
-    color: #00f;
-    outline: 1px solid #00f;
+    background: -webkit-linear-gradient(left, var(--blue), #00f);
+    color: #fff;
 }
 
 .content h1{
@@ -241,6 +241,7 @@ body{
 }
 
 .title-quest{
+    text-align: left;
     color: var(--blue);
 }
 /* div quiz sugerido  */
@@ -255,6 +256,16 @@ body{
     }
     100%{
         transform: translate(-50%, -50%) rotateX(0deg);
+    }
+}
+
+@keyframes removeSection{
+    0%{
+        transform: translate(-50%, -50%);
+    }
+    100%{
+        opacity: 0;
+        transform: translate(100%, -50%);
     }
 }
 
@@ -350,6 +361,7 @@ body{
 /* Seccion de agregar preguntas */
 
 .c-ur-q{
+    opacity: 1;
     overflow: auto;
     position: absolute;
     left: 50%;
@@ -359,6 +371,7 @@ body{
     box-shadow: 3px 3px 8px rgba(0, 0, 0, .5);
     background: rgba(255, 255, 255, 1);
     z-index: 10;
+    transition: all .5s;
 }
 
 .c-ur-q > .more-quest{
@@ -476,19 +489,49 @@ body{
     cursor: pointer;
 }
 
+.load-send{
+    border-radius: 50%;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    top: 0px;
+    right: 15px;
+    border: 2px solid var(--blue);
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+}
+
+@keyframes loop{
+    0%{  
+        transform: rotate(0deg);
+      
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
 #send{
+    top: -5px;
+    right: 0;
+    position: absolute;
     border: none;
     outline: none;
-    color: var(--white);
-    background-color: var(--blue);
+    color: var(--blue);
+    font-size: 25px;
     padding: 15px;
     text-transform: uppercase;
     cursor: pointer;
+    opacity: 1;
+    transition: opacity .5s;
 }
+
 #send:active{
-    border-top: 3px solid #05f;
-    font-size: 10px;
+    color: var(--darkBlue);
 }
+
 .select-ans{
     display: flex;
     flex-wrap: wrap;
@@ -538,6 +581,158 @@ body{
         height: 45px;
     }
 
+/* Compartir link  */
+.share-link{
+    opacity: 0;
+    position: absolute;
+    transform: translate(-50%, -50%) scale(1);
+    left: 50%;
+    top: 60%;
+    background: var(--white);
+    z-index: 100;
+    transition: opacity 1s;
+}
+
+.content-icons{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px 0;
+}
+.share-link .content-links{
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 5px 5px 19px rgba(0, 0, 0, .5);
+    justify-content: space-evenly;
+    border-radius: 5px;
+}
+
+.share-link .content-links p{
+    padding: 10px 0;
+    font-size: 25px;
+    color: var(--blue);
+    flex-basis: 100%;
+    text-align: center;
+}
+
+.share-link .content-links #text-link{
+    border: 1px solid var(--blue);
+    padding: 10px;
+    flex-basis: 80%;
+    text-align: center;
+}
+.share-link .content-links i{
+    font-size: 30px;
+    padding: 5px;
+}
+.grid-content-link{
+    position: relative;
+    padding: 20px;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr minmax(50px, 80px);
+}
+
+.alert-copy{
+    opacity: 0;
+    display: none;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+    text-transform: uppercase;
+    position: absolute;
+    transform: translate(-50%);
+    left: 50%;
+    top: 100%;
+    width: 50%;
+    background: var(--blue);
+}
+
+@keyframes aparecerCopy{
+    0%{
+        opacity: 0;
+    }
+    10%{
+        opacity: 1;
+    }
+    90%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+.alert-copy::before{
+    content: '';
+    position: absolute;
+    background: transparent;
+    transform: translateY(-95%);
+    left: calc(50% - 15px);
+    border-top: 15px solid transparent;
+    border-left: 15px solid transparent;
+    border-bottom: 15px solid var(--blue);
+    border-right: 15px solid transparent;
+
+}
+.alert-copy > span{
+    padding: 10px;
+}
+.grid-content-link > span{
+    text-align: center;
+    width: 100%;
+}
+.grid-content-link button{
+    border: none;
+    outline: none;
+    background: var(--blue);
+    color: var(--white);
+}
+.grid-content-link button:active{
+    background: var(--white);
+    color: var(--blue);
+}
+.content-icons{
+    padding: 0 0 20px 0;
+}
+.content-icons div i{
+    border-radius: 5px;
+}
+.content-icons div:hover i{
+    cursor: pointer;
+}
+.content-icons div:nth-child(1) i{
+    color: rgb(12, 194, 52);
+}
+.content-icons div:nth-child(1):hover i{
+    color: #fff;
+    background-color: rgb(12, 194, 52);
+}
+
+.content-icons div:nth-child(2) i{
+    color: #00f;
+}
+.content-icons div:nth-child(2):hover i{
+    color: #fff;
+    background-color: #00f ;
+}
+
+.content-icons div:nth-child(3) i{
+    color: #0cf;
+}
+.content-icons div:nth-child(3):hover i{
+    color: #fff;
+    background-color:  #0cf;
+}
+
+.content-icons div:nth-child(4) i{
+    color: #f81;
+}
+.content-icons div:nth-child(4):hover i{
+    color: #fff;
+    background-color: #f81;
+}
 /* FOOTER  */
 
 footer{
