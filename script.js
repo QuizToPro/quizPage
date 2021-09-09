@@ -1,5 +1,7 @@
 'use strict'
 
+// const { rejects } = require("assert");
+
 const err = document.querySelector('.err');
 const selectLanguage = document.getElementById('select-language');
 const modal = document.querySelector('.modal');
@@ -391,9 +393,14 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
 
         if(empty == false){
             if(idioma != "en"){
-                (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : upToFirebase();       
+                (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
+                    console.log("PROMESAAA")
+                    upToFirebase()
+                });       
             }else{
-                (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : upToFirebase();
+                (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : CreateObjectGame().then((Game)=>{
+                    console.log("PROMESSSS")
+                });       
             };
         }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');
         const divCopy = document.querySelector('.share-link');
@@ -447,21 +454,26 @@ for(let i = 0; i < $q.length; i++){
     });
 };
 
-function upToFirebase(){
+function CreateObjectGame () {
+    return new Promise((resolve,reject)=>{
+    
     const preguntas = document.querySelectorAll('.question'); //traigo todas las clases.question
+
     let empty = false; // variable que si es true no deja continuar con el script
     preguntas.forEach(item => {
         if(item.value < 1) {
             empty = true; //Se vuelve true si consigue un input sin llenar
+            reject()
             return showErrPop('Comprueba que todos los campos estén completos antes de continuar');
         };
     });
+
     if(empty == false){
         const answers = document.querySelectorAll('.answ');//traigo todas las clases.answ
         const Array_preguntas_answers = new Array; //Creo el array donde guardaré los valores de las preguntas y respuestas
         let duqueisnotreadingthis = 0; //sé que duquenoestaleyendoesto
 
-            for(let i = 0; i < preguntas.length; i++) { //creo un for sayayin
+         for(let i = 0; i < preguntas.length; i++) { //creo un for sayayin
 
             let obj_pregunta_y_respuestas = new Object;//creo el objeto, y dependiendo de la cantidad de respuestas lo lleno
             const correctAnswer = document.querySelector(`#selected-answer${i+1} > input`).value //traigo el valor de la respuesta correcta
@@ -496,6 +508,7 @@ function upToFirebase(){
                 }
                 else{
                     console.error("error en la cantidad de respuestas")
+                    reject()
                 }
                 console.log(obj_pregunta_y_respuestas)
 
@@ -505,5 +518,11 @@ function upToFirebase(){
             const Game = { ...Array_preguntas_answers } //por ultimo, tenemos el objeto del juego
             console.info(Game);
             console.log(Array_preguntas_answers)
-    };
+            resolve(Game)
+        }
+    });
+
+    async function upToFirebase(Game){
+        
+    }
 };
