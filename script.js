@@ -1,6 +1,16 @@
 'use strict'
 
+
+
+
+
 // const { rejects } = require("assert");
+
+const database = firebase.firestore();
+// TODO: Replace the following with your app's Firebase project configuration
+
+
+console.log(database)
 
 const err = document.querySelector('.err');
 const selectLanguage = document.getElementById('select-language');
@@ -22,6 +32,75 @@ let id = 0; //Es el contador de id de cada div question
 let contador = 0; //Contador que me permite identificar la respuesta seleccionada
 let checkRes = 1;
 let cantidad_de_respuestas = undefined;
+let uid_person = undefined;
+
+firebase.auth().signInAnonymously()
+  .then((user) => {
+      console.log(user)
+    // Signed in..
+    uid_person = user.user.uid;
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(error)
+    window.location.reload()
+    // ...
+  });
+
+
+  function upToFirebase (Game){
+    return new Promise((resolve,reject)=>{
+    if (Object.entries(Game).length === 0) {
+        console.error(Game);
+        console.error("An error has ocurred. please try later");
+        reject("Game has troublesome");
+    }
+
+    const timestamp = Math.floor(Date.now()/1000);
+    const collectionName = `quizpersonalizados`
+
+
+    database.collection(collectionName).add({
+        timestamp:timestamp,
+        uid:uid_person,
+        Game
+    })
+        .then((docRef) => {
+            console.log(docRef);
+            console.log("Document written with ID: ", docRef.id);
+            const pathToPlayQuiz = `miTrivia.webApp/playQuiz/Quiz.html?id=${docRef.id}`
+     
+            resolve(pathToPlayQuiz)
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+            reject(error);
+        });
+})}
+
+const nextPage = (url) => {
+    const divCopy = document.querySelector('.share-link');
+    const codeCopy = `<div class="content-links">
+    <p>Quiz Creado con éxito!</p>
+    <p>Compartir enlace</p>
+    <div class="grid-content-link">
+        <span id="text-link">${url}</span>
+        <button onclick="copyClipboard()">Copiar</button>
+        <div class="alert-copy">
+            <span>Texto Copiado correctamente</span>
+        </div>
+    </div>
+    
+    <div class="content-icons">
+        <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti triviaQuiz.com/?=hashTrfqAcqust" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+        <div><a href=""><i class="fab fa-facebook"></i></a> </div>
+        <div><a href=""><i class="fab fa-twitter"></i></a> </div>
+        <div><a href=""><i class="fab fa-instagram"></i></a> </div>
+    </div>              
+</div>`
+divCopy.innerHTML = codeCopy;
+}
 
 function copyClipboard(){
     const content = document.getElementById('text-link').innerHTML;
@@ -315,7 +394,6 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
 
     }
     
-    
     divMoreQuest.classList.add('more-quest');
     buttonAdd.classList.add('add-quest-btn');
     buttonAdd.textContent = 'Agregar otra pregunta';
@@ -395,44 +473,27 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
             if(idioma != "en"){
                 (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
                     console.log("PROMESAAA")
-                    upToFirebase()
+                    upToFirebase(Game).then((url)=>nextPage(url))
+                    .catch((error)=>console.error(error))
                 });       
             }else{
                 (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : CreateObjectGame().then((Game)=>{
                     console.log("PROMESSSS")
+                    upToFirebase(Game).then((url)=>nextPage(url))
+                    .catch((error)=>console.error(error))
                 });       
             };
         }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');
-        const divCopy = document.querySelector('.share-link');
-        const codeCopy = `<div class="content-links">
-        <p>Quiz Creado con éxito!</p>
-        <p>Compartir enlace</p>
-        <div class="grid-content-link">
-            <span id="text-link">TriviaQuiz.app/?=TokenAjUscAbbIpRes</span>
-            <button onclick="copyClipboard()">Copiar</button>
-            <div class="alert-copy">
-                <span>Texto Copiado correctamente</span>
-            </div>
-        </div>
-        
-        <div class="content-icons">
-            <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti triviaQuiz.com/?=hashTrfqAcqust" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
-            <div><a href=""><i class="fab fa-facebook"></i></a> </div>
-            <div><a href=""><i class="fab fa-twitter"></i></a> </div>
-            <div><a href=""><i class="fab fa-instagram"></i></a> </div>
-        </div>              
-    </div>`
-    iconSend.style.opacity = '0';  
-    divLoad.style.animation = 'loop 1s infinite'
-    setTimeout(() => {
-        e.path[2].style.animation = 'removeSection 1s forwards';
-        divCopy.innerHTML = codeCopy;
-        iconSend.removeAttribute('style'); 
-        divLoad.removeAttribute('style'); 
-        document.querySelector('.share-link').style.opacity = '1'
-        }, 5000)
-    });
-};
+        iconSend.style.opacity = '0';  
+        divLoad.style.animation = 'loop 1s infinite'
+        setTimeout(() => {
+            e.path[2].style.animation = 'removeSection 1s forwards';
+            iconSend.removeAttribute('style'); 
+            divLoad.removeAttribute('style'); 
+            document.querySelector('.share-link').style.opacity = '1'
+            }, 5000)
+    })
+}
 
 const createQuiz = selected => {
     
@@ -516,13 +577,10 @@ function CreateObjectGame () {
                 duqueisnotreadingthis = duqueisnotreadingthis + parseInt(cantidad_de_respuestas) //como duque no esta leyendo esto le sumo un numero
             } //traer respuestas
             const Game = { ...Array_preguntas_answers } //por ultimo, tenemos el objeto del juego
+    
             console.info(Game);
-            console.log(Array_preguntas_answers)
+
             resolve(Game)
         }
     });
-
-    async function upToFirebase(Game){
-        
-    }
-};
+}
