@@ -1,9 +1,4 @@
 'use strict'
-
-
-
-
-
 // const { rejects } = require("assert");
 
 const database = firebase.firestore();
@@ -69,8 +64,9 @@ firebase.auth().signInAnonymously()
         .then((docRef) => {
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
-            const pathToPlayQuiz = `miTrivia.webApp/playQuiz/Quiz.html?id=${docRef.id}`
-     
+            // const pathToPlayQuiz = `miTrivia.webApp/playQuiz/Quiz.html?id=${docRef.id}` file:///C:/Users/ricar/Downloads/quizPage-main/playQuiz/Quiz.html
+            const pathToPlayQuiz = `file:///C:/Users/Downloads/quizPage-main/playQuiz/Quiz.html?id=${docRef.id}` //insert your quiz.html's path
+
             resolve(pathToPlayQuiz)
         })
         .catch((error) => {
@@ -100,6 +96,8 @@ const nextPage = (url) => {
     </div>              
 </div>`
 divCopy.innerHTML = codeCopy;
+window.open(url, '_blank').focus();
+
 }
 
 function copyClipboard(){
