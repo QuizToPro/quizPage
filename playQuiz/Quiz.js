@@ -1,5 +1,21 @@
 'use strict'
 
+
+
+const linkwebpage = 'about:blank'
+
+const locationurl = window.location.href
+
+if (!locationurl.includes('=')) {
+    window.location = linkwebpage
+}
+
+const id_doc = locationurl.split('=')[1]
+console.log(id_doc)
+
+let uid_person = undefined;
+const database = firebase.firestore();
+
 let idQuest;
 let content;
 let quest;
@@ -20,6 +36,20 @@ const results = {
 }
 const load = document.querySelector('.load3');
 const buttonNext = document.getElementById('next');
+
+firebase.auth().signInAnonymously()
+  .then((user) => {
+      console.log(user)
+    // Signed in..
+    uid_person = user.user.uid;
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(error)
+    window.location.reload()
+    // ...
+  });
 
 const selectAns = (a) => {
 
@@ -120,3 +150,15 @@ document.getElementById('send').addEventListener('click', e => {
     e.path[2].style.opacity = '0';
     getQuest(createQuest);
 });
+
+async function getGame() {
+    const gameRef = database.collection('quizpersonalizados').doc(id_doc);
+    const doc = await gameRef.get();
+    const data = doc.data()
+    const Game = Object.values(data.Game)
+    console.info(Game)
+    return Game
+}
+setTimeout(async()=>{
+    await getGame()
+})
