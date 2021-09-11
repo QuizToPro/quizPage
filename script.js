@@ -1,4 +1,6 @@
 'use strict'
+
+
 // const { rejects } = require("assert");
 
 const database = firebase.firestore();
@@ -20,7 +22,7 @@ const $main = document.querySelector('.main'); //section main
 const $uQz = document.querySelector('.u-qz'); //La seccion de preguntas sugeridas
 const $pQz = document.querySelector('.p-qz'); //La seccion de preguntas personalizadas
 const $q = document.querySelectorAll('.q'); //Aquí me traigo ambas secciones de arriba 
-const idioma = localStorage.getItem('lang') // Podría ser inglés u español
+const idioma = localStorage.getItem('lang'); // Podría ser inglés u español
 
 let numAns = 0; //La seleccion de la cantidad de respuestas que podrá realizar el usuario
 let id = 0; //Es el contador de id de cada div question
@@ -44,8 +46,11 @@ firebase.auth().signInAnonymously()
   });
 
 
-  function upToFirebase (Game){
+  function upToFirebase (Game, load, btnSend){
     return new Promise((resolve,reject)=>{
+        load.style.opacity = '1';
+        load.style.animation = 'loop 1s linear infinite';
+        btnSend.style.visibility = 'hidden';
     if (Object.entries(Game).length === 0) {
         console.error(Game);
         console.error("An error has ocurred. please try later");
@@ -64,9 +69,8 @@ firebase.auth().signInAnonymously()
         .then((docRef) => {
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
-            // const pathToPlayQuiz = `miTrivia.webApp/playQuiz/Quiz.html?id=${docRef.id}` file:///C:/Users/ricar/Downloads/quizPage-main/playQuiz/Quiz.html
-            const pathToPlayQuiz = `file:///C:/Users/Downloads/quizPage-main/playQuiz/Quiz.html?id=${docRef.id}` //insert your quiz.html's path
-
+            const pathToPlayQuiz = `./playQuiz/Quiz.html?id=${docRef.id}`
+     
             resolve(pathToPlayQuiz)
         })
         .catch((error) => {
@@ -75,7 +79,8 @@ firebase.auth().signInAnonymously()
         });
 })}
 
-const nextPage = (url) => {
+const nextPage = (url, nodo) => {    
+    nodo.style.animation = 'removeSection 1s forwards';
     const divCopy = document.querySelector('.share-link');
     const codeCopy = `<div class="content-links">
     <p>Quiz Creado con éxito!</p>
@@ -89,16 +94,16 @@ const nextPage = (url) => {
     </div>
     
     <div class="content-icons">
-        <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti triviaQuiz.com/?=hashTrfqAcqust" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
-        <div><a href=""><i class="fab fa-facebook"></i></a> </div>
-        <div><a href=""><i class="fab fa-twitter"></i></a> </div>
-        <div><a href=""><i class="fab fa-instagram"></i></a> </div>
-    </div>              
+    <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti https://${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+    <div><a href="https://www.facebook.com/sharer/sharer.php?u=https://${url}" target="_blank"><i class="fab fa-facebook"></i></a> </div>
+    <div><a href="https://twitter.com/intent/tweet?text=Prueba%20mi%20nuevo%20Quiz!,%20mira%20quien%20conoce%20más%20sobre%20sobre%20ti&url=https%3A%2F%2F${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
+</div>              
 </div>`
 divCopy.innerHTML = codeCopy;
+document.querySelector('.share-link').style.opacity = '1';
+console.log(url)
 window.open(url, '_blank').focus();
-
-}
+};
 
 function copyClipboard(){
     const content = document.getElementById('text-link').innerHTML;
@@ -108,17 +113,18 @@ function copyClipboard(){
         copyText.style.display = 'grid';
         copyText.style.animation = 'aparecerCopy 2s linear';
         setTimeout(() => copyText.removeAttribute('style'), 2000)
-    })
-}
+    });
+};
+
 const showErrPop = msg => {    
     if(err.classList.contains('show')) err.classList.remove('show');
     setTimeout(() => err.classList.add('show'), 1)
     err.children[0].textContent = msg;
-}
+};
 
 document.querySelector('.close-err').addEventListener('click', e => {
     err.classList.remove('show')
-})
+});
 
 selectLanguage.addEventListener('change', e => {
     localStorage.setItem('lang', selectLanguage.value);
@@ -158,7 +164,7 @@ if(idioma == 'es' || idioma == 'es-ES'){
     $btnStart.textContent = '¡Start!';
     $sugered.textContent = 'Create a quiz with our suggested questions!'
     $personalized.textContent = 'Create a quiz with your persolanized questions!';
-}
+};
 
 //Evento para aparecer los apartados de que tipo de quiz prefieres
 
@@ -293,7 +299,7 @@ const createQuest = (entity, entries, p) => {
         };
         containDivQuest.appendChild(fragmentQuest)
         return containDivQuest;
-    }        
+    };      
 };
 
 
@@ -304,13 +310,13 @@ const addQuestInput = node => { //Ésta funcion me crea divs por separado cada v
     contentAnswer.appendChild(addInput());
     contentAnswer.appendChild(createQuest());
     fragment.appendChild(contentAnswer);
-    node.appendChild(fragment)
+    node.appendChild(fragment);
     return node;
 };
 
 const setLanguaje = lang => {
     const p = document.createElement('P');
-    const fragment = document.createDocumentFragment()
+    const fragment = document.createDocumentFragment();
     if(lang == 'es' || lang == 'es-ES'){
         const span1 = document.createElement('SPAN');
         const span2 = document.createElement('SPAN');
@@ -354,15 +360,16 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     const divQuestions = document.createElement('DIV');
     const divAnswer = document.createElement('DIV');
     const divMoreQuest = document.createElement('DIV');
-    const iconSend = document.createElement('I');
+    const spanSend = document.createElement('SPAN');
     const divLoad = document.createElement('DIV');
     const buttonAdd = document.createElement('BUTTON');
+    let iIcon = document.createElement('I');
     const pTitle = document.createElement('P');
     const p = document.createElement('P');
     const fragment = document.createDocumentFragment();
     const divSelectHowAns = document.createElement('DIV');
    
-
+    iIcon.classList.add('fas', 'fa-plus')
     form.classList.add('flex-form');
 
     divContent.classList.add('c-ur-q');
@@ -371,7 +378,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     // if(languaje != 'es') {
         
     // }
-    pTitle.classList.add('title-quest')
+    pTitle.classList.add('title-quest');
     divTitle.appendChild(pTitle);
 
     divQuestions.classList.add('questions');
@@ -380,27 +387,29 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     divSelectHowAns.classList.add('select-ans');
 
     if(showBtn == true){
-        
         divSelectHowAns.appendChild(setLanguaje(languaje));
         divAnswer.appendChild(divSelectHowAns);
     }else{
         divAnswer.appendChild(createQuestSugered('¿Cuál es mi bebida favorita?', 'Pepsi', 'Coca-Cola'));
-        divAnswer.appendChild(createQuestSugered('¿Cuál es mi color favorito?'));        
+        divAnswer.appendChild(createQuestSugered('¿Cuál es mi color favorito?'));
         divAnswer.appendChild(createQuestSugered('¿Qué prefiero?', 'Fiestas', 'Quedarme en casa'));
         divAnswer.appendChild(createQuestSugered('¿Deporte favorito?', 'Basketball', 'Futbol', 'Ninguno de los anteriores'));
         divAnswer.appendChild(createQuestSugered('¿Cuál comida prefiero?', 'Hamburguesas', 'Perros calientes'));
-
     }
     
     divMoreQuest.classList.add('more-quest');
     buttonAdd.classList.add('add-quest-btn');
-    buttonAdd.textContent = 'Agregar otra pregunta';
+    buttonAdd.textContent = 'Agregar otra pregunta ';
     buttonAdd.style.display = 'none';
 
-    iconSend.id = 'send';
-    iconSend.classList.add('fas');
-    iconSend.classList.add('fa-chevron-circle-right');
-    iconSend.setAttribute('title', 'continuar')
+    buttonAdd.classList.add('add-quest-btn');
+    buttonAdd.textContent = 'Agregar otra pregunta';
+    buttonAdd.appendChild(iIcon)
+    buttonAdd.title = 'Agregar pregunta'
+    buttonAdd.style.display = 'none';
+
+    spanSend.id = 'send';
+    spanSend.textContent = 'Crear quiz'
 
     divLoad.classList.add('load-send');
 
@@ -408,13 +417,17 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
         buttonAdd.textContent = 'Add other question';
     }
 
-    divMoreQuest.appendChild(buttonAdd);
+    if(showBtn == false){
+        divMoreQuest.appendChild(spanSend);
+    }else{
+        divMoreQuest.appendChild(buttonAdd);
+        divMoreQuest.appendChild(spanSend);
+    }
     divQuestions.appendChild(divAnswer);
     fragment.appendChild(divTitle);
     fragment.appendChild(divQuestions);
     fragment.appendChild(divMoreQuest);
     fragment.appendChild(divLoad)
-    fragment.appendChild(iconSend);
     form.appendChild(fragment);
     divContent.appendChild(form);
     $main.appendChild(divContent);
@@ -423,73 +436,82 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
 
     const entity = document.querySelectorAll('.entity');
 
+    if(showBtn == false){
+        spanSend.style.display = 'inline-block'
+    }
     for(let i = 0; i < entity.length; i++){
         entity[i].addEventListener('click', () => {
             cantidad_de_respuestas = entity[i].outerText.slice( 0, 1 );
-            let deleteP = document.querySelector('.select-ans')
+            let deleteP = document.querySelector('.select-ans');
+            spanSend.style.display = 'inline-block'
             buttonAdd.style.display = 'inline-block';
             divAnswer.appendChild(createQuest(entity[i].textContent.slice(0, 1), entity));
             checkIcon();
             contador++;
             id++;
-            deleteP.removeChild(deleteP.children[0])
+            deleteP.removeChild(deleteP.children[0]);
         });
     };
-       
-    document.querySelector('.add-quest-btn').addEventListener('click', e => {
-        e.preventDefault();
-        if(showBtn != false){
-            divAnswer.appendChild(createQuest(numAns, '', true));
-            contador++;
-            id++;
-            checkIcon()
-        }else{
-            divAnswer.appendChild(createQuest('', '', false));
-        };
-    });
-
+    if(showBtn == true){
+        document.querySelector('.add-quest-btn').addEventListener('click', e => {
+            e.preventDefault();
+            if(showBtn != false){
+                divAnswer.appendChild(createQuest(numAns, '', true));
+                contador++;
+                id++;
+                checkIcon();
+            }else{
+                divAnswer.appendChild(createQuest('', '', false));
+            };
+        });
+    }
+   
     document.getElementById('send').addEventListener('click', e => {
         console.log(e)
         e.preventDefault();
         let empty = false;
-        let inputValue = document.querySelectorAll('.answ')
+        let inputValue = document.querySelectorAll('.answ');
         let questionValue = document.querySelectorAll('.question');
-        if(contador < 3 && showBtn == true){
+        if(contador < 2 && showBtn == true){
             return (idioma != "en") ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question after continue');  
         };
         
         inputValue.forEach(item => {
             if(item.value < 1) {
                 empty = true;
-                return 
+                return
             }else{
                 empty = false;
-            }
+            };
         });
 
         if(empty == false){
             if(idioma != "en"){
                 (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
-                    console.log("PROMESAAA")
-                    upToFirebase(Game).then((url)=>nextPage(url))
-                    .catch((error)=>console.error(error))
+                    console.log("PROMESAAA");
+                    upToFirebase(Game, divLoad, divMoreQuest).then( (url) =>nextPage(url, divContent))
+                    .catch((error)=>{
+                        divLoad.removeAttribute('style');
+                        divMoreQuest.style.visibility = 'visible';
+                        console.error(error);
+                        showErrPop('Ha ocurrido un error, reintalo de nuevo')
+                        }   
+                    )
                 });       
             }else{
                 (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : CreateObjectGame().then((Game)=>{
                     console.log("PROMESSSS")
-                    upToFirebase(Game).then((url)=>nextPage(url))
-                    .catch((error)=>console.error(error))
+                    upToFirebase(Game, divLoad, divMoreQuest).then((url)=>nextPage(url, divContent))
+                    .catch((error)=>{
+                        divLoad.removeAttribute('style')
+                        divMoreQuest.style.visibility = 'visible';
+                        console.error(error);
+                        showErrPop('Ha ocurrido un error, reintalo de nuevo')
+                        }            
+                    )
                 });       
             };
-        }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');
-        iconSend.style.opacity = '0';  
-        divLoad.style.animation = 'loop 1s infinite'
-        setTimeout(() => {
-            e.path[2].style.animation = 'removeSection 1s forwards';
-            iconSend.removeAttribute('style'); 
-            divLoad.removeAttribute('style'); 
-            document.querySelector('.share-link').style.opacity = '1'
-            }, 5000)
+        }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
     })
 }
 
@@ -566,19 +588,23 @@ function CreateObjectGame () {
                     }
                 }
                 else{
-                    console.error("error en la cantidad de respuestas")
-                    reject()
-                }
-                console.log(obj_pregunta_y_respuestas)
+                    console.error("error en la cantidad de respuestas");
+                    reject();
+                };
+                console.log(obj_pregunta_y_respuestas);
 
                 Array_preguntas_answers.push(obj_pregunta_y_respuestas) //una vez llenado el objeto de preguntasyrespuestas, lo guardo en el array
                 duqueisnotreadingthis = duqueisnotreadingthis + parseInt(cantidad_de_respuestas) //como duque no esta leyendo esto le sumo un numero
-            } //traer respuestas
-            const Game = { ...Array_preguntas_answers } //por ultimo, tenemos el objeto del juego
+            }; //traer respuestas
+            const Game = { ...Array_preguntas_answers }; //por ultimo, tenemos el objeto del juego
     
             console.info(Game);
 
-            resolve(Game)
-        }
+            resolve(Game);
+        };
     });
-}
+};
+
+document.getElementById('send-email').addEventListener('click', () => {
+    window.location.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=mitrivia77@gmail.com';
+});

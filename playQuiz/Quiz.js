@@ -1,24 +1,21 @@
 'use strict'
 
-
-
 const linkwebpage = 'about:blank'
-
+ //Valor ingresado el usuario cuando responde el quiz
 const locationurl = window.location.href
 
 if (!locationurl.includes('=')) {
     window.location = linkwebpage
 }
 
+const database = firebase.firestore();
 const id_doc = locationurl.split('=')[1]
 console.log(id_doc)
 
 let uid_person = undefined;
-const database = firebase.firestore();
 
-let idQuest;
-let content;
-let quest;
+let nameUser, content, quest, idQuest; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
+let similary = false;
 let loadBar = 0;
 let progress = 0;
 let contador = 0;
@@ -37,6 +34,14 @@ const results = {
 const load = document.querySelector('.load3');
 const buttonNext = document.getElementById('next');
 
+document.getElementById('send-email').addEventListener('click', () => {
+    window.location.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=mitrivia77@gmail.com';
+});
+
+document.getElementById('create').addEventListener('click', () => {
+    window.location.href = '../index.html'
+});
+
 firebase.auth().signInAnonymously()
   .then((user) => {
       console.log(user)
@@ -52,15 +57,17 @@ firebase.auth().signInAnonymously()
   });
 
 const selectAns = (a) => {
-
     buttonNext.addEventListener('click', () => {
-        for(const cl of quest){
+    for(const cl of quest){
             if(cl.classList.contains('selected')){                    
                 if(cl.id != idQuest) {        
+                    console.log('No soy la correcta')
                     load.style.width = `${loadBar}%`;
                     load.style.background = '#F33';
                 }else{
-                    meet += progress;                      
+                    console.log('Soy la correcta');
+                    (meet == 0) ? meet = progress : meet = meet + progress;
+                    console.log(meet)
                     load.style.width = `${loadBar}%`;
                     load.style.background = 'rgb(93, 209, 245)';
                 };  
@@ -71,8 +78,9 @@ const selectAns = (a) => {
 };
 
 const createQuest = arr => { 
+    document.querySelector('.load-circle').style.display = 'none'
     let data = Object.values(arr)
-    buttonNext.style.opacity = '0';
+    buttonNext.style.visibility = 'hidden';
     if(key == false) {
         progress = 100 / data.length;
         key = true;
@@ -89,26 +97,39 @@ const createQuest = arr => {
         document.querySelector('.question-answer').innerHTML = '';     
         const fragment = document.createDocumentFragment();
         document.querySelector('.titleQuest').textContent = data[contador].pregunta;
-        for(let i = 2; i < data2.length; i ++){
+
+        for(const c of data2){
             const div = document.createElement('DIV');
             const span = document.createElement('SPAN');
             div.classList.add('quest');
             span.classList.add('spanColor');
-            if(data2[i] == data[contador].niceValue) {
-                div.id = data[contador].niceValue;
-                idQuest =  data[contador].niceValue;
-            };
 
-            span.textContent = data2[i];
-            div.appendChild(span);
-            fragment.appendChild(div);
+            
+
+            if(c == data[contador].niceValue) {
+                div.id = data[contador].niceValue;
+                idQuest = data[contador].niceValue;
+
+                if(similary == false){
+                    span.textContent = c;
+                    div.appendChild(span);
+                    fragment.appendChild(div);
+                    similary = true;
+                    console.log(c)
+                };
+            }else if(c != data[contador].pregunta){           
+                span.textContent = c;
+                console.log(c)
+                div.appendChild(span);      
+                fragment.appendChild(div);
+            };
         };
         document.querySelector('.question-answer').appendChild(fragment);
         quest = document.querySelectorAll('.quest');
 
         for(let i = 0; i <  quest.length; i ++){
             quest[i].addEventListener('click', () => {
-                buttonNext.style.opacity = '1';
+                buttonNext.style.visibility = 'visible';
                 for(let cl of  quest){
                     if(cl.classList.contains('selected')){
                         cl.classList.remove('selected');
@@ -129,36 +150,37 @@ const createQuest = arr => {
         if(meet > 60 && meet <= 80) meetText.textContent = results.sixty;
         if(meet > 80 && meet <= 99) meetText.textContent = results.eighty;
         if(meet >= 100) meetText.textContent = results.houndred;
-        percentText.textContent = `Conoces a fulanito un ${meet}%`
+        percentText.textContent = `Conoces a fulanito en un ${meet}%`;
         document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
     };
-};
-
-const getQuest = async (fn) => {
-    if(content != undefined) return selectAns()
-    const data = await fetch('quest.txt');
-    const res = await data.json();
-    content = res;
-    fn(content);
-    selectAns();
+    similary = false;
+    selectAns()
 };
 
 document.getElementById('send').addEventListener('click', e => {
     e.preventDefault();
-    if(document.getElementById('name').value.length < 1) return document.querySelector('.err').textContent = 'Debes ingresar un nombre antes de continuar'
-    document.querySelector('.container').style.animation = 'aparecer .5s forwards'
+    if(document.getElementById('name').value.length < 1) return document.querySelector('.err').textContent = 'Debes ingresar un nombre antes de continuar';
+    else nameUser = document.getElementById('name').value;
+    document.querySelector('.container').style.animation = 'aparecer .5s forwards';
     e.path[2].style.opacity = '0';
-    getQuest(createQuest);
 });
 
-async function getGame() {
-    const gameRef = database.collection('quizpersonalizados').doc(id_doc);
-    const doc = await gameRef.get();
-    const data = doc.data()
-    const Game = Object.values(data.Game)
-    console.info(Game)
-    return Game
+async function getGame(callback) {
+    try{
+        const gameRef = database.collection('quizpersonalizados').doc(id_doc);
+        const doc = await gameRef.get();
+        const data = doc.data()
+        const Game = Object.values(data.Game)
+        content = Game;
+    
+        console.info(Game)
+    
+        return callback(content)
+    } catch (err){
+        callback(content);
+    };
 }
 setTimeout(async()=>{
-    await getGame()
-})
+    await getGame(createQuest)
+});
+

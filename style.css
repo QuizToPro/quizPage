@@ -382,6 +382,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 .flex-form > div{
     margin: 10px 0;
@@ -391,6 +392,9 @@ body{
     text-transform: uppercase;
     font-size: 20px;
     font-weight: bold;
+}
+.questions{
+    width: 100%;
 }
 .questions2{
     display: flex;
@@ -461,6 +465,7 @@ body{
 .contentInput > i:hover{
     background-color: rgba(34, 170, 255, 1);
     cursor: pointer;
+    
 }
 .contentInput > i::before{
     display: flex;
@@ -476,27 +481,33 @@ body{
 /* add other quest */
 
 .more-quest{
-    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .more-quest .add-quest-btn{
+    flex-basis: 40%;
     border: none;
-    outline: none;
-    color: var(--white);
-    background-color: rgb(105, 183, 231);
-    padding: 15px;
-    text-transform: uppercase;
+    color: var(--blue);
+    font-size: 15px;
+    padding: 10px 0;
+    border-radius: 5px;
+    border: 1px solid var(--blue);
     cursor: pointer;
-}
+    transition: all .2s;
 
+}
+.add-quest-btn i {
+    padding-left: 5px;
+}
 .load-send{
+    opacity: 0;
     border-radius: 50%;
-    position: absolute;
-    width: 25px;
-    height: 25px;
+    width: 50px;
+    height: 50px;
     padding: 5px;
-    top: 0px;
-    right: 15px;
     border: 2px solid var(--blue);
     border-left-color: transparent;
     border-bottom-color: transparent;
@@ -514,20 +525,25 @@ body{
 }
 
 #send{
-    top: -5px;
-    right: 0;
-    position: absolute;
+    display: none;
     border: none;
-    outline: none;
-    color: var(--blue);
-    font-size: 25px;
-    padding: 15px;
+    text-align: center;
+    flex-basis: 40%;
+    color: var(--white);
+    background: var(--blue);
+    /* border: 2px solid var(--blue); */
+    font-size: 15px;
+    padding: 10px 0;
+    border-radius: 5px;
+    border: 1px solid var(--blue);
     text-transform: uppercase;
     cursor: pointer;
     opacity: 1;
-    transition: opacity .5s;
+    transition: all .2s;
 }
-
+#send:hover{
+    background: #25f;
+}
 #send:active{
     color: var(--darkBlue);
 }
@@ -535,7 +551,7 @@ body{
 .select-ans{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     user-select: none;
     margin: 15px;
 }
@@ -726,18 +742,35 @@ body{
     background-color:  #0cf;
 }
 
-.content-icons div:nth-child(4) i{
-    color: #f81;
-}
-.content-icons div:nth-child(4):hover i{
-    color: #fff;
-    background-color: #f81;
-}
 /* FOOTER  */
 
 footer{
+    display: flex;
     border-top: 1px solid var(--blue);
     background: #fff;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.questions-page{
+    border-left: 1px solid var(--blue);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.questions-page span{
+   color: var(--blue);
+   font-size: 18px;
+   flex-basis: 40%;
+}
+.questions-page button{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    color: var(--white);
+    background-color: var(--blue);
 }
 .contact-section, #copy-section{
     text-align: center;
@@ -750,14 +783,12 @@ footer{
     padding: 20px;
     color: var(--blue);
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 #contact > span{
     text-align: center;
     text-transform: uppercase;
     font-size: 20px;
-    padding: 15px;
 }
 
 #contact-list{
@@ -772,7 +803,7 @@ footer{
 }
 #contact-list li a{
     color: var(--blue);
-    font-size: 25px;
+    font-size: 18px;
     padding: 20px;
     transition: color, font-size .1s ease-in;
 }
@@ -800,9 +831,51 @@ footer{
 }
 
 .language{
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 100%;
     padding: 15px;
     text-align: right;
 }
+.language span{
+    color: transparent;
+    background: var(--blue);
+    -webkit-background-clip: text;
+    font-weight: bold;
+    animation: cgbg 3s infinite;
+}
+
+@keyframes cgbg{
+    0%{
+        background: var(--blue);
+        -webkit-background-clip: text;
+    }
+    10%{
+        background: #09f;
+        -webkit-background-clip: text;
+    }
+    30%{
+        background: #25f;
+        -webkit-background-clip: text;
+    }
+    50%{
+        background: #00f;
+        -webkit-background-clip: text;
+    }
+    70%{
+        background: rgb(7, 7, 155);
+        -webkit-background-clip: text;
+    }
+    80%{
+        background: rgb(14, 127, 202);
+        -webkit-background-clip: text;
+    }
+    100%{
+        background: #2aff;
+        -webkit-background-clip: text;
+    }
+}
+
 .language label{
     font-size: 15px;
     color: var(--darkBlue);

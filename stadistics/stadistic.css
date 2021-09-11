@@ -1,0 +1,242 @@
+*{
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --blue: #09f;
+    --darkBlue: #00f;
+    --white: #fff;
+}
+
+body{
+    position: relative;
+}
+
+.content-wave{
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    top: 0;
+    background: -webkit-linear-gradient(rgb(1, 38, 253), rgb(29, 201, 231) );
+}
+
+.content-wave .wave1{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url('../assets/wave.png');
+    background-size: 1000px 100px;
+    animation: move1 4s linear infinite;
+    z-index: 2;
+}
+.content-wave .wave2{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url('../assets/wave.png');
+    background-size: 1000px 100px;
+    animation: move2 7s linear infinite;
+    animation-delay: -5s;
+    z-index: 1;
+    opacity: .5;
+}
+
+@keyframes move2{
+    0%{
+        background-position-x: 0;
+    }
+    100%{
+        background-position-x: -1000px ;
+    }
+}
+
+@keyframes move1{
+    0%{
+        background-position-x: 0;
+    }
+    100%{
+        background-position-x: 1000px ;
+    }
+}
+
+.hg{
+    width: 100%;
+    height: 400px;
+}
+
+.flex-content{
+    margin: 30px 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.flex-content h2{
+    padding: 15px;
+    color: var(--blue);
+    flex-basis: 100%;
+    text-align: center;
+}
+.grid-content{
+    width: 70%;
+    display: grid;
+    grid-template-columns: 1fr 60px;
+}
+.grid-content span{
+    padding: 15px;
+    border: 2px solid var(--blue);
+}
+/* footer  */
+
+footer{
+    display: flex;
+    border-top: 1px solid var(--blue);
+    background: #fff;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.questions-page{
+    border-left: 1px solid var(--blue);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.questions-page span{
+   color: var(--blue);
+   font-size: 18px;
+   flex-basis: 40%;
+}
+.questions-page button{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    color: var(--white);
+    background-color: var(--blue);
+}
+.contact-section, #copy-section{
+    text-align: center;
+    flex-basis: 100%;
+}
+
+#contact{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    color: var(--blue);
+    justify-content: center;
+}
+
+#contact > span{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+#contact-list{
+    padding: 8px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+#contact-list li{
+    list-style: none;
+}
+#contact-list li a{
+    color: var(--blue);
+    font-size: 18px;
+    padding: 20px;
+    transition: color, font-size .1s ease-in;
+}
+
+#contact-list li:nth-child(1):hover > a{
+    color: rgb(219, 93, 20);
+}
+#contact-list li:nth-child(2):hover > a{
+    color: rgb(12, 194, 52);
+}
+#contact-list li:nth-child(3):hover > a{
+    color: #0cf;
+}
+#contact-list li:nth-child(4):hover > a{
+    color: #00f;
+}
+#contact-list li:nth-child(5):hover > a{
+    color: #0fc;
+}
+#contact-list li:nth-child(6):hover > a{
+    color: #00c0f9;
+}
+#contact-list li:nth-child(7):hover > a{
+    color: rgba(100, 100, 77, 0.933);
+}
+
+.language{
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 100%;
+    padding: 15px;
+    text-align: right;
+}
+.language span{
+    color: transparent;
+    background: var(--blue);
+    -webkit-background-clip: text;
+    font-weight: bold;
+    animation: cgbg 3s infinite;
+}
+
+@keyframes cgbg{
+    0%{
+        background: var(--blue);
+        -webkit-background-clip: text;
+    }
+    10%{
+        background: #09f;
+        -webkit-background-clip: text;
+    }
+    30%{
+        background: #25f;
+        -webkit-background-clip: text;
+    }
+    50%{
+        background: #00f;
+        -webkit-background-clip: text;
+    }
+    70%{
+        background: rgb(7, 7, 155);
+        -webkit-background-clip: text;
+    }
+    80%{
+        background: rgb(14, 127, 202);
+        -webkit-background-clip: text;
+    }
+    100%{
+        background: #2aff;
+        -webkit-background-clip: text;
+    }
+}
+
+.language label{
+    font-size: 15px;
+    color: var(--darkBlue);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.language #select-language{
+    font-size: 15px;
+    color: var(--blue);
+    border: 1px solid var(--darkBlue);
+}
