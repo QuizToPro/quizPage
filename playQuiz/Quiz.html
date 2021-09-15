@@ -3,20 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crea tu Quiz: Conoce quienes saben más de ti!</title> 
+    <title>MiTrivia: Responde a tus conocidos!</title> 
     <script src="https://kit.fontawesome.com/b15ad0e7fc.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!">
-    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/logo/logo.favicon" type="image/x-icon">
 </head>
 <body>
+    <div class="sign-txt">
+        <span>MI<b>TRIVIA</b></span>
+        <p>¿</p>
+        <p>?</p>
+        <p>?</p>
+        <p>¿?</p>
+        <p>¿</p>
+        <p>?</p>
+        <p>?</p>
+        <p>¿?</p>
+        <p>?</p>
+        <p>¿</p>
+    </div>
     <section class="main">
         <div class="div-name">
             <form action="">
-                <input type="text" placeholder="Ingresa tu nombre" name="" id="name">
+                <input type="text" placeholder="Ingresa tu nombre" name="" maxlength="20" id="name">
                 <input type="submit" value="Continuar" id="send">
                 <div><span class="err"></span></div>
             </form>
@@ -26,6 +39,7 @@
                 <div class="load2"></div>
                 <div class="load3"></div>
                 <div class="content">
+                    <div class="load-circle"></div>
                     <div class="title"><p class="titleQuest"></p></div>
                     <!-- <div class="load-content">
                         <div class="load"></div>
@@ -43,15 +57,33 @@
                     <p id="content-percent"><span id="percent"></span></p>
                     <p id="content-meet"><span id="meet"></span></p>
                     <div class="modal-content__btns">
+                        <span class="btn-opt"><i class="fas fa-redo"></i> Repetir</span>                        
                         <button id="create">Crear mi Quiz</button>
                     </div>
                 </div>
+                <div class="puntuaciones">
+                    <h3>Puntuaciones</h3>
+                    <div class="table">
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
+                    </div>   
+                </div>
             </div>
+            
         </article>
     </section>
     <footer>
         <div id="contact">
-            <span class="contact-section"> <b>Contact</b> </span>
+            <span class="contact-section"> <b>Contacto</b> </span>
             <ul id="contact-list">
                 <li> <a href="http://instagram.com/theapsu3" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 <li> <a href="http://wa.me" target="_blank" ><i class="fab fa-whatsapp" ></i></a></li>
@@ -61,9 +93,25 @@
                 <li> <a href="https://twitter.com/?lang=es" target="_blank"><i class="fab fa-twitter"></i></a></li>
                 <li> <a href="https://workana.com/" target="_blank"><i class="fas fa-user-friends"></i></a></li>
             </ul>
-            <span> <b>Web Designed by</b>: R&R</span>
         </div>
-       
+        <div class="questions-page">          
+            <span>Haznos saber qué podríamos mejorar!, apreciamos mucho las opiniones de nuestros usuarios.</span>
+            <button id="send-email">Envianos un correo</button>
+        </div>
+        <div class="language">
+            <div>
+                <span> Web Designed by: <b>R&R</b> - </span>
+                <span>MiTrivia</span>
+            </div>
+           <div>
+            <label for="">Selecciona tu idioma</label>
+            <select name="" id="select-language">
+                <option value="">Lenguaje</option>
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+           </div>
+        </div>     
     </footer>
       <!-- The core Firebase JS SDK is always required and must be listed first -->
       <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

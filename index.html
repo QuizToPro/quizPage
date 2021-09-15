@@ -11,8 +11,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;900&family=Nerko+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/logo/logo.favicon" type="image/x-icon">
     <title>MiTrivia: Conoce quienes saben más de ti!</title>
 </head>
 <body>
@@ -30,8 +34,16 @@
             </div>  
         </div>
     </div>
+    <script>
+        const modal = document.querySelector('.modal');
+        if(localStorage.getItem('lang') === null){
+            localStorage.setItem('lang', navigator.language);
+            history.go();
+        }else modal.style.display = 'none';
+    </script>
     <section class="main">
         <div class="content-wave">
+
             <div class="wave wave1"></div>
             <div class="wave wave2"></div>
         </div>
@@ -39,6 +51,7 @@
             <div class="content">
                 <h1 class="title-quiz"></h1>
                 <p><strong class="concept"></strong></p>
+                <input type="text" placeholder="Ingresa tu nombre" name="" spellcheck="false" autocomplete="off" id="user">
                 <button id="btn-start"></button>
             </div>
         </article>
@@ -57,7 +70,7 @@
     </section>
     <footer>
         <div id="contact">
-            <span class="contact-section"> <b>Contact</b> </span>
+            <span class="contact-section"> <b>Contacto</b> </span>
             <ul id="contact-list">
                 <li> <a href="http://instagram.com/theapsu3" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 <li> <a href="http://wa.me" target="_blank" ><i class="fab fa-whatsapp" ></i></a></li>
@@ -67,17 +80,25 @@
                 <li> <a href="https://twitter.com/?lang=es" target="_blank"><i class="fab fa-twitter"></i></a></li>
                 <li> <a href="https://workana.com/" target="_blank"><i class="fas fa-user-friends"></i></a></li>
             </ul>
-            <span> <b>Web Designed by</b>: R&R</span>
+        </div>
+        <div class="questions-page">          
+            <span>Haznos saber qué podríamos mejorar!, apreciamos mucho las opiniones de nuestros usuarios.</span>
+            <button id="send-email">Envianos un correo</button>
         </div>
         <div class="language">
+            <div>
+                <span> Web Designed by: <b>R&R</b> - </span>
+                <span>MiTrivia</span>
+            </div>
+           <div>
             <label for="">Selecciona tu idioma</label>
             <select name="" id="select-language">
                 <option value="">Lenguaje</option>
                 <option value="es">Español</option>
                 <option value="en">English</option>
             </select>
-        </div>
-       
+           </div>
+        </div>     
     </footer>
         <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
