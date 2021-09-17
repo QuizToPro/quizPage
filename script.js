@@ -28,7 +28,7 @@ let contador = 0; //Contador que me permite identificar la respuesta seleccionad
 let checkRes = 1;
 let cantidad_de_respuestas = undefined;
 let uid_person = undefined;
-
+let preguntaSugerida = undefined;
     
 if(idioma != "es-ES" && idioma != "en" && idioma != "es"){
     document.querySelector('.es').addEventListener('click', () => {
@@ -494,6 +494,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
         divQuestions.addEventListener('click', e => {
             if(e.path[1].children[0].tagName == 'SPAN'){
                 console.log(e.path[1].children[0].textContent)
+                preguntaSugerida = e.path[1].children[0].textContent; //Agrego la categoría de quiz sugerido que el usuario seleccionó 
                 divMoreQuest.appendChild(spanSend)
             };
         });
