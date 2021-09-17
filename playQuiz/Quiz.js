@@ -243,7 +243,7 @@ async function getGame(callback) {
         async function getGame2(b){
             if( b == false) {
                 console.log('Falso')
-                const gameRef = database.collection('quizpersonalizados').doc(id_doc);
+                const gameRef = database.collection('quiz_personalizados').doc(id_doc);
                 const doc = await gameRef.get();
                 const data = doc.data()
                 const Game = Object.values(data.Game)

@@ -50,8 +50,8 @@ if(idioma == 'es' || idioma == 'es-ES'){
     titleQuiz.textContent = 'Crea tu Quiz';
     concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
     $btnStart.textContent = '¡Comenzar!';
-    $sugered.textContent = 'Crea un quiz con nuestras preguntas sugeridas!'
-    $personalized.textContent = 'Crea un quiz con tus preguntas personalizadas!';
+    $sugered.textContent = 'Crea un quiz con  preguntas sugeridas!'
+    $personalized.textContent = 'Crea un quiz con  preguntas personalizadas!';
 }else{
     titleQuiz.textContent = 'Create your Quiz';
     concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great test!';
@@ -82,8 +82,8 @@ if(idioma == 'es' || idioma == 'es-ES'){
     titleQuiz.textContent = 'Crea tu Quiz';
     concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
     $btnStart.textContent = '¡Comenzar!';
-    $sugered.textContent = 'Crea un quiz con nuestras preguntas sugeridas!'
-    $personalized.textContent = 'Crea un quiz con tus preguntas personalizadas!';
+    $sugered.textContent = 'Crea un quiz con  preguntas sugeridas!'
+    $personalized.textContent = 'Crea un quiz con  preguntas personalizadas!';
 }else{
     titleQuiz.textContent = 'Create your Quiz';
     concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great test!';
@@ -108,26 +108,25 @@ firebase.auth().signInAnonymously()
   });
 
 
-  function upToFirebase (Game, load, btnSend, userQuiz){
+  function upToFirebase (Game, load, btnSend, userQuiz,collectionName='quiz_personalizados'){
     return new Promise((resolve,reject)=>{
         load.style.opacity = '1';
         load.style.animation = 'loop 1s linear infinite';
         btnSend.style.visibility = 'hidden';
-    if (Object.entries(Game).length === 0) {
-        console.error(Game);
-        console.error("An error has ocurred. please try later");
-        reject("Game has troublesome");
-    }
+        if (Object.entries(Game).length === 0) {
+            console.error(Game);
+            console.error("An error has ocurred. please try later");
+            reject("Game has troublesome");
+        }
 
     const timestamp = Math.floor(Date.now()/1000);
-    const collectionName = `quizpersonalizados`
 
 
     database.collection(collectionName).add({
         timestamp:timestamp,
         uid:uid_person,
         Game,
-        userQuiz: user
+        userQuiz: userQuiz
     })
         .then((docRef) => {
             console.log(docRef);
@@ -434,7 +433,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
         const divStyleClothes = document.createElement('DIV');
         divStyleClothes.classList.add('clothes', 'section-select');
         divStyleClothes.innerHTML = `
-                <div class="content-sections" data-value="Estilo_de_vestir"><span class="text-section v">¿Como es tú Estilo de vestir?</span><img class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
+                <div class="content-sections" data-value="Estilo_De_Vestir"><span class="text-section v">¿Como es tú Estilo de vestir?</span><img class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
             `
         const divFood = document.createElement('DIV');
         divFood.classList.add('food', 'section-select');
@@ -581,7 +580,29 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                 }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
             }else{
                 console.log('soy sugerido')
+                //Nos traimos la plantilla elegida by user
                 
+                const get_pre_Game = async(preguntaSugerida)=>{ 
+                    console.log("inicio")
+                    const gameRef = database.collection('plantilla_quiz_sugeridos').doc(preguntaSugerida);
+                    const doc = await gameRef.get();
+                    const data = doc.data()
+                    const Game = Object.values(data.Game)
+                    return Game
+                }
+                get_pre_Game(preguntaSugerida)
+                    .then((pre_game)=>{
+                        console.log(pre_game)
+                        //añadir un super for que por cada objeto en pregame muestre su pregunta y respuesta en el frontend, para luego insertar niceValue
+                                //mision secundaria: guardar cada una de las 4 respuestas de pregame en el indexed db, asi get_pre_Game solo ocurra si no existe la plantilla json en la base de datos local xd
+                        //por ultimo, al oprimir el boton final, asignar nicevalues y descomentar las 2 lineas de codigo de abajo        
+                        //upToFirebase(Game, divLoad, divMoreQuest, user,'quiz_sugeridos').then((url) =>
+                          //      nextPage(url, divContent))
+                    })
+                
+            //    setTimeout(()=>{
+            //     console.log(get_pre_Game)
+            //    },5000) 
             }
         }
     })
