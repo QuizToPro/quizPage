@@ -429,22 +429,22 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
         const divPersonality = document.createElement('DIV');
         divPersonality.classList.add('personality', 'section-select');
             divPersonality.innerHTML = `
-                <div class="content-sections"><span class="text-section c">Personalidad</span><img class="img-section" src="https://www.synergie.es/wp-content/uploads/2020/11/test-personalidad.jpg"></div>
+                <div class="content-sections" data-value="Personalidad"><span class="text-section c">¡Describe tu Personalidad!</span><img class="img-section" src="https://www.synergie.es/wp-content/uploads/2020/11/test-personalidad.jpg"></div>
             `
         const divStyleClothes = document.createElement('DIV');
         divStyleClothes.classList.add('clothes', 'section-select');
         divStyleClothes.innerHTML = `
-                <div class="content-sections"><span class="text-section v">Estilo de vestir</span><img class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
+                <div class="content-sections" data-value="Estilo_de_vestir"><span class="text-section v">¿Como es tú Estilo de vestir?</span><img class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
             `
         const divFood = document.createElement('DIV');
         divFood.classList.add('food', 'section-select');
         divFood.innerHTML = `
-                <div class="content-sections"><span class="text-section f">Comida favorita</span><img class="img-section" src="https://cdn.pixabay.com/photo/2020/12/23/06/34/strawberry-5854081_960_720.png"></div>
+                <div class="content-sections" data-value="Comida"><span class="text-section f">¿Cómo es tu Comida Favorita?</span><img class="img-section" src="https://cdn.pixabay.com/photo/2020/12/23/06/34/strawberry-5854081_960_720.png"></div>
             `
         const divTravel = document.createElement('DIV');
         divTravel.classList.add('travel', 'section-select');
         divTravel.innerHTML = `
-                <div class="content-sections"><span class="text-section t">Viajes</span><img class="img-section" src="https://p4.wallpaperbetter.com/wallpaper/672/343/818/1920x1080-px-aircraft-humor-imagination-minimalistic-paper-plane-wall-anime-full-metal-alchemist-hd-art-wallpaper-preview.jpg"></div>
+                <div class="content-sections" data-value="Viajes"><span class="text-section t">¿Como serían tus Viajes ideales?</span><img class="img-section" src="https://p4.wallpaperbetter.com/wallpaper/672/343/818/1920x1080-px-aircraft-humor-imagination-minimalistic-paper-plane-wall-anime-full-metal-alchemist-hd-art-wallpaper-preview.jpg"></div>
             `
         fragment.appendChild(divPersonality);
         fragment.appendChild(divStyleClothes);
@@ -525,8 +525,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     }else{
         divQuestions.addEventListener('click', e => {
             if(e.path[1].children[0].tagName == 'SPAN'){
-                console.log(e.path[1].children[0].textContent)
-                preguntaSugerida = e.path[1].children[0].textContent; //Agrego la categoría de quiz sugerido que el usuario seleccionó 
+                console.log(e.path[1].getAttribute('data-value'))
+                preguntaSugerida = e.path[1].getAttribute('data-value'); //Agrego la categoría de quiz sugerido que el usuario seleccionó 
                 divMoreQuest.appendChild(spanSend)
             };
         });
@@ -581,6 +581,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                 }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
             }else{
                 console.log('soy sugerido')
+                
             }
         }
     })
