@@ -24,7 +24,7 @@ body{
     right: 10px;
     bottom: 10px;
     z-index: 100;
-    background: -webkit-linear-gradient(left, rgb(29, 201, 231),rgb(1, 38, 253));
+    background: -webkit-linear-gradient(left, rgb(29, 201, 231),rgb(56, 82, 235));
     color: var(--white);
     transform: translate(100%);
     opacity: 0;
@@ -87,7 +87,6 @@ body{
         opacity: 0;
     }
 }
-
 
 .select-lang{
     display: flex;
@@ -195,6 +194,7 @@ body{
 }
 
 .content{
+    position: relative;
     margin: auto;
     font-size: 30px;
 }
@@ -203,17 +203,38 @@ body{
     background: #fff;
     color: var(--darkBlue);
     width: 100%;
+    border-radius: 5px;
     font-size: 23px;
     margin-top: 10px;   
     font-weight: bold;
     padding: 10px;
-    outline: 1px solid #00f;
+    border: 1px solid #00f;
     transition: all .3s;
 }
 .content button:hover{
     cursor: pointer;
     background: -webkit-linear-gradient(left, var(--blue), #00f);
     color: #fff;
+}
+#user{
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 25px;
+    padding: 10px;
+    border-left: 4px solid var(--blue);
+    color: var(--blue);
+    width: 100%;
+}
+#user::placeholder{
+    font-size: 25px;
+    color: var(--blue);
+}
+#user:focus{
+    background-color: rgba(84, 202, 231, 0.247);
+}
+#user:focus::placeholder{
+    color: transparent;
 }
 
 .content h1{
@@ -362,6 +383,7 @@ body{
 
 .c-ur-q{
     opacity: 1;
+    border-radius: 5px;
     overflow: auto;
     position: absolute;
     left: 50%;
@@ -393,9 +415,16 @@ body{
     font-size: 20px;
     font-weight: bold;
 }
-.questions{
+
+.questions-sug{
+    display: grid;
+    grid-template-rows: repeat(4, 300px);
+    grid-gap: 10px;
+    align-content: center;
+    justify-items: center;
     width: 100%;
 }
+
 .questions2{
     display: flex;
     flex-direction: column;
@@ -493,14 +522,14 @@ body{
     color: var(--blue);
     font-size: 15px;
     padding: 10px 0;
-    border-radius: 5px;
+    border-radius: 20px;
     border: 1px solid var(--blue);
     cursor: pointer;
     transition: all .2s;
 
 }
 .add-quest-btn i {
-    padding-left: 5px;
+    padding-left: 8px;
 }
 .load-send{
     opacity: 0;
@@ -534,7 +563,7 @@ body{
     /* border: 2px solid var(--blue); */
     font-size: 15px;
     padding: 10px 0;
-    border-radius: 5px;
+    border-radius: 20px;
     border: 1px solid var(--blue);
     text-transform: uppercase;
     cursor: pointer;
@@ -546,6 +575,9 @@ body{
 }
 #send:active{
     color: var(--darkBlue);
+}
+#send > i{
+    padding-left: 8px;
 }
 
 .select-ans{
@@ -569,25 +601,85 @@ body{
 
 /* preguntas sugeridas */
 
-.content-quest{
-    margin: 15px 0;
+
+
+
+.section-select{
+    position: relative;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     display: flex;
-    width: 80%;
-    flex-direction: column;
-}
-
-.content-quest span{
-    font-size: 17px;
-}
-
-.content-quest select{
-    margin: 5px;
-    padding: 10px;
-    border: 1px solid var(--blue);
+    perspective: 500px;
+    overflow: hidden;
     border-radius: 5px;
-    outline: none;
+}
+.content-sections:hover{
+    cursor: pointer;
+}
+.content-sections:hover .text-section{
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    height: 100%;
+}
+.content-sections{
+    overflow: hidden;
+    z-index: 10;
+    justify-self: center;
+    width: 70%;
+    height: 70%;
+    position: relative;
+    transition: all ease-in-out .5s;
+    border-radius: 5px;
 }
 
+.img-section{
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.text-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    font-size: 30px;
+    bottom: 0;
+    left: 0;
+    height: 25%;
+    width: 100%;
+    
+    transition: all .5s;
+}
+.c{
+    background-color: var(--blue);
+    color: var(--white);
+}
+.v{
+    background-color: rgb(219, 84, 84);
+    color: var(--white);
+}
+.f{
+    background-color: #f90;
+    color: var(--white);
+}
+.t{
+    background-color: #090;
+    color: var(--white);
+}
+
+
+.img-select{
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+
+    object-fit: cover;
+}
     /* input color  */
 
     .input-color{
@@ -765,12 +857,17 @@ footer{
    flex-basis: 40%;
 }
 .questions-page button{
-    border: none;
+    border: 1px solid var(--blue);
     outline: none;
     cursor: pointer;
     padding: 10px;
+    border-radius: 5px;
     color: var(--white);
     background-color: var(--blue);
+}
+.questions-page button:hover{
+    color: var(--blue);
+    background-color: var(--white);
 }
 .contact-section, #copy-section{
     text-align: center;

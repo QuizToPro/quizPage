@@ -1,6 +1,5 @@
 'use strict'
 
-
 // const { rejects } = require("assert");
 
 const database = firebase.firestore();
@@ -11,7 +10,6 @@ console.log(database)
 
 const err = document.querySelector('.err');
 const selectLanguage = document.getElementById('select-language');
-const modal = document.querySelector('.modal');
 const titleQuiz = document.querySelector('.title-quiz');
 const concept = document.querySelector('.concept');
 const $btnStart = document.getElementById('btn-start'); //Obtengo el boton de inicio 'Comenzar'
@@ -23,13 +21,45 @@ const $uQz = document.querySelector('.u-qz'); //La seccion de preguntas sugerida
 const $pQz = document.querySelector('.p-qz'); //La seccion de preguntas personalizadas
 const $q = document.querySelectorAll('.q'); //Aquí me traigo ambas secciones de arriba 
 const idioma = localStorage.getItem('lang'); // Podría ser inglés u español
-
+let user;
 let numAns = 0; //La seleccion de la cantidad de respuestas que podrá realizar el usuario
 let id = 0; //Es el contador de id de cada div question
 let contador = 0; //Contador que me permite identificar la respuesta seleccionada
 let checkRes = 1;
 let cantidad_de_respuestas = undefined;
 let uid_person = undefined;
+
+    
+if(idioma != "es-ES" && idioma != "en" && idioma != "es"){
+    document.querySelector('.es').addEventListener('click', () => {
+        localStorage.setItem('lang', 'es');
+        modal.style.animation = 'disappearModal 1s forwards';
+        setTimeout(() => modal.style.display = 'none', 1000);
+        history.go();
+    });
+    
+    document.querySelector('.en').addEventListener('click', () => {
+        localStorage.setItem('lang', 'en');
+        modal.style.animation = 'disappearModal 1s forwards';
+        setTimeout(() => modal.style.display = 'none', 1000);
+        history.go();
+    });
+};
+
+if(idioma == 'es' || idioma == 'es-ES'){
+    titleQuiz.textContent = 'Crea tu Quiz';
+    concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
+    $btnStart.textContent = '¡Comenzar!';
+    $sugered.textContent = 'Crea un quiz con nuestras preguntas sugeridas!'
+    $personalized.textContent = 'Crea un quiz con tus preguntas personalizadas!';
+}else{
+    titleQuiz.textContent = 'Create your Quiz';
+    concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great test!';
+    $btnStart.textContent = '¡Start!';
+    $sugered.textContent = 'Create a quiz with our suggested questions!'
+    $personalized.textContent = 'Create a quiz with your persolanized questions!';
+};
+
 
 firebase.auth().signInAnonymously()
   .then((user) => {
@@ -46,7 +76,7 @@ firebase.auth().signInAnonymously()
   });
 
 
-  function upToFirebase (Game, load, btnSend){
+  function upToFirebase (Game, load, btnSend, userQuiz){
     return new Promise((resolve,reject)=>{
         load.style.opacity = '1';
         load.style.animation = 'loop 1s linear infinite';
@@ -64,7 +94,8 @@ firebase.auth().signInAnonymously()
     database.collection(collectionName).add({
         timestamp:timestamp,
         uid:uid_person,
-        Game
+        Game,
+        userQuiz: user
     })
         .then((docRef) => {
             console.log(docRef);
@@ -75,34 +106,35 @@ firebase.auth().signInAnonymously()
         })
         .catch((error) => {
             console.error("Error adding document: ", error);
+            showErrPop('Ha ocurrido un error, reintentalo de nuevo');
             reject(error);
         });
-})}
+})};
 
 const nextPage = (url, nodo) => {    
     nodo.style.animation = 'removeSection 1s forwards';
     const divCopy = document.querySelector('.share-link');
     const codeCopy = `<div class="content-links">
-    <p>Quiz Creado con éxito!</p>
-    <p>Compartir enlace</p>
-    <div class="grid-content-link">
-        <span id="text-link">${url}</span>
-        <button onclick="copyClipboard()">Copiar</button>
-        <div class="alert-copy">
-            <span>Texto Copiado correctamente</span>
+        <p>Quiz Creado con éxito!</p>
+        <p>Compartir enlace</p>
+        <div class="grid-content-link">
+            <span id="text-link">${url}</span>
+            <button onclick="copyClipboard()">Copiar</button>
+            <div class="alert-copy">
+                <span>Enlace Copiado correctamente</span>
+            </div>
         </div>
-    </div>
     
-    <div class="content-icons">
-    <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti https://${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
-    <div><a href="https://www.facebook.com/sharer/sharer.php?u=https://${url}" target="_blank"><i class="fab fa-facebook"></i></a> </div>
-    <div><a href="https://twitter.com/intent/tweet?text=Prueba%20mi%20nuevo%20Quiz!,%20mira%20quien%20conoce%20más%20sobre%20sobre%20ti&url=https%3A%2F%2F${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
-</div>              
-</div>`
-divCopy.innerHTML = codeCopy;
-document.querySelector('.share-link').style.opacity = '1';
-console.log(url)
-window.open(url, '_blank').focus();
+        <div class="content-icons">
+        <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti https://${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+        <div><a href="https://www.facebook.com/sharer/sharer.php?u=https://${url}" target="_blank"><i class="fab fa-facebook"></i></a> </div>
+        <div><a href="https://twitter.com/intent/tweet?text=Prueba%20mi%20nuevo%20Quiz!,%20mira%20quien%20conoce%20más%20sobre%20sobre%20ti&url=https%3A%2F%2F${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
+        </div>              
+    </div>`
+    divCopy.innerHTML = codeCopy;
+    document.querySelector('.share-link').style.opacity = '1';
+    console.log(url)
+    window.open(url, '_blank').focus();
 };
 
 function copyClipboard(){
@@ -131,44 +163,13 @@ selectLanguage.addEventListener('change', e => {
     history.go();
 });
 
-if(idioma === null){
-    localStorage.setItem('lang', navigator.language);
-    history.go();
-};
-
-if(idioma != "es-ES" && idioma != "en" && idioma != "es"){
-    document.querySelector('.es').addEventListener('click', () => {
-        localStorage.setItem('lang', 'es');
-        modal.style.animation = 'disappearModal 1s forwards';
-        setTimeout(() => modal.style.display = 'none', 1000);
-        history.go();
-    });
-    
-    document.querySelector('.en').addEventListener('click', () => {
-        localStorage.setItem('lang', 'en');
-        modal.style.animation = 'disappearModal 1s forwards';
-        setTimeout(() => modal.style.display = 'none', 1000);
-        history.go();
-    });
-}else modal.style.display = 'none';
-
-if(idioma == 'es' || idioma == 'es-ES'){
-    titleQuiz.textContent = 'Crea tu Quiz';
-    concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
-    $btnStart.textContent = '¡Comenzar!';
-    $sugered.textContent = 'Crea un quiz con nuestras preguntas sugeridas!'
-    $personalized.textContent = 'Crea un quiz con tus preguntas personalizadas!';
-}else{
-    titleQuiz.textContent = 'Create your Quiz';
-    concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great test!';
-    $btnStart.textContent = '¡Start!';
-    $sugered.textContent = 'Create a quiz with our suggested questions!'
-    $personalized.textContent = 'Create a quiz with your persolanized questions!';
-};
 
 //Evento para aparecer los apartados de que tipo de quiz prefieres
 
 $btnStart.addEventListener('click', e => {
+    let username = document.getElementById('user').value;
+    if(username < 1) return showErrPop('Debes ingresar un nombre antes de continuar');
+    user = username;
     $container.style.animation = 'disappear .5s forwards';
     setTimeout(() => $container.style.display = 'none',500);
     $uQz.style.width = '100%';
@@ -183,7 +184,7 @@ const createQuestSugered = (title, a, b, c) => { //Title seria la pregunta, las 
         divContentQuest.classList.add('content-quest');
     const select = document.createElement('SELECT');
     const span = document.createElement('SPAN');
-   
+    select.classList.add('sugered-select');
 
     span.textContent = title;
     if(a != undefined && b != undefined || c != undefined){ //Aquí comparo si se le pasaron algunos parametros como las opciones
@@ -363,12 +364,14 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     const spanSend = document.createElement('SPAN');
     const divLoad = document.createElement('DIV');
     const buttonAdd = document.createElement('BUTTON');
-    let iIcon = document.createElement('I');
+    const iIcon = document.createElement('I');
+    const sendIcon = document.createElement('I');
     const pTitle = document.createElement('P');
     const p = document.createElement('P');
     const fragment = document.createDocumentFragment();
     const divSelectHowAns = document.createElement('DIV');
-   
+    
+    sendIcon.classList.add('fas', 'fa-arrow-right')
     iIcon.classList.add('fas', 'fa-plus')
     form.classList.add('flex-form');
 
@@ -390,13 +393,34 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
         divSelectHowAns.appendChild(setLanguaje(languaje));
         divAnswer.appendChild(divSelectHowAns);
     }else{
-        divAnswer.appendChild(createQuestSugered('¿Cuál es mi bebida favorita?', 'Pepsi', 'Coca-Cola'));
-        divAnswer.appendChild(createQuestSugered('¿Cuál es mi color favorito?'));
-        divAnswer.appendChild(createQuestSugered('¿Qué prefiero?', 'Fiestas', 'Quedarme en casa'));
-        divAnswer.appendChild(createQuestSugered('¿Deporte favorito?', 'Basketball', 'Futbol', 'Ninguno de los anteriores'));
-        divAnswer.appendChild(createQuestSugered('¿Cuál comida prefiero?', 'Hamburguesas', 'Perros calientes'));
+        divQuestions.classList.replace('questions', 'questions-sug')
+        const divPersonality = document.createElement('DIV');
+        divPersonality.classList.add('personality', 'section-select');
+            divPersonality.innerHTML = `
+                <div class="content-sections"><span class="text-section c">Personalidad</span><img class="img-section" src="https://www.synergie.es/wp-content/uploads/2020/11/test-personalidad.jpg"></div>
+            `
+        const divStyleClothes = document.createElement('DIV');
+        divStyleClothes.classList.add('clothes', 'section-select');
+        divStyleClothes.innerHTML = `
+                <div class="content-sections"><span class="text-section v">Estilo de vestir</span><img class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
+            `
+        const divFood = document.createElement('DIV');
+        divFood.classList.add('food', 'section-select');
+        divFood.innerHTML = `
+                <div class="content-sections"><span class="text-section f">Comida favorita</span><img class="img-section" src="https://cdn.pixabay.com/photo/2020/12/23/06/34/strawberry-5854081_960_720.png"></div>
+            `
+        const divTravel = document.createElement('DIV');
+        divTravel.classList.add('travel', 'section-select');
+        divTravel.innerHTML = `
+                <div class="content-sections"><span class="text-section t">Viajes</span><img class="img-section" src="https://p4.wallpaperbetter.com/wallpaper/672/343/818/1920x1080-px-aircraft-humor-imagination-minimalistic-paper-plane-wall-anime-full-metal-alchemist-hd-art-wallpaper-preview.jpg"></div>
+            `
+        fragment.appendChild(divPersonality);
+        fragment.appendChild(divStyleClothes);
+        fragment.appendChild(divFood);
+        fragment.appendChild(divTravel);
     }
     
+    divQuestions.appendChild(fragment)
     divMoreQuest.classList.add('more-quest');
     buttonAdd.classList.add('add-quest-btn');
     buttonAdd.textContent = 'Agregar otra pregunta ';
@@ -410,19 +434,21 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
 
     spanSend.id = 'send';
     spanSend.textContent = 'Crear quiz'
-
+    spanSend.appendChild(sendIcon)
     divLoad.classList.add('load-send');
 
     if(idioma == 'en'){
         buttonAdd.textContent = 'Add other question';
     }
 
-    if(showBtn == false){
-        divMoreQuest.appendChild(spanSend);
-    }else{
+    if(showBtn != false){
         divMoreQuest.appendChild(buttonAdd);
         divMoreQuest.appendChild(spanSend);
+       
     }
+
+    // divMoreQuest.appendChild(spanSend); //Agergar boton en sugerido
+
     divQuestions.appendChild(divAnswer);
     fragment.appendChild(divTitle);
     fragment.appendChild(divQuestions);
@@ -464,54 +490,66 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                 divAnswer.appendChild(createQuest('', '', false));
             };
         });
-    }
-   
-    document.getElementById('send').addEventListener('click', e => {
-        console.log(e)
-        e.preventDefault();
-        let empty = false;
-        let inputValue = document.querySelectorAll('.answ');
-        let questionValue = document.querySelectorAll('.question');
-        if(contador < 2 && showBtn == true){
-            return (idioma != "en") ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question after continue');  
-        };
-        
-        inputValue.forEach(item => {
-            if(item.value < 1) {
-                empty = true;
-                return
-            }else{
-                empty = false;
+    }else{
+        divQuestions.addEventListener('click', e => {
+            if(e.path[1].children[0].tagName == 'SPAN'){
+                console.log(e.path[1].children[0].textContent)
+                divMoreQuest.appendChild(spanSend)
             };
         });
-
-        if(empty == false){
-            if(idioma != "en"){
-                (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
-                    console.log("PROMESAAA");
-                    upToFirebase(Game, divLoad, divMoreQuest).then( (url) =>nextPage(url, divContent))
-                    .catch((error)=>{
-                        divLoad.removeAttribute('style');
-                        divMoreQuest.style.visibility = 'visible';
-                        console.error(error);
-                        showErrPop('Ha ocurrido un error, reintalo de nuevo')
-                        }   
-                    )
-                });       
+    };
+    
+    //Evento para enviar los datos
+    document.querySelector('.more-quest').addEventListener('click', e => {
+        if(e.target.tagName == 'SPAN'){
+            if(showBtn){
+                let empty = false;
+                let inputValue = document.querySelectorAll('.answ');
+                let questionValue = document.querySelectorAll('.question');
+                if(contador < 2 && showBtn == true){
+                    return (idioma != "en") ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question after continue');  
+                };
+                
+                inputValue.forEach(item => {
+                    if(item.value < 1) {
+                        empty = true;
+                        return
+                    }else{
+                        empty = false;
+                    };
+                });
+        
+                if(empty == false){
+                    if(idioma != "en"){
+                        (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
+                            console.log("PROMESAAA");
+                            upToFirebase(Game, divLoad, divMoreQuest, user).then( (url) =>nextPage(url, divContent))
+                            .catch((error)=>{
+                                divLoad.removeAttribute('style');
+                                divMoreQuest.style.visibility = 'visible';
+                                console.error(error);
+                                showErrPop('Ha ocurrido un error, reintalo de nuevo')
+                                }   
+                            )
+                        });       
+                    }else{
+                        (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : CreateObjectGame().then((Game)=>{
+                            console.log("PROMESSSS")
+                            upToFirebase(Game, divLoad, divMoreQuest, user).then((url)=>nextPage(url, divContent))
+                            .catch((error)=>{
+                                divLoad.removeAttribute('style')
+                                divMoreQuest.style.visibility = 'visible';
+                                console.error(error);
+                                showErrPop('Ha ocurrido un error, reintalo de nuevo')
+                                }            
+                            )
+                        });       
+                    };
+                }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
             }else{
-                (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : CreateObjectGame().then((Game)=>{
-                    console.log("PROMESSSS")
-                    upToFirebase(Game, divLoad, divMoreQuest).then((url)=>nextPage(url, divContent))
-                    .catch((error)=>{
-                        divLoad.removeAttribute('style')
-                        divMoreQuest.style.visibility = 'visible';
-                        console.error(error);
-                        showErrPop('Ha ocurrido un error, reintalo de nuevo')
-                        }            
-                    )
-                });       
-            };
-        }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
+                console.log('soy sugerido')
+            }
+        }
     })
 }
 
@@ -521,7 +559,7 @@ const createQuiz = selected => {
         (idioma != 'en') ? contentHTML('¡Estás creando tu quiz personalizado!', true, idioma) : contentHTML("You're creating your personalized quiz!", true, idioma);
         
     }else{
-        (idioma != 'en') ? contentHTML('¡Estás creando tu quiz sugerido!', false, idioma) : contentHTML("You're creating a suggered quiz!", false, idioma);      
+        (idioma != 'en') ? contentHTML('Selecciona una categoría para tu quiz', false, idioma) : contentHTML("You're creating a suggered quiz!", false, idioma);      
     };
 };
 
@@ -597,7 +635,7 @@ function CreateObjectGame () {
                 duqueisnotreadingthis = duqueisnotreadingthis + parseInt(cantidad_de_respuestas) //como duque no esta leyendo esto le sumo un numero
             }; //traer respuestas
             const Game = { ...Array_preguntas_answers }; //por ultimo, tenemos el objeto del juego
-    
+            // Game.username = user;
             console.info(Game);
 
             resolve(Game);

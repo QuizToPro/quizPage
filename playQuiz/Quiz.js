@@ -4,17 +4,19 @@ const linkwebpage = 'about:blank'
  //Valor ingresado el usuario cuando responde el quiz
 const locationurl = window.location.href
 
+// if(localStorage.getItem('url') == locationurl) alert('Ya haz completado éste quiz');
+
 if (!locationurl.includes('=')) {
-    window.location = linkwebpage
+    window.location = linkwebpage;
 }
 
+const puntuacionesBTN = document.getElementById('punt');
 const database = firebase.firestore();
 const id_doc = locationurl.split('=')[1]
 console.log(id_doc)
-
-let uid_person = undefined;
-
-let nameUser, content, quest, idQuest; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
+let click = false;
+let uid_person = undefined; 
+let userQuiz, nameUser, content, quest, idQuest, results; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
 let similary = false;
 let loadBar = 0;
 let progress = 0;
@@ -23,16 +25,43 @@ let meet = 0;
 let key = false;
 const meetText = document.getElementById('meet');
 const percentText = document.getElementById('percent');
-const results = {
-    zero: 'Parece que casi no conoces a fulanito :(', // de 0% a 20%
-    twenty: 'Vaya!, deberías hablar más con fulanito', // de 20% a 40%
-    fourty: 'Conoces lo suficiente a fulanito, pero podrías acercarte más :)', // 40% a 60%
-    sixty: 'Eres muy cercano a fulanito, acertaste la mayoría!', //60% a 80%
-    eighty: 'Parece que fulanito tiene gente que la conoce muy bien! acertaste en la gran cantidad', // de 80% a 99%
-    houndred: 'Perfecto! lograste acertar en todas las preguntas, conoces muy bien a fulanito!' // 100% 
-}
 const load = document.querySelector('.load3');
 const buttonNext = document.getElementById('next');
+
+const localContent = indexedDB.open('local-content', 1);
+
+puntuacionesBTN.addEventListener('click', e => {
+    const puntuaciones = document.querySelector('.puntuaciones').classList
+    if(puntuaciones.contains('hide')) puntuaciones.remove('hide');
+    else puntuaciones.add('hide')
+})
+
+localContent.addEventListener('upgradeneeded', () => {
+    const db = localContent.result;
+    db.createObjectStore("data", {
+        autoIncrement: true
+    });
+});
+
+const getIDBData = (mode, msg) => {
+    const db = localContent.result; //Esto nos trae el resultado de la solicitud, "nos trae el objeto a modificar"
+
+    const IDBTransaction = db.transaction("data", mode); // Esto da permisos de leer y escribir, modificar, y eliminar cualquier indice
+
+    const objectStore = IDBTransaction.objectStore("data"); //Aquí accedemos a los objetos que contiene "nombres";
+    IDBTransaction.addEventListener("complete", () =>{ // Esto nos avisará cuando el objeto sea agregado/leido/modificado/eliminado;
+        
+        console.log(msg)
+    });
+
+    return objectStore;
+}
+
+const addObject = () => {
+    const objectStore = getIDBData("readwrite", "objeto agregado correctamente");
+    objectStore.add({data: content, name: userQuiz, id: locationurl.split('=')[1]});
+};
+
 
 document.getElementById('send-email').addEventListener('click', () => {
     window.location.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=mitrivia77@gmail.com';
@@ -56,30 +85,39 @@ firebase.auth().signInAnonymously()
     // ...
   });
 
-const selectAns = (a) => {
-    buttonNext.addEventListener('click', () => {
-    for(const cl of quest){
-            if(cl.classList.contains('selected')){                    
-                if(cl.id != idQuest) {        
-                    console.log('No soy la correcta')
-                    load.style.width = `${loadBar}%`;
-                    load.style.background = '#F33';
-                }else{
-                    console.log('Soy la correcta');
-                    (meet == 0) ? meet = progress : meet = meet + progress;
-                    console.log(meet)
-                    load.style.width = `${loadBar}%`;
-                    load.style.background = 'rgb(93, 209, 245)';
-                };  
-            };
-        }; 
-        createQuest(content);
-    });
-};
+function selectAns(){
+    return quest;
+}
 
-const createQuest = arr => { 
+buttonNext.addEventListener('click', () => {
+    for(const cl of selectAns()){
+        if(cl.classList.contains('selected')){                   
+            if(cl.id != idQuest) {
+                load.style.width = `${loadBar}%`;
+                load.style.background = '#F33';
+                click = false;
+                createQuest(content);
+                return 
+            }else if(cl.id == idQuest){
+                load.style.width = `${loadBar}%`;
+                load.style.background = 'rgb(93, 209, 245)';       
+                if(meet <= 100) {
+                    click = false;
+                    createQuest(content, true);
+                    return
+                };
+            };
+        };
+    };
+    
+});  
+
+const createQuest = (arr, b) => { 
+    if(b)  meet = meet + progress;
+    console.log(arr)
     document.querySelector('.load-circle').style.display = 'none'
-    let data = Object.values(arr)
+    let data = Object.values(arr);
+    console.log(data)
     buttonNext.style.visibility = 'hidden';
     if(key == false) {
         progress = 100 / data.length;
@@ -87,10 +125,6 @@ const createQuest = arr => {
     };
 
     if(loadBar < 100){
-
-        if(loadBar > 50){
-            document.querySelector('.titleQuest').style.color = '#fff';
-        }
 
         let data2 = Object.values(data[contador]);
         loadBar = progress + loadBar;
@@ -103,8 +137,6 @@ const createQuest = arr => {
             const span = document.createElement('SPAN');
             div.classList.add('quest');
             span.classList.add('spanColor');
-
-            
 
             if(c == data[contador].niceValue) {
                 div.id = data[contador].niceValue;
@@ -150,11 +182,11 @@ const createQuest = arr => {
         if(meet > 60 && meet <= 80) meetText.textContent = results.sixty;
         if(meet > 80 && meet <= 99) meetText.textContent = results.eighty;
         if(meet >= 100) meetText.textContent = results.houndred;
-        percentText.textContent = `Conoces a fulanito en un ${meet}%`;
+        percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet.toFixed(2)}%`;
         document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
+        localStorage.setItem('url', locationurl);
     };
     similary = false;
-    selectAns()
 };
 
 document.getElementById('send').addEventListener('click', e => {
@@ -165,22 +197,76 @@ document.getElementById('send').addEventListener('click', e => {
     e.path[2].style.opacity = '0';
 });
 
+
 async function getGame(callback) {
-    try{
-        const gameRef = database.collection('quizpersonalizados').doc(id_doc);
-        const doc = await gameRef.get();
-        const data = doc.data()
-        const Game = Object.values(data.Game)
-        content = Game;
-    
-        console.info(Game)
-    
-        return callback(content)
-    } catch (err){
-        callback(content);
-    };
-}
+    localContent.addEventListener("success", async () => { 
+        const res = () => {
+            let bool = false;
+            let data;
+            const db = localContent.result; //Esto nos trae el resultado de la solicitud, "nos trae el objeto a modificar"
+            const IDBTransaction = db.transaction("data", "readonly"); // Esto da permisos de leer y escribir, modificar, y eliminar cualquier indice
+            const objectStore = IDBTransaction.objectStore("data"); //Aquí accedemos a los objetos que contiene "nombres";
+            const cursor = objectStore.openCursor(); 
+
+            // cursor accederá a los valores que contiene objectStore
+            cursor.addEventListener("success", ()=>{ //Si es completado, me de devolverá una solicitud que tendrá que ser recibida mediante un .result
+                if(cursor.result){ // Como nos devolvió un .result que contiene todos los datos, entonces el if se ejecutará
+                    if(locationurl.includes(cursor.result.value.id)){
+                        bool = true;
+                        data = cursor.result.value.data;
+                        userQuiz = cursor.result.value.name
+                    } 
+                    cursor.result.continue(); //Aquí le diremos que continue leyendo después de cada uno
+                }else{
+                    if(bool == false) return getGame2(bool)
+                    else {             
+                        results = {
+                            zero: `Parece que casi no conoces a ${userQuiz} :(` , // de 0% a 20%
+                            twenty: `Vaya!, deberías hablar más con ${userQuiz}` , // de 20% a 40%
+                            fourty: `Conoces lo suficiente a ${userQuiz}, pero podrías acercarte más :)`, // 40% a 60%
+                            sixty: `Eres muy cercano a ${userQuiz}, acertaste la mayoría!`, //60% a 80%
+                            eighty: `Parece que ${userQuiz} tiene gente que la conoce muy bien! acertaste en la gran cantidad`, // de 80% a 99%
+                            houndred: `Perfecto! lograste acertar en todas las preguntas, conoces muy bien a ${userQuiz}!`  // 100% 
+                        }
+                        content = data;
+                        return createQuest(content)
+                    } 
+                };
+            });
+            
+            IDBTransaction.addEventListener("complete", () =>{ // Esto nos avisará cuando el objeto sea agregado/leido/modificado/eliminado;
+                
+                console.log("objeto leido correctamente")
+            });
+        } 
+        res();
+        async function getGame2(b){
+            if( b == false) {
+                console.log('Falso')
+                const gameRef = database.collection('quizpersonalizados').doc(id_doc);
+                const doc = await gameRef.get();
+                const data = doc.data()
+                const Game = Object.values(data.Game)
+                content = Game;
+                userQuiz = data.userQuiz;
+                results = {
+                    zero: `Parece que casi no conoces a ${userQuiz} :(` , // de 0% a 20%
+                    twenty: `Vaya!, deberías hablar más con ${userQuiz}` , // de 20% a 40%
+                    fourty: `Conoces lo suficiente a ${userQuiz}, pero podrías acercarte más :)`, // 40% a 60%
+                    sixty: `Eres muy cercano a ${userQuiz}, acertaste la mayoría!`, //60% a 80%
+                    eighty: `Parece que ${userQuiz} tiene gente que la conoce muy bien! acertaste en la gran cantidad`, // de 80% a 99%
+                    houndred: `Perfecto! lograste acertar en todas las preguntas, conoces muy bien a ${userQuiz}!`  // 100% 
+                }            
+                addObject()
+                return callback(content);
+            }else{
+                console.log('True')
+            }
+        };
+        return
+    });
+};
+
 setTimeout(async()=>{
     await getGame(createQuest)
 });
-

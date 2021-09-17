@@ -34,6 +34,13 @@
             </div>  
         </div>
     </div>
+    <script>
+        const modal = document.querySelector('.modal');
+        if(localStorage.getItem('lang') === null){
+            localStorage.setItem('lang', navigator.language);
+            history.go();
+        }else modal.style.display = 'none';
+    </script>
     <section class="main">
         <div class="content-wave">
 
@@ -44,6 +51,7 @@
             <div class="content">
                 <h1 class="title-quiz"></h1>
                 <p><strong class="concept"></strong></p>
+                <input type="text" placeholder="Ingresa tu nombre" name="" spellcheck="false" autocomplete="off" id="user">
                 <button id="btn-start"></button>
             </div>
         </article>
