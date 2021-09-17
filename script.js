@@ -28,6 +28,38 @@ let contador = 0; //Contador que me permite identificar la respuesta seleccionad
 let checkRes = 1;
 let cantidad_de_respuestas = undefined;
 let uid_person = undefined;
+let preguntaSugerida = undefined;
+    
+if(idioma != "es-ES" && idioma != "en" && idioma != "es"){
+    document.querySelector('.es').addEventListener('click', () => {
+        localStorage.setItem('lang', 'es');
+        modal.style.animation = 'disappearModal 1s forwards';
+        setTimeout(() => modal.style.display = 'none', 1000);
+        history.go();
+    });
+    
+    document.querySelector('.en').addEventListener('click', () => {
+        localStorage.setItem('lang', 'en');
+        modal.style.animation = 'disappearModal 1s forwards';
+        setTimeout(() => modal.style.display = 'none', 1000);
+        history.go();
+    });
+};
+
+if(idioma == 'es' || idioma == 'es-ES'){
+    titleQuiz.textContent = 'Crea tu Quiz';
+    concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
+    $btnStart.textContent = '¡Comenzar!';
+    $sugered.textContent = 'Crea un quiz con nuestras preguntas sugeridas!'
+    $personalized.textContent = 'Crea un quiz con tus preguntas personalizadas!';
+}else{
+    titleQuiz.textContent = 'Create your Quiz';
+    concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great test!';
+    $btnStart.textContent = '¡Start!';
+    $sugered.textContent = 'Create a quiz with our suggested questions!'
+    $personalized.textContent = 'Create a quiz with your persolanized questions!';
+};
+
 
     
 if(idioma != "es-ES" && idioma != "en" && idioma != "es"){
@@ -106,6 +138,7 @@ firebase.auth().signInAnonymously()
         })
         .catch((error) => {
             console.error("Error adding document: ", error);
+            showErrPop('Ha ocurrido un error, reintentalo de nuevo');
             reject(error);
         });
 })};
@@ -183,7 +216,7 @@ const createQuestSugered = (title, a, b, c) => { //Title seria la pregunta, las 
         divContentQuest.classList.add('content-quest');
     const select = document.createElement('SELECT');
     const span = document.createElement('SPAN');
-   
+    select.classList.add('sugered-select');
 
     span.textContent = title;
     if(a != undefined && b != undefined || c != undefined){ //Aquí comparo si se le pasaron algunos parametros como las opciones
@@ -392,13 +425,34 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
         divSelectHowAns.appendChild(setLanguaje(languaje));
         divAnswer.appendChild(divSelectHowAns);
     }else{
-        divAnswer.appendChild(createQuestSugered('¿Cuál es mi bebida favorita?', 'Pepsi', 'Coca-Cola'));
-        divAnswer.appendChild(createQuestSugered('¿Cuál es mi color favorito?'));
-        divAnswer.appendChild(createQuestSugered('¿Qué prefiero?', 'Fiestas', 'Quedarme en casa'));
-        divAnswer.appendChild(createQuestSugered('¿Deporte favorito?', 'Basketball', 'Futbol', 'Ninguno de los anteriores'));
-        divAnswer.appendChild(createQuestSugered('¿Cuál comida prefiero?', 'Hamburguesas', 'Perros calientes'));
+        divQuestions.classList.replace('questions', 'questions-sug')
+        const divPersonality = document.createElement('DIV');
+        divPersonality.classList.add('personality', 'section-select');
+            divPersonality.innerHTML = `
+                <div class="content-sections"><span class="text-section c">Personalidad</span><img class="img-section" src="https://www.synergie.es/wp-content/uploads/2020/11/test-personalidad.jpg"></div>
+            `
+        const divStyleClothes = document.createElement('DIV');
+        divStyleClothes.classList.add('clothes', 'section-select');
+        divStyleClothes.innerHTML = `
+                <div class="content-sections"><span class="text-section v">Estilo de vestir</span><img class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
+            `
+        const divFood = document.createElement('DIV');
+        divFood.classList.add('food', 'section-select');
+        divFood.innerHTML = `
+                <div class="content-sections"><span class="text-section f">Comida favorita</span><img class="img-section" src="https://cdn.pixabay.com/photo/2020/12/23/06/34/strawberry-5854081_960_720.png"></div>
+            `
+        const divTravel = document.createElement('DIV');
+        divTravel.classList.add('travel', 'section-select');
+        divTravel.innerHTML = `
+                <div class="content-sections"><span class="text-section t">Viajes</span><img class="img-section" src="https://p4.wallpaperbetter.com/wallpaper/672/343/818/1920x1080-px-aircraft-humor-imagination-minimalistic-paper-plane-wall-anime-full-metal-alchemist-hd-art-wallpaper-preview.jpg"></div>
+            `
+        fragment.appendChild(divPersonality);
+        fragment.appendChild(divStyleClothes);
+        fragment.appendChild(divFood);
+        fragment.appendChild(divTravel);
     }
     
+    divQuestions.appendChild(fragment)
     divMoreQuest.classList.add('more-quest');
     buttonAdd.classList.add('add-quest-btn');
     buttonAdd.textContent = 'Agregar otra pregunta ';
@@ -419,12 +473,14 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
         buttonAdd.textContent = 'Add other question';
     }
 
-    if(showBtn == false){
-        divMoreQuest.appendChild(spanSend);
-    }else{
+    if(showBtn != false){
         divMoreQuest.appendChild(buttonAdd);
         divMoreQuest.appendChild(spanSend);
+       
     }
+
+    // divMoreQuest.appendChild(spanSend); //Agergar boton en sugerido
+
     divQuestions.appendChild(divAnswer);
     fragment.appendChild(divTitle);
     fragment.appendChild(divQuestions);
@@ -466,54 +522,67 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                 divAnswer.appendChild(createQuest('', '', false));
             };
         });
-    }
-   
-    document.getElementById('send').addEventListener('click', e => {
-        console.log(e)
-        e.preventDefault();
-        let empty = false;
-        let inputValue = document.querySelectorAll('.answ');
-        let questionValue = document.querySelectorAll('.question');
-        if(contador < 2 && showBtn == true){
-            return (idioma != "en") ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question after continue');  
-        };
-        
-        inputValue.forEach(item => {
-            if(item.value < 1) {
-                empty = true;
-                return
-            }else{
-                empty = false;
+    }else{
+        divQuestions.addEventListener('click', e => {
+            if(e.path[1].children[0].tagName == 'SPAN'){
+                console.log(e.path[1].children[0].textContent)
+                preguntaSugerida = e.path[1].children[0].textContent; //Agrego la categoría de quiz sugerido que el usuario seleccionó 
+                divMoreQuest.appendChild(spanSend)
             };
         });
-
-        if(empty == false){
-            if(idioma != "en"){
-                (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
-                    console.log("PROMESAAA");
-                    upToFirebase(Game, divLoad, divMoreQuest, user).then( (url) =>nextPage(url, divContent))
-                    .catch((error)=>{
-                        divLoad.removeAttribute('style');
-                        divMoreQuest.style.visibility = 'visible';
-                        console.error(error);
-                        showErrPop('Ha ocurrido un error, reintalo de nuevo')
-                        }   
-                    )
-                });       
+    };
+    
+    //Evento para enviar los datos
+    document.querySelector('.more-quest').addEventListener('click', e => {
+        if(e.target.tagName == 'SPAN'){
+            if(showBtn){
+                let empty = false;
+                let inputValue = document.querySelectorAll('.answ');
+                let questionValue = document.querySelectorAll('.question');
+                if(contador < 2 && showBtn == true){
+                    return (idioma != "en") ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question after continue');  
+                };
+                
+                inputValue.forEach(item => {
+                    if(item.value < 1) {
+                        empty = true;
+                        return
+                    }else{
+                        empty = false;
+                    };
+                });
+        
+                if(empty == false){
+                    if(idioma != "en"){
+                        (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
+                            console.log("PROMESAAA");
+                            upToFirebase(Game, divLoad, divMoreQuest, user).then( (url) =>nextPage(url, divContent))
+                            .catch((error)=>{
+                                divLoad.removeAttribute('style');
+                                divMoreQuest.style.visibility = 'visible';
+                                console.error(error);
+                                showErrPop('Ha ocurrido un error, reintalo de nuevo')
+                                }   
+                            )
+                        });       
+                    }else{
+                        (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : CreateObjectGame().then((Game)=>{
+                            console.log("PROMESSSS")
+                            upToFirebase(Game, divLoad, divMoreQuest, user).then((url)=>nextPage(url, divContent))
+                            .catch((error)=>{
+                                divLoad.removeAttribute('style')
+                                divMoreQuest.style.visibility = 'visible';
+                                console.error(error);
+                                showErrPop('Ha ocurrido un error, reintalo de nuevo')
+                                }            
+                            )
+                        });       
+                    };
+                }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
             }else{
-                (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : CreateObjectGame().then((Game)=>{
-                    console.log("PROMESSSS")
-                    upToFirebase(Game, divLoad, divMoreQuest, user).then((url)=>nextPage(url, divContent))
-                    .catch((error)=>{
-                        divLoad.removeAttribute('style')
-                        divMoreQuest.style.visibility = 'visible';
-                        console.error(error);
-                        showErrPop('Ha ocurrido un error, reintalo de nuevo')
-                        }            
-                    )
-                });       
-            };
-        }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
+                console.log('soy sugerido')
+            }
+        }
     })
 }
 
@@ -523,7 +592,7 @@ const createQuiz = selected => {
         (idioma != 'en') ? contentHTML('¡Estás creando tu quiz personalizado!', true, idioma) : contentHTML("You're creating your personalized quiz!", true, idioma);
         
     }else{
-        (idioma != 'en') ? contentHTML('¡Estás creando tu quiz sugerido!', false, idioma) : contentHTML("You're creating a suggered quiz!", false, idioma);      
+        (idioma != 'en') ? contentHTML('Selecciona una categoría para tu quiz', false, idioma) : contentHTML("You're creating a suggered quiz!", false, idioma);      
     };
 };
 

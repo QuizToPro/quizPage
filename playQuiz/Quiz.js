@@ -10,6 +10,7 @@ if (!locationurl.includes('=')) {
     window.location = linkwebpage;
 }
 
+const puntuacionesBTN = document.getElementById('punt');
 const database = firebase.firestore();
 const id_doc = locationurl.split('=')[1]
 console.log(id_doc)
@@ -28,6 +29,12 @@ const load = document.querySelector('.load3');
 const buttonNext = document.getElementById('next');
 
 const localContent = indexedDB.open('local-content', 1);
+
+puntuacionesBTN.addEventListener('click', e => {
+    const puntuaciones = document.querySelector('.puntuaciones').classList
+    if(puntuaciones.contains('hide')) puntuaciones.remove('hide');
+    else puntuaciones.add('hide')
+})
 
 localContent.addEventListener('upgradeneeded', () => {
     const db = localContent.result;
@@ -204,10 +211,11 @@ async function getGame(callback) {
             // cursor accederá a los valores que contiene objectStore
             cursor.addEventListener("success", ()=>{ //Si es completado, me de devolverá una solicitud que tendrá que ser recibida mediante un .result
                 if(cursor.result){ // Como nos devolvió un .result que contiene todos los datos, entonces el if se ejecutará
-                    bool = true;
-                    data = cursor.result.value.data;
-                    userQuiz = cursor.result.value.name
-                    console.log(data)
+                    if(locationurl.includes(cursor.result.value.id)){
+                        bool = true;
+                        data = cursor.result.value.data;
+                        userQuiz = cursor.result.value.name
+                    } 
                     cursor.result.continue(); //Aquí le diremos que continue leyendo después de cada uno
                 }else{
                     if(bool == false) return getGame2(bool)

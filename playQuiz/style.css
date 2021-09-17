@@ -406,6 +406,35 @@ body{
     border: 1px solid var(--blue);
 }
 
+.hide{
+    padding: 0px;
+    height: 0px;
+}
+
+.puntuaciones {
+    padding: 30px;
+    overflow: hidden;
+    position: relative;
+    transition: height .5s;
+}
+.puntuaciones h3, p{
+    margin: 30px;
+    text-align: center;
+    color: var(--blue);
+}
+.puntuaciones h3{ 
+    font-weight: bold;
+}
+.puntuaciones .table-content{
+    display: grid;
+    grid-template-columns: 1fr 50px;
+}
+.puntuaciones .table-content span{
+    color: var(--blue);
+    padding: 10px;
+    border: 1px solid var(--blue);
+}
+
 @keyframes aparecerModal {
     0%{
         opacity: 0;
