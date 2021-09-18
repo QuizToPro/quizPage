@@ -200,7 +200,7 @@ const createQuest = (arr, b) => {
         const tableWithActualUser = [...table];
         sortTable(tableWithActualUser)
         //tableWithActualUser is table with actual user
-        //table is without the user
+        //table is with the user in the end
         console.info('Pusehado')
         console.info(tableWithActualUser)
         database.collection('scoreboards_table').doc(id_doc).update({
