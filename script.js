@@ -131,14 +131,25 @@ firebase.auth().signInAnonymously()
         .then((docRef) => {
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
-            const pathToPlayQuiz = `./playQuiz/Quiz.html?id=${docRef.id}`
-     
-            resolve(pathToPlayQuiz)
+            const pathToPlayQuiz = `./playQuiz/Quiz.html?id=${docRef.id}`;
+                database.collection('scoreboards_table').doc(docRef.id).set({
+                    table:[],
+                    uid:uid_person,
+                })  
+            .then((a)=>{
+                console.info(a)
+                console.info('scoreboard set good')
+                resolve(pathToPlayQuiz)
+                })  
+            .catch((error)=>{
+                console.error("Error adding table: ", error);
+                reject(error,docRef.id);
+            })
         })
         .catch((error) => {
             console.error("Error adding document: ", error);
             showErrPop('Ha ocurrido un error, reintentalo de nuevo');
-            reject(error);
+            reject(error,docRef.id);
         });
 })};
 
@@ -556,11 +567,15 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                         (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
                             console.log("PROMESAAA");
                             upToFirebase(Game, divLoad, divMoreQuest, user).then( (url) =>nextPage(url, divContent))
-                            .catch((error)=>{
+                            .catch((error,docRef)=>{
                                 divLoad.removeAttribute('style');
                                 divMoreQuest.style.visibility = 'visible';
                                 console.error(error);
                                 showErrPop('Ha ocurrido un error, reintalo de nuevo')
+
+                                database.collection('quiz_personalizados').doc(docRef).delete()
+                                database.collection('scoreboards_table').doc(docRef).delete()
+
                                 }   
                             )
                         });       

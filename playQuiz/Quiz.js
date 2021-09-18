@@ -23,11 +23,12 @@ let progress = 0;
 let contador = 0;
 let meet = 0;
 let key = false;
+let table = undefined;
+
 const meetText = document.getElementById('meet');
 const percentText = document.getElementById('percent');
 const load = document.querySelector('.load3');
 const buttonNext = document.getElementById('next');
-
 const localContent = indexedDB.open('local-content', 1);
 
 puntuacionesBTN.addEventListener('click', e => {
@@ -114,10 +115,10 @@ buttonNext.addEventListener('click', () => {
 
 const createQuest = (arr, b) => { 
     if(b)  meet = meet + progress;
-    console.log(arr)
+    
     document.querySelector('.load-circle').style.display = 'none'
     let data = Object.values(arr);
-    console.log(data)
+    
     buttonNext.style.visibility = 'hidden';
     if(key == false) {
         progress = 100 / data.length;
@@ -147,7 +148,7 @@ const createQuest = (arr, b) => {
                     div.appendChild(span);
                     fragment.appendChild(div);
                     similary = true;
-                    console.log(c)
+                    content
                 };
             }else if(c != data[contador].pregunta){           
                 span.textContent = c;
@@ -175,6 +176,8 @@ const createQuest = (arr, b) => {
 
         contador++;
     }else{
+
+        console.log("SEACABO")
         document.querySelector('.container-content').style.animation = 'desaparecer .5s forwards';
         if(meet <= 20) meetText.textContent = results.zero;
         if(meet > 20 && meet <= 40) meetText.textContent = results.twenty;
@@ -185,6 +188,31 @@ const createQuest = (arr, b) => {
         percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet.toFixed(2)}%`;
         document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
         localStorage.setItem('url', locationurl);
+        //////////////////////////////////////////////////
+        const numberscore = Number(meet);
+        const userscore = {
+            nameUser,
+            numberscore
+        };
+        console.log(table)
+        table.push(userscore)
+
+        const tableWithActualUser = [...table];
+        sortTable(tableWithActualUser)
+        //tableWithActualUser is table with actual user
+        //table is without the user
+        console.info('Pusehado')
+        console.info(tableWithActualUser)
+        database.collection('scoreboards_table').doc(id_doc).update({
+            table,
+        }).then(()=>{
+            console.info('User score saved sucessfully')
+        }).catch((error)=>{
+            console.error(error)
+            console.error('No se pudo guardar puntuaciones usuario')
+        });
+
+      
     };
     similary = false;
 };
@@ -199,6 +227,7 @@ document.getElementById('send').addEventListener('click', e => {
 
 
 async function getGame(callback) {
+    try {
     localContent.addEventListener("success", async () => { 
         const res = () => {
             let bool = false;
@@ -265,8 +294,38 @@ async function getGame(callback) {
         };
         return
     });
-};
+    } catch (error) {
+        console.error(error);
+        console.error('There was a problem geting the game, lets try again  '); 
+        await getGame(createQuest) 
+    }
+}
+
+function sortTable(table) {
+    table.sort((b, a) => {
+        console.log(a.numberscore - b.numberscore)
+        return a.numberscore - b.numberscore;
+    })
+}
+
+async function getTable() {
+    try {
+        
+    const tableee = await database.collection('scoreboards_table').doc(id_doc).get()
+    const tablee = tableee.data() 
+    sortTable(tablee.table)
+    console.info(tablee)
+    return tablee.table;
+
+} catch (error) {
+       console.error(error)
+       console.error('No se pudo consultar las puntuaciones :(')
+       return ['No se pudo consultar las puntuaciones :('] 
+}
+}
+
 
 setTimeout(async()=>{
     await getGame(createQuest)
+    table = await getTable()
 });
