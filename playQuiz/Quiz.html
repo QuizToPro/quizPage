@@ -14,7 +14,6 @@
 </head>
 <body>
     <div class="sign-txt">
-        <span>MI<b>TRIVIA</b></span>
         <p>¿</p>
         <p>?</p>
         <p>?</p>
@@ -27,11 +26,22 @@
         <p>¿</p>
     </div>
     <section class="main">
+        <div class="title">
+            <h1>MI<br><strong>TRIVIA</strong></h1>
+            <span class="description">Descubre quien conoce más sobre ti</span>
+        </div>
         <div class="div-name">
             <form action="">
-                <input type="text" placeholder="Ingresa tu nombre" name="" maxlength="20" id="name">
-                <input type="submit" value="Continuar" id="send">
+                <input type="text" placeholder="Ingresa tu nombre" name="" maxlength="12" id="name">
+                <button id="send">Continuar <i class="fas fa-arrow-right"></i></button>
                 <div><span class="err"></span></div>
+
+                <div class="table tops">
+                    <h2 class="top">TOP 3 <i class="fas fa-trophy"></i></h2>
+                    <div class="table-content-esp"><span>N°</span><span>Nombre</span><span>Puntuaciones</span></div>
+                    <div class="load-circle-top"></div>
+                </div>
+
             </form>
         </div>
         <article class="container">
@@ -62,25 +72,17 @@
                         <span class="btn-opt" id="punt">Ver puntuaciones <i class="fas fa-chevron-down"aria-hidden="true"></i></span>
                     </div>
                 </div>
-                <div class="puntuaciones hide">
-                    <h3>Puntuaciones</h3>
-                    <div class="table">
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                        <div class="table-content"><span>Ricardo</span><span>10%</span></div>
-                    </div>   
-                </div>
             </div>
-            
         </article>
+        <div class="puntuaciones hide">
+            <div class="modal-closes">
+                <span class="close-modal">x</span>
+            </div>
+            <div class="table-end">
+                <h2 class="top">TOP 10</h2>
+                <div class="table-content-esp"><span>N°</span><span>Nombre</span><span>Puntuaciones</span></div>
+            </div>   
+        </div>
     </section>
     <footer>
         <div id="contact">

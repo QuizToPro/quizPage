@@ -12,10 +12,9 @@
     --white: #fff;
 }
 body{
-    background:url('../assets/background/ScreenShot_20210912112525.png') ;
+    background: -webkit-linear-gradient(#2af, #0d9aA9) ;
     position: relative;
-    background-repeat: no-repeat;
-    background-size: cover;
+    
 }
 
 .sign-txt{
@@ -49,7 +48,7 @@ body{
 }
 .sign-txt > p:nth-child(1){
     font-size: 90px;
-    top: 50px;
+    top: 85px;
     animation-delay: 2s;
     left: 30px;
 }
@@ -127,23 +126,66 @@ body{
     min-height: 100vh;
 }
 
+.title{
+    margin: 8px;
+    text-shadow: 3px 3px 9px rgba(83, 83, 83, .5);
+    align-content: center;
+    display: inline-flex;
+}
+
+.title h1{
+    padding: 15px;
+    font-size: 35px;
+    color: var(--white);
+}
+.title h1 strong{
+    color: var(--darkBlue);
+}
+.description{
+    width: 50%                              ;
+    border-left: 3px solid var(--white);
+    padding: 15px;
+    font-size: 25px;
+    color: var(--white);    
+}
 .div-name{
+    position: relative;
+    margin: 100px auto;
+    width: 70%;
+    height: 400px;
     opacity: 1;
-    position: absolute;
-    transform: translate(-50%, -100%);
-    left: 50%;
-    top: 50%;
     background-color: var(--white);
     border-radius: 5px;
     box-shadow: 5px 5px 20px rgba(83, 83, 83, .5);
     transition: opacity .2s;
     z-index: 1;  
 }
+.tops{
+    margin-top: 30px;
+}
+.top{
+    position: relative;
+    font-size: 30px;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--blue);
+    z-index: 5;
+}
+.fa-trophy{
+    color: transparent;
+    background: -webkit-linear-gradient(#2af, #00f);
+    -webkit-background-clip: text;
+}
+
 .div-name form{
+    width: 100%;
+    background-color: var(--white);
+    border-radius: 10px;
     opacity: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    padding: 35px;
+    grid-template-rows: 50px 50px;
+    padding: 30px;
 }
 .div-name form #name {
     border-radius: 5px 5px 0 0;
@@ -152,7 +194,6 @@ body{
     outline: none;;
     background-color: transparent;
     border-bottom: 2px solid #2af;
-    padding: 10px;
     font-size: 20px; 
 }
 .div-name form #name::placeholder{
@@ -175,6 +216,7 @@ body{
     color: #f00;
 }
 .container{
+    margin: 100px auto 50px auto;
     position: relative;
     display: flex;
     perspective: 400px;
@@ -183,19 +225,20 @@ body{
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
-    transform: translate(100%) translateY(50%);
+    animation-delay: 1s;
+    transform: translate(100%, 0);
     z-index: 10;
 }
 
 @keyframes aparecer {
     0%{
-        transform: translate(100%) translateY(50%);
+        transform: translate(100%, 0);
     }
     50%{
-        transform: translate(-10%) translateY(50%);
+        transform: translate( -10%, 0);
     }
     100%{
-        transform: translate(0) translateY(50%);
+        transform: translate(0%, 0);
     }
 }
 
@@ -214,6 +257,7 @@ body{
 }
 
 .container-content{
+    display: none;
     width: 80%;
     position: relative;
     padding: 20px;
@@ -259,6 +303,9 @@ body{
 }
 .load-circle{
     position: absolute;
+}
+
+.load-circle, .load-circle-top{
     padding: 5px;
     left: calc(50% - 25px);
     top: 50%;
@@ -271,6 +318,10 @@ body{
     border-top: 3px solid rgb(38, 0, 255);
     z-index: 100;
     animation: loop 1s infinite;
+}
+.load-circle-top{
+    position: relative;
+    top: 10%;
 }
 @keyframes loop{
     0%{
@@ -338,11 +389,6 @@ body{
     font-size: 18px;
 }
 
-@media screen and (max-width: 500px){
-    .container-content{
-        width: 100%;
-    }
-}
 .load-content{
     position: relative;
     width: 100%;
@@ -372,67 +418,16 @@ body{
 
 
 .modal{
-    overflow: auto;
-    top: 0px;
-    width: 70%;
-    height: 100%;
+    display: none;
+    position: relative;
+    width: 90%;
+    height: 300px;
     opacity: 0;
-    position: absolute;
     background: #fff;
     border-radius: 5px;
     box-shadow: 3px 3px 10px rgb(191, 191, 212);
     z-index: 1;
-}
-.puntuaciones {
-    overflow: hidden;
-    position: relative;
-    padding: 40px;
-}
-.puntuaciones h3, p{
-    margin: 30px;
-    text-align: center;
-    color: var(--blue);
-}
-.puntuaciones h3{ 
-    font-weight: bold;
-}
-.puntuaciones .table-content{
-    display: grid;
-    grid-template-columns: 1fr 50px;
-}
-.puntuaciones .table-content span{
-    color: var(--blue);
-    padding: 10px;
-    border: 1px solid var(--blue);
-}
-
-.hide{
-    padding: 0px;
-    height: 0px;
-}
-
-.puntuaciones {
-    padding: 30px;
-    overflow: hidden;
-    position: relative;
-    transition: height .5s;
-}
-.puntuaciones h3, p{
-    margin: 30px;
-    text-align: center;
-    color: var(--blue);
-}
-.puntuaciones h3{ 
-    font-weight: bold;
-}
-.puntuaciones .table-content{
-    display: grid;
-    grid-template-columns: 1fr 50px;
-}
-.puntuaciones .table-content span{
-    color: var(--blue);
-    padding: 10px;
-    border: 1px solid var(--blue);
+    transition: all 1s;
 }
 
 @keyframes aparecerModal {
@@ -443,6 +438,51 @@ body{
         opacity: 1;
     }
 }
+
+.puntuaciones{
+    background-color: var(--white);
+    top:0;
+    left: 0;
+    width: 90%;
+    height: 400px;
+    border-radius: 10px;
+    margin: 10px auto;
+    overflow: auto;
+    padding: 30px;
+    position: relative;
+    transition: all .5s;
+    z-index: 100;
+}
+
+.hide{
+    padding: 0px;
+    height: 0px;
+}
+
+.table-content{
+    width: inherit;
+}
+.table-content{
+    display: grid;
+    grid-template-columns: 50px repeat(2, 1fr);  
+}
+.table-content span{
+    color: var(--blue);
+    padding: 15px;
+    border: 1px solid var(--blue);
+}
+
+.table-content-esp{
+    display: grid;
+    grid-template-columns: 50px repeat(2, 1fr);
+    justify-items: space-evenly;
+}
+.table-content-esp span{
+    background-color: var(--blue);
+    padding: 15px;
+    color: var(--white);
+}
+
 .modal-content{
     overflow: hidden;
     flex-direction: column;
@@ -451,10 +491,12 @@ body{
     text-align: center;
     position: relative;
     width: 100%;
+    height: 100%;
     overflow: hidden;
     padding: 20px 15px;
     z-index: 2;
 }
+
 @keyframes moveto{
     from{
         height: 100%;
@@ -481,7 +523,21 @@ body{
     padding: 25px;
 
 }
-
+.modal-closes{
+    width: 100%;
+    align-items: center;
+    display: flex;
+}
+.close-modal{
+    display: none;
+    padding: 10px;
+    text-align: right;
+    cursor: pointer;
+    font-size: 20px;
+    width: 100%;
+    color: var(--blue);
+    font-weight: bold;
+}
 .modal-content__btns{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
@@ -494,8 +550,10 @@ body{
     transition: background, color .2s;
 }
 .btn-opt{
+    opacity: 1;
     cursor: pointer;
     color: var(--blue);
+    transition: opacity .5s;
 }
 .btn-opt > i {
     padding: 0 10px;
@@ -663,13 +721,43 @@ footer{
     color: var(--blue);
     border: 1px solid var(--darkBlue);
 }
-@media screen and (max-width: 500px){
-   
+@media screen and (max-width: 480px){
+    .container-content{
+        width: 100%;
+    }
     #contact > span{
         font-size: 15px;
     }
     #contact-list li a{
         font-size: 15px;
         padding: 5px;
+    }
+    .div-name{
+        width: 100%;
+    }
+    .puntuaciones{
+        background-color: var(--white);
+        top:0;
+        left: 0;
+        overflow: auto;
+        width: 100%;
+        height: 100vh;
+        padding: 30px;
+        position: absolute;
+        transition: all .5s;
+        z-index: 100;
+    }
+    .close-modal{
+        display: inline-block;
+    }
+    .hide{
+        padding: 0px;
+        width: 0%;
+    }
+    .modal{
+        width: 100%;
+    }
+    .description{
+        width: 100%;
     }
 }
