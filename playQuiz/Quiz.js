@@ -12,8 +12,13 @@ if (!locationurl.includes('=')) {
 
 const puntuacionesBTN = document.getElementById('punt');
 const database = firebase.firestore();
-const id_doc = locationurl.split('=')[1]
+let ispersonalizedquiz = undefined;
+const id_doc = (locationurl.split('=')[1] == false)?(ispersonalizedquiz = false,
+     locationurl.split('=')[2]):(ispersonalizedquiz = true, locationurl.split('=')[1]);
+console.info(id_doc[1] == false)
 console.log(id_doc)
+console.log(ispersonalizedquiz)
+
 let click = false;
 let uid_person = undefined; 
 let userQuiz, nameUser, content, quest, idQuest, results; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
@@ -272,10 +277,17 @@ async function getGame(callback) {
         async function getGame2(b){
             if( b == false) {
                 console.log('Falso')
-                const gameRef = database.collection('quiz_personalizados').doc(id_doc);
+                console.log(id_doc)
+                //const gameRef = database.collection('quiz_sugeridos').doc(id_doc)
+                console.info(ispersonalizedquiz)
+                const gameRef = (ispersonalizedquiz === false)?database.collection('quiz_sugeridos').doc(id_doc) :database.collection('quiz_personalizados').doc(id_doc)
+                console.log(gameRef);
                 const doc = await gameRef.get();
                 const data = doc.data()
+                console.log(data)
                 const Game = Object.values(data.Game)
+
+
                 content = Game;
                 userQuiz = data.userQuiz;
                 results = {

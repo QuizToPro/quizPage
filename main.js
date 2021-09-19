@@ -150,7 +150,8 @@ firebase.auth().signInAnonymously()
         .then((docRef) => {
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
-            const pathToPlayQuiz = `./playQuiz/Quiz.html?id=${docRef.id}`;
+            const pathToPlayQuiz =(collectionName === 'quiz_sugeridos')?`./playQuiz/Quiz.html?id==${docRef.id}` :`./playQuiz/Quiz.html?id=${docRef.id}`;
+
                 database.collection('scoreboards_table').doc(docRef.id).set({
                     table:[],
                     uid:uid_person,
