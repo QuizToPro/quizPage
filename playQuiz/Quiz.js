@@ -16,7 +16,10 @@ const tableTops = document.querySelector('.tops')
 const tableEnd = document.querySelector('.table-end')
 const puntuacionesBTN = document.getElementById('punt');
 const database = firebase.firestore();
-const id_doc = locationurl.split('=')[1]
+let ispersonalizedquiz = undefined;
+const id_doc = (locationurl.split('=')[1] == false) ? (ispersonalizedquiz = false,
+     locationurl.split('=')[2]) : (ispersonalizedquiz = true, locationurl.split('=')[1]);
+console.info(id_doc[1] == false)
 console.log(id_doc)
 let click = false;
 let uid_person = undefined; 
@@ -48,8 +51,8 @@ puntuacionesBTN.addEventListener('click', e => {
 })
 
 closeModal.addEventListener('click', () => {
-    puntuacionesBTN.style.cursor = 'pointer'
     puntuaciones.add('hide');
+    puntuacionesBTN.innerHTML = 'Ver puntuaciones <i class="fas fa-chevron-down"aria-hidden="true"></i>'
 })
 
 localContent.addEventListener('upgradeneeded', () => {
@@ -75,13 +78,8 @@ const getIDBData = (mode, msg) => {
 
 const addObject = () => {
     const objectStore = getIDBData("readwrite", "objeto agregado correctamente");
-    objectStore.add({data: content, name: userQuiz, id: locationurl.split('=')[1]});
+    objectStore.add({data: content, name: userQuiz, id: id_doc});
 };
-
-
-document.getElementById('send-email').addEventListener('click', () => {
-    window.location.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=mitrivia77@gmail.com';
-});
 
 document.getElementById('create').addEventListener('click', () => {
     window.location.href = '../index.html'
@@ -125,7 +123,6 @@ buttonNext.addEventListener('click', () => {
             };
         };
     };
-    
 });  
 
 const createQuest = (arr, b) => { 
@@ -195,65 +192,72 @@ const createQuest = (arr, b) => {
         modal_content.style.display = 'block'
         const modal = document.querySelector('.container-content')
         modal.style.animation = 'desaparecer .5s forwards';
-        if(meet <= 20) meetText.textContent = results.zero;
-        if(meet > 20 && meet <= 40) meetText.textContent = results.twenty;
-        if(meet > 40 && meet <= 60) meetText.textContent = results.fourty;
-        if(meet > 60 && meet <= 80) meetText.textContent = results.sixty;
-        if(meet > 80 && meet <= 99) meetText.textContent = results.eighty;
-        if(meet >= 100) meetText.textContent = results.houndred;
+        if(meet <= 20) meetText.innerHTML = results.zero;
+        if(meet > 20 && meet <= 40) meetText.innerHTML = results.twenty;
+        if(meet > 40 && meet <= 60) meetText.innerHTML = results.fourty;
+        if(meet > 60 && meet <= 80) meetText.innerHTML = results.sixty;
+        if(meet > 80 && meet <= 99) meetText.innerHTML = results.eighty;
+        if(meet >= 100) meetText.innerHTML = results.houndred;
         percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet.toFixed(2)}%`;
         setTimeout(() => {
             modal.style.display = 'none'
             document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
         }, 500)
+
         localStorage.setItem('url', locationurl);
 
-         //////////////////////////////////////////////////
-         const numberscore = Number(meet);
-         const userscore = {
-             nameUser,
-             numberscore
-         };
-         console.log(table)
-         table.push(userscore)
- 
-         const tableWithActualUser = [...table];
-         sortTable(tableWithActualUser)
-         //tableWithActualUser is table with actual user
-         //table is without the user
-         console.info('Pusehado')
+        //////////////////////////////////////////////////
+        const numberscore = Number(meet);
+        const userscore = {
+            nameUser,
+            numberscore
+        };
+        console.log(table)
+        table.push(userscore)
+        const tableWithActualUser = [...table];
+        sortTable(tableWithActualUser)
+        //tableWithActualUser is table with actual user
+        //table is without the user
+        console.info('Pusehado')
 
-         console.info(tableWithActualUser)
+        console.info(tableWithActualUser)
 
-         for(let i = 1; i <= 10; i++){
-            const div = document.createElement('DIV');
-            div.classList.add('table-content');
-    
-            const fragment = document.createDocumentFragment();
-    
-            const position = document.createElement('SPAN');
-            const user = document.createElement('SPAN');
-            const score = document.createElement('SPAN');
-    
-            position.textContent = i;
-            user.textContent = table[i].nameUser;
-            score.textContent = `${table[i].numberscore}%`;
-            fragment.appendChild(position);
-            fragment.appendChild(user);
-            fragment.appendChild(score);
-    
-            div.appendChild(fragment);
-            tableEnd.appendChild(div)
+        if(table.length > 0){
+            console.log(table)
+            for(let i = 0; i < table.length; i++){
+                if(i < 10){
+                    const div = document.createElement('DIV');
+                    div.classList.add('table-content');
+            
+                    const fragment = document.createDocumentFragment();
+            
+                    const position = document.createElement('SPAN');
+                    const user = document.createElement('SPAN');
+                    const score = document.createElement('SPAN');
+            
+                    position.textContent = i + 1;
+                    console.log(table[i])
+                    user.textContent = table[i].nameUser;
+                    score.textContent = `${table[i].numberscore}%`;
+                    fragment.appendChild(position);
+                    fragment.appendChild(user);
+                    fragment.appendChild(score);
+            
+                    div.appendChild(fragment);
+                    tableEnd.appendChild(div)
+                }      
+            }
         }
+         
 
-         database.collection('scoreboards_table').doc(id_doc).update({
-             table,
-         }).then(()=>{
-             console.info('User score saved sucessfully')
-         }).catch((error)=>{
-             console.error(error)
-             console.error('No se pudo guardar puntuaciones usuario')
-         });
+        database.collection('scoreboards_table').doc(id_doc).update({
+            table,
+        }).then(()=>{
+            console.info('User score saved sucessfully')
+        }).catch((error)=>{
+            console.error(error)
+            console.error('No se pudo guardar puntuaciones usuario')
+        });
 
     };
     similary = false;
@@ -273,12 +277,12 @@ document.getElementById('send').addEventListener('click', e => {
 
 const setScorePhrase = () => {
     results = {
-        zero: `Parece que casi no conoces a ${userQuiz} :(` , // de 0% a 20%
-        twenty: `Vaya!, deberías hablar más con ${userQuiz}` , // de 20% a 40%
-        fourty: `Conoces lo suficiente a ${userQuiz}, pero podrías acercarte más :)`, // 40% a 60%
-        sixty: `Eres muy cercano a ${userQuiz}, acertaste la mayoría!`, //60% a 80%
-        eighty: `Parece que ${userQuiz} tiene gente que la conoce muy bien! acertaste en la gran cantidad`, // de 80% a 99%
-        houndred: `Perfecto! lograste acertar en todas las preguntas, conoces muy bien a ${userQuiz}!`  // 100% 
+        zero: `Parece que casi no conoces a <b>${userQuiz}</b> :(` , // de 0% a 20%
+        twenty: `Vaya!, deberías hablar más con <b>${userQuiz}</b>` , // de 20% a 40%
+        fourty: `Conoces lo suficiente a <b>${userQuiz}</b>, pero podrías acercarte más :)`, // 40% a 60%
+        sixty: `Eres muy cercano a <b>${userQuiz}</b>, acertaste la mayoría!`, //60% a 80%
+        eighty: `Parece que <b>${userQuiz}</b> tiene gente que la conoce muy bien! acertaste en la gran cantidad`, // de 80% a 99%
+        houndred: `Perfecto! lograste acertar en todas las preguntas, conoces muy bien a <b>${userQuiz}</b>!`  // 100% 
     }      
 }
 
@@ -321,11 +325,12 @@ async function getGame(callback) {
             async function getGame2(b){
                 if( b == false) {
                     console.log('Falso')
-                    const gameRef = database.collection('quiz_personalizados').doc(id_doc);
+                    console.log(id_doc)
+                    //const gameRef = database.collection('quiz_sugeridos').doc(id_doc)
+                    console.info(ispersonalizedquiz)
+                    const gameRef = (ispersonalizedquiz === false) ? database.collection('quiz_sugeridos').doc(id_doc) : database.collection('quiz_personalizados').doc(id_doc)
                     const doc = await gameRef.get();
-                    const data = doc.data()
-                    
-                    console.log(data)
+                    const data = doc.data()    
                     const Game = Object.values(data.Game)
                     content = Game;
                     userQuiz = data.userQuiz;
@@ -354,41 +359,47 @@ function sortTable(table) {
 
 async function getTable() {
     try {
-
-    const tableee = await database.collection('scoreboards_table').doc(id_doc).get()
-    const tablee = tableee.data() 
-    sortTable(tablee.table)
-    console.info(tablee)
+    const tableee = await database.collection('scoreboards_table').doc(id_doc).get();
+    const tablee = tableee.data();
+    sortTable(tablee.table);
+    console.info(tablee);
     return tablee.table;
-} catch (error) {
-       console.error(error)
-       console.error('No se pudo consultar las puntuaciones :(')
-       return ['No se pudo consultar las puntuaciones :('] 
-}
-}
+    } catch (error) {
+        console.error(error);
+        console.error('No se pudo consultar las puntuaciones :(');
+    };
+};
 
 setTimeout(async()=>{
-    await getGame(createQuest)
-    table = await getTable()
-    document.querySelector('.load-circle-top').style.display = 'none'
-    for(let i = 1; i < 4; i++){
-        const div = document.createElement('DIV');
-        div.classList.add('table-content');
-
-        const fragment = document.createDocumentFragment();
-
-        const position = document.createElement('SPAN');
-        const user = document.createElement('SPAN');
-        const score = document.createElement('SPAN');
-
-        position.textContent = i;
-        user.textContent = table[i].nameUser;
-        score.textContent = `${table[i].numberscore}%`;
-        fragment.appendChild(position);
-        fragment.appendChild(user);
-        fragment.appendChild(score);
-
-        div.appendChild(fragment);
-        tableTops.appendChild(div)
+    await getGame(createQuest);
+    table = await getTable();
+    document.querySelector('.load-circle-top').style.display = 'none';
+    if(table.length > 0){
+        document.querySelector('.first').style.display = 'none'
+        for(let i = 0; i < table.length; i++){
+            if(i < 3){
+                const div = document.createElement('DIV');
+                div.classList.add('table-content');
+        
+                const fragment = document.createDocumentFragment();
+        
+                const position = document.createElement('SPAN');
+                const user = document.createElement('SPAN');
+                const score = document.createElement('SPAN');
+        
+                position.textContent = i + 1;
+                user.textContent = table[i].nameUser;
+                score.textContent = `${table[i].numberscore}%`;
+                fragment.appendChild(position);
+                fragment.appendChild(user);
+                fragment.appendChild(score);
+        
+                div.appendChild(fragment);
+                tableTops.appendChild(div);
+                console.log('ñe');
+            };
+        };
+    }else{
+        document.querySelector('.first').textContent = 'Aún nadie ha respondido éste quiz, sé el primero!'
     }
 });
