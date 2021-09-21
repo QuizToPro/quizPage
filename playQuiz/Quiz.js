@@ -327,6 +327,7 @@ async function getTable() {
     const tablee = tableee.data() 
     sortTable(tablee.table)
     console.info(tablee)
+    console.info('table get done sucessfully')
     return tablee.table;
 
 } catch (error) {
@@ -338,6 +339,7 @@ async function getTable() {
 
 
 setTimeout(async()=>{
-    await getGame(createQuest)
     table = await getTable()
+    await getGame(createQuest)
+   
 });
