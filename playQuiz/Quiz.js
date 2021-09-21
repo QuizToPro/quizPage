@@ -126,7 +126,7 @@ buttonNext.addEventListener('click', () => {
 });  
 
 const createQuest = (arr, b) => { 
-    if(b)  meet = meet + progress;
+    if(b)  meet = Number(meet + progress).toFixed(2);
     console.log(arr)
     document.querySelector('.load-circle').style.display = 'none'
     let data = Object.values(arr);
@@ -188,6 +188,19 @@ const createQuest = (arr, b) => {
 
         contador++;
     }else{
+        const numberscore = Number(meet);
+        const userscore = {
+            nameUser,
+            numberscore
+        };
+
+        table.push(userscore)
+        // const tableWithActualUser = [...table];
+        // sortTable(tableWithActualUser)
+
+        //tableWithActualUser is table with actual user
+        //table is without the user
+
         console.log("SEACABO")
         modal_content.style.display = 'block'
         const modal = document.querySelector('.container-content')
@@ -198,67 +211,56 @@ const createQuest = (arr, b) => {
         if(meet > 60 && meet <= 80) meetText.innerHTML = results.sixty;
         if(meet > 80 && meet <= 99) meetText.innerHTML = results.eighty;
         if(meet >= 100) meetText.innerHTML = results.houndred;
-        percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet.toFixed(2)}%`;
+        percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet}%`;
         setTimeout(() => {
             modal.style.display = 'none'
             document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
         }, 500)
-
-        localStorage.setItem('url', locationurl);
-
-        //////////////////////////////////////////////////
-        const numberscore = Number(meet);
-        const userscore = {
-            nameUser,
-            numberscore
-        };
-        console.log(table)
-        table.push(userscore)
-        const tableWithActualUser = [...table];
-        sortTable(tableWithActualUser)
-        //tableWithActualUser is table with actual user
-        //table is without the user
-        console.info('Pusehado')
-
-        console.info(tableWithActualUser)
-
-        if(table.length > 0){
-            console.log(table)
-            for(let i = 0; i < table.length; i++){
-                if(i < 10){
-                    const div = document.createElement('DIV');
-                    div.classList.add('table-content');
-            
-                    const fragment = document.createDocumentFragment();
-            
-                    const position = document.createElement('SPAN');
-                    const user = document.createElement('SPAN');
-                    const score = document.createElement('SPAN');
-            
-                    position.textContent = i + 1;
-                    console.log(table[i])
-                    user.textContent = table[i].nameUser;
-                    score.textContent = `${table[i].numberscore}%`;
-                    fragment.appendChild(position);
-                    fragment.appendChild(user);
-                    fragment.appendChild(score);
-            
-                    div.appendChild(fragment);
-                    tableEnd.appendChild(div)
-                }      
-            }
-        }
-         
-
+  
         database.collection('scoreboards_table').doc(id_doc).update({
             table,
         }).then(()=>{
-            console.info('User score saved sucessfully')
+            console.info('User score saved sucessfully');
+            if(table.length > 0){
+            
+                console.log(table)
+                for(let i = 0; i < table.length; i++){
+                    if(i < 10){
+                        const div = document.createElement('DIV');
+                        div.classList.add('table-content');
+                
+                        const fragment = document.createDocumentFragment();
+                
+                        const position = document.createElement('SPAN');
+                        const user = document.createElement('SPAN');
+                        const score = document.createElement('SPAN');
+                
+                        position.textContent = i + 1;
+                        console.log(table[i])
+                        user.textContent = table[i].nameUser;
+                        score.textContent = `${table[i].numberscore}%`;
+                        fragment.appendChild(position);
+                        fragment.appendChild(user);
+                        fragment.appendChild(score);
+                
+                        div.appendChild(fragment);
+                        tableEnd.appendChild(div)
+                    }      
+                }
+            }
         }).catch((error)=>{
             console.error(error)
             console.error('No se pudo guardar puntuaciones usuario')
         });
+        localStorage.setItem('url', locationurl);
 
+        //////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////
+
+        console.info('Pusehado')
+
+        
     };
     similary = false;
 };
@@ -317,7 +319,6 @@ async function getGame(callback) {
                 });
                 
                 IDBTransaction.addEventListener("complete", () =>{ // Esto nos avisará cuando el objeto sea agregado/leido/modificado/eliminado;
-                    
                     console.log("objeto leido correctamente")
                 });
             } 
