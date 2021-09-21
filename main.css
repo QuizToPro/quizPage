@@ -271,7 +271,7 @@ body{
 }
 
 .title-quest{
-    text-align: left;
+    text-align: center;
     color: var(--blue);
 }
 
@@ -302,6 +302,8 @@ body{
     }
 }
 
+
+
 .u-qz{
     cursor: pointer;
     display: flex;
@@ -311,6 +313,7 @@ body{
     overflow: hidden;
     transition: width 1s;
 }
+
 .u-qz:hover > span, .p-qz:hover > span{
     background: -webkit-linear-gradient(left, var(--blue), rgb(34, 111, 255));
     font-size: 25px;
@@ -417,7 +420,7 @@ body{
     transition: all 1s;
 }
 .questions2 > input{
-    margin-top: 10px;
+    margin: 10px;
     width: 100%;
     border: none;
     outline: none;
@@ -444,24 +447,22 @@ body{
     grid-template-columns: 1fr 40px;
     justify-content: center;
     align-items: center;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 .contentInput .answ{
     color: var(--darkBlue);
     width: 100%;
     border: none;
     outline: none;
+    background-color: rgb(209, 233, 248);
     padding: 15px;
-    border: 1px solid var(--blue);
-    border-right-color: transparent;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+    border-left: 2px solid var(--blue);
     transition: all .3s;
 }
 
 .contentInput .answ:focus{
     border-color: var(--darkBlue);
-    border-right-color: transparent;
+    background-color: #fff;
 }
 .contentInput .answ::placeholder{
     color: var(--blue);
@@ -489,10 +490,9 @@ body{
     height: 100%;
 }
 
-.question::placeholder{
-    font-weight: bold;
+.menu{
+    width: 45%;
 }
-
 /* add other quest */
 
 .more-quest{
@@ -508,7 +508,6 @@ body{
     color: var(--blue);
     font-size: 15px;
     padding: 10px 0;
-    border-radius: 20px;
     border: 1px solid var(--blue);
     cursor: pointer;
     background-color: var(--white);
@@ -541,16 +540,20 @@ body{
     }
 }
 
+#send, .add-quest-btn{
+    border-radius: 15px;
+    padding: 5px 9px;
+}
+
 #send{
+    justify-content: center;
+    align-items: center;
     display: none;
     border: none;
-    text-align: center;
     flex-basis: 40%;
     color: var(--white);
     background: var(--blue);
     font-size: 15px;
-    padding: 10px 0;
-    border-radius: 20px;
     border: 1px solid var(--blue);
     text-transform: uppercase;
     cursor: pointer;
@@ -583,7 +586,8 @@ body{
     margin: 10px;
     background-color: var(--blue);
     color: var(--white);
-    padding: 10px;
+    padding: 5px 9px;
+    border-radius: 2px;
 }
 
 /* preguntas sugeridas */
@@ -783,6 +787,7 @@ body{
 .questions-content .container-sugered-quest{
     display: grid;
     grid-template-columns: 1fr 60px;
+    align-items: center;
     border-radius: 5px;
     position: relative;
     margin: 5px;
@@ -968,6 +973,7 @@ footer{
     flex-wrap: wrap;
 }
 .questions-page{
+    width: 50%;
     border-left: 2px solid var(--blue);
     display: flex;
     flex-wrap: wrap;
@@ -980,16 +986,17 @@ footer{
    font-size: 18px;
    flex-basis: 40%;
 }
-.questions-page button{
+.questions-page #send-email{
+    padding: 5px 9px;
+    text-decoration: none;
     border: 1px solid var(--blue);
     outline: none;
     cursor: pointer;
-    padding: 10px;
-    border-radius: 5px;
+    border-radius: 2px;
     color: var(--white);
     background-color: var(--blue);
 }
-.questions-page button:hover{
+.questions-page #send-email:hover{
     color: var(--blue);
     background-color: var(--white);
 }
@@ -1122,6 +1129,9 @@ footer{
         top: 0;
         height: 200px;
     }
+    .menu{
+        width: 100%;
+    }
     .main{
         justify-content: center;
     }
@@ -1148,9 +1158,15 @@ footer{
     }
     #contact-list li a{
         font-size: 15px;
-        padding: 5px;
+        padding: 5px 10px;
     }
     .text-section{
         font-size: 18px;
+    }
+    .questions-page{
+        width: 100%;
+    }
+    #send, .add-quest-btn{
+        border-radius: 5px;
     }
 }

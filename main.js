@@ -150,8 +150,7 @@ firebase.auth().signInAnonymously()
         .then((docRef) => {
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
-            const pathToPlayQuiz =(collectionName === 'quiz_sugeridos')?`./playQuiz/Quiz.html?id==${docRef.id}` :`./playQuiz/Quiz.html?id=${docRef.id}`;
-
+            const pathToPlayQuiz = (collectionName === 'quiz_sugeridos') ? `./playQuiz/Quiz.html?id==${docRef.id}` : `./playQuiz/Quiz.html?id=${docRef.id}`;
                 database.collection('scoreboards_table').doc(docRef.id).set({
                     table:[],
                     uid:uid_person,
@@ -242,8 +241,8 @@ $btnStart.addEventListener('click', e => {
     setTimeout(() => {
         $container.style.display = 'none';
 
-        $uQz.style.width = '45%'; 
-        $pQz.style.width = '45%';
+        $uQz.classList.add('menu')
+        $pQz.classList.add('menu')
     }, 500);
   
 });
@@ -569,13 +568,13 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     const entity = document.querySelectorAll('.entity');
 
     if(showBtn == false){
-        spanSend.style.display = 'inline-block'
+        spanSend.style.display = 'flex'
     }
     for(let i = 0; i < entity.length; i++){
         entity[i].addEventListener('click', () => {
             cantidad_de_respuestas = entity[i].outerText.slice( 0, 1 );
             let deleteP = document.querySelector('.select-ans');
-            spanSend.style.display = 'inline-block'
+            spanSend.style.display = 'flex'
             buttonAdd.style.display = 'inline-block';
             divAnswer.appendChild(createQuest(entity[i].textContent.slice(0, 1), entity));
             checkIcon();
@@ -869,7 +868,3 @@ function CreateObjectGame () {
         };
     });
 };
-
-document.getElementById('send-email').addEventListener('click', () => {
-    window.location.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=mitrivia77@gmail.com';
-});
