@@ -187,6 +187,7 @@ body{
     box-shadow: 5px 5px 20px rgba(83, 83, 83, .5);
     transition: opacity .2s;
     z-index: 1;  
+    
 }
 .first{
     color: var(--darkBlue);
@@ -221,6 +222,8 @@ body{
     display: grid;
     grid-template-rows: 50px 50px;
     padding: 30px;
+    
+    
 }
 .div-name form #name {
     width: 50%;
@@ -233,12 +236,14 @@ body{
     border-bottom: 2px solid #2af;
     padding: 5px;
     font-size: 18px;
+    text-align: center;
 }
 .div-name form #name::placeholder{
     color: var(--blue);
 }
 .div-name form #name:focus{
     background: rgb(220, 237, 248);
+    
 }
 
 .div-name form #send{
