@@ -201,7 +201,7 @@ const nextPage = (url, nodo) => {
         $main.appendChild(divCopy)
         document.querySelector('.share-link').style.opacity = '1';
     }, 100) 
-    //window.open(url, '_blank').focus();
+    
 };
 
 function copyClipboard(){
