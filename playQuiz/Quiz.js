@@ -1,6 +1,6 @@
 'use strict'
 
-const linkwebpage = 'about:blank'
+const linkwebpage = 'mitrivia77-97762.web.app/'
  //Valor ingresado el usuario cuando responde el quiz
 const locationurl = window.location.href
 const puntuaciones = document.querySelector('.puntuaciones').classList
