@@ -224,6 +224,7 @@ body{
     border-radius: 5px 5px 0 0;
     color: var(--blue);
     justify-self: center;
+    text-align: center;
     border: none;
     outline: none;
     background-color: transparent;
