@@ -291,6 +291,10 @@ const checkIcon = (icon = true) => {
         for(let i = 0; i < iconClick.length; i ++){
             iconClick[i].addEventListener('click', e => {
                 (function(){ //Creo una función anonima autoejecutable para no gastar lineas llamandola después de ejecutarla      
+                   
+                    for(let i = 2; i < e.path[2].children.length; i++){
+                        if(e.path[2].children[i].firstChild.classList.contains('wh-in')) e.path[2].children[i].firstChild.classList.remove('wh-in')
+                    }
                     for(const t of e.path[2].children){ //Ésta funcion me permite identificar si ya hay una opcion escogida, en caso de cambiar se borra el id y es colocado en la otra opción escogida
                         if(t.id.includes('selected-answer')){
                             t.removeAttribute('id');
@@ -302,6 +306,7 @@ const checkIcon = (icon = true) => {
                 let idAns = iconClick[i].parentElement.parentElement;
                 let id = idAns.children[0].children[0].textContent
                 idAns.classList.add('selected');
+                e.path[1].firstChild.classList.add('wh-in') //Agrega fondo blanco a los inputs ya seleccionados
                 iconClick[i].style.backgroundColor = '#2af' //Establezco el color al icono después de haber sido clickeado
                 iconClick[i].parentElement.id = `selected-answer${id}` //Con esta linea establezco un id unico a cada selección hecha por el usuario (para poder ser identificable en la base de datos y hacer las comprobaciones en el frontend cuando se estén respondiendo los quiz)
             });
@@ -343,7 +348,8 @@ const createQuest = (entity, entries, p) => {
 
     if(entries != undefined){
         for(let f of entries){
-            f.style.display = 'none';
+            f.style.animation = 'disentity .5s forwards'
+            setTimeout(() => f.style.display = 'none', 500);     
         };
     };
    
@@ -384,18 +390,6 @@ const createQuest = (entity, entries, p) => {
     };      
 };
 
-
-const addQuestInput = node => { //Ésta funcion me crea divs por separado cada vez que se crea una nueva pregunta
-
-    const contentAnswer = document.createElement('DIV');
-    const fragment = document.createDocumentFragment();
-    contentAnswer.appendChild(addInput());
-    contentAnswer.appendChild(createQuest());
-    fragment.appendChild(contentAnswer);
-    node.appendChild(fragment);
-    return node;
-};
-
 const setLanguaje = lang => {
     const p = document.createElement('P');
     const fragment = document.createDocumentFragment();
@@ -430,6 +424,7 @@ const setLanguaje = lang => {
         fragment.appendChild(span1);
         fragment.appendChild(span2);
         fragment.appendChild(span3);
+        fragment.style.animation = 'appFrag .5s forwards'
         return fragment;
     }
 }
@@ -473,6 +468,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     if(showBtn == true){
         divSelectHowAns.appendChild(setLanguaje(languaje));
         divAnswer.appendChild(divSelectHowAns);
+        divQuestions.style.display = 'none'
     }else{
         divQuestions.classList.replace('questions', 'questions-sug')
         const divPersonality = document.createElement('DIV');
@@ -577,6 +573,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
             spanSend.style.display = 'flex'
             buttonAdd.style.display = 'inline-block';
             divAnswer.appendChild(createQuest(entity[i].textContent.slice(0, 1), entity));
+            document.querySelector('.questions2').style.animation = 'appFrag 1s forwards'
             checkIcon();
             contador++;
             id++;
@@ -588,6 +585,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
             e.preventDefault();
             if(showBtn != false){
                 divAnswer.appendChild(createQuest(numAns, '', true));
+                const qDiv = document.querySelectorAll('.questions2');
+                qDiv[contador].style.animation = 'appFrag .5s forwards'
                 contador++;
                 id++;
                 checkIcon();
