@@ -220,10 +220,12 @@ body{
     padding: 30px;
 }
 .div-name form #name {
+    width: 50%;
     border-radius: 5px 5px 0 0;
     color: var(--blue);
+    justify-self: center;
     border: none;
-    outline: none;;
+    outline: none;
     background-color: transparent;
     border-bottom: 2px solid #2af;
     padding: 5px;
@@ -237,13 +239,17 @@ body{
 }
 
 .div-name form #send{
+    justify-self: center;
     font-size: 18px;
-    width: 100%;
+    width: 50%;
     border: none;
     background: var(--blue);
     color: var(--white);
     padding: 10px;
     border-radius: 0 0 5px 5px;
+}
+.div-name form #send:hover{
+    background: rgb(25, 118, 199);
 }
 .div-name form .err{
     color: #f00;
@@ -475,6 +481,7 @@ body{
     }
 }
 
+
 .puntuaciones{
     background-color: var(--white);
     top:0;
@@ -495,16 +502,20 @@ body{
 }
 
 .table-content{
-    width: inherit;
-}
-.table-content{
     display: grid;
-    grid-template-columns: 50px repeat(2, 1fr);  
-}
-.table-content span{
     color: var(--blue);
+    grid-template-columns: 50px repeat(2, 1fr);  
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+.table-content-user{
+    color: var(--white);
+    background-color: #2af;
+}
+
+.table-content span{
     padding: 15px;
-    border: 1px solid var(--blue);
 }
 
 .table-content-esp{
@@ -513,11 +524,16 @@ body{
     justify-items: space-evenly;
 }
 .table-content-esp span{
-    background-color: var(--blue);
+    text-align: center;
+    background-color: rgb(78, 186, 236);
     padding: 15px;
     color: var(--white);
 }
-
+.table-end__content, .table-end__content-top{
+    border-radius: 5px;
+    border: 2px solid rgb(78, 186, 236);
+    overflow: hidden;
+}
 .modal-content{
     overflow: hidden;
     flex-direction: column;
@@ -531,7 +547,6 @@ body{
     padding: 20px 15px;
     z-index: 2;
 }
-
 @keyframes moveto{
     from{
         height: 100%;
@@ -582,9 +597,8 @@ body{
 
 .btn-opt{
     padding: 20px 0;
-    flex-basis: 50%;
+    flex-basis: 30%;
     opacity: 1;
-    order: 2;
     cursor: pointer;
     color: var(--blue);
     transition: opacity .5s;
@@ -592,24 +606,24 @@ body{
 .btn-opt > i {
     padding: 0 10px;
 }
+.btn-opt:hover{
+    color: rgb(2, 111, 201);
+}
 .modal-content__btns #create{
-    order: 1;
-    flex: 1;
+    font-size: 18px;
     border: none;
-    flex-basis: 100%;
+    cursor: pointer;
+    flex-basis: 30%;
     outline: none;
-    padding: 10px;
+    padding: 20px 0;
     transition: background, color .2s;
-    background: #2af;
+    background-color: #2af;
     border-radius: 5px;
     color: #fff;
 }
-.modal-content__btns > #repeat:hover{
-    cursor: pointer;
-    background: #fff;
-    color: #2af;
+.modal-content__btns #create:hover{
+    background-color: rgb(2, 111, 201);
 }
-
 /* /FOOTER  */
 
 footer{
@@ -631,9 +645,10 @@ footer{
 }
 
 .questions-page span{
-   color: var(--blue);
-   font-size: 18px;
-   flex-basis: 40%;
+    margin: auto 20px;
+    color: var(--blue);
+    font-size: 18px;
+    flex-basis: 40%;
 }
 .questions-page #send-email{
     padding: 5px 9px;
@@ -806,5 +821,16 @@ footer{
     .questions-page{
         width: 100%;
     }
-    
+    .div-name form #name, .div-name form #send{
+        width: 90%;
+    }
+    .modal-content__btns #create{
+        order:1;
+        flex-basis: 100%;
+    }
+    .btn-opt{
+        justify-self: center;
+        order:2;
+        flex-basis: 45%;
+    }
 }

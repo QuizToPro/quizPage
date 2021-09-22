@@ -5,6 +5,11 @@ const linkwebpage = 'about:blank'
 const locationurl = window.location.href
 const puntuaciones = document.querySelector('.puntuaciones').classList
 const closeModal = document.querySelector('.close-modal');
+const idRandom = Math.ceil(Math.random()*10000)
+let idLocal;
+let userLocal;
+if (localStorage.getItem('idQuiz') != undefined) idLocal = localStorage.getItem('idQuiz')
+if (localStorage.getItem('userQuiz') != undefined) userLocal = localStorage.getItem('userQuiz')
 
 // if(localStorage.getItem('url') == locationurl) alert('Ya haz completado éste quiz');
 
@@ -12,8 +17,8 @@ if (!locationurl.includes('=')) {
     window.location = linkwebpage;
 }
 
-const tableTops = document.querySelector('.tops')
-const tableEnd = document.querySelector('.table-end')
+const tableTops = document.querySelector('.table-end__content-top')
+const tableEnd = document.querySelector('.table-end__content')
 const puntuacionesBTN = document.getElementById('punt');
 const database = firebase.firestore();
 let ispersonalizedquiz = undefined;
@@ -126,7 +131,7 @@ buttonNext.addEventListener('click', () => {
 });  
 
 const createQuest = (arr, b) => { 
-    if(b)  meet = Number(meet + progress).toFixed(2);
+    if(b)  meet = meet + progress;
     console.log(arr)
     document.querySelector('.load-circle').style.display = 'none'
     let data = Object.values(arr);
@@ -188,22 +193,24 @@ const createQuest = (arr, b) => {
 
         contador++;
     }else{
-        const numberscore = Number(meet);
+        const numberscore = Number(meet).toFixed(2);
         const userscore = {
             nameUser,
-            numberscore
+            numberscore,
+            id: idRandom
         };
-
+        console.log(table)
         table.push(userscore)
-        // const tableWithActualUser = [...table];
-        // sortTable(tableWithActualUser)
 
-        //tableWithActualUser is table with actual user
-        //table is without the user
+        const tableWithActualUser = [...table];
+        sortTable(tableWithActualUser)
+        console.log(tableWithActualUser)
+        // tableWithActualUser is table with actual user
+        // table is without the user
 
         console.log("SEACABO")
-        modal_content.style.display = 'block'
-        const modal = document.querySelector('.container-content')
+        modal_content.style.display = 'block';
+        const modal = document.querySelector('.container-content');
         modal.style.animation = 'desaparecer .5s forwards';
         if(meet <= 20) meetText.innerHTML = results.zero;
         if(meet > 20 && meet <= 40) meetText.innerHTML = results.twenty;
@@ -211,64 +218,76 @@ const createQuest = (arr, b) => {
         if(meet > 60 && meet <= 80) meetText.innerHTML = results.sixty;
         if(meet > 80 && meet <= 99) meetText.innerHTML = results.eighty;
         if(meet >= 100) meetText.innerHTML = results.houndred;
-        percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet}%`;
+        percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet.toFixed(2)}%`;
         setTimeout(() => {
             modal.style.display = 'none'
             document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
-        }, 500)
-  
+        }, 500);
+
         database.collection('scoreboards_table').doc(id_doc).update({
             table,
         }).then(()=>{
             console.info('User score saved sucessfully');
-            if(table.length > 0){
-            
-                console.log(table)
-                for(let i = 0; i < table.length; i++){
-                    if(i < 10){
-                        const div = document.createElement('DIV');
-                        div.classList.add('table-content');
-                
-                        const fragment = document.createDocumentFragment();
-                
-                        const position = document.createElement('SPAN');
-                        const user = document.createElement('SPAN');
-                        const score = document.createElement('SPAN');
-                
-                        position.textContent = i + 1;
-                        console.log(table[i])
-                        user.textContent = table[i].nameUser;
-                        score.textContent = `${table[i].numberscore}%`;
-                        fragment.appendChild(position);
-                        fragment.appendChild(user);
-                        fragment.appendChild(score);
-                
-                        div.appendChild(fragment);
-                        tableEnd.appendChild(div)
-                    }      
-                }
-            }
+            addUserToTable(table, 10, tableEnd);
         }).catch((error)=>{
-            console.error(error)
-            console.error('No se pudo guardar puntuaciones usuario')
+            console.error(error);
+            console.error('No se pudo guardar puntuaciones usuario');
         });
         localStorage.setItem('url', locationurl);
-
-        //////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////
-
-        console.info('Pusehado')
-
-        
     };
     similary = false;
+};
+
+function addUserToTable(table_user, condition, node){
+    if(table_user.length > 0){
+        document.querySelector('.first').style.display = 'none'
+        console.log(table_user)
+        for(let i = 0; i < table_user.length; i++){
+            if(i < condition){
+                const div = document.createElement('DIV');
+                div.classList.add('table-content');
+        
+                const fragment = document.createDocumentFragment();
+        
+                const position = document.createElement('SPAN');
+                const user = document.createElement('SPAN');
+                const score = document.createElement('SPAN');
+
+                score.classList.add('ml')
+
+                position.textContent = i + 1;
+                console.log(table_user[i])
+               
+                user.textContent = table_user[i].nameUser;
+                score.textContent = `${table_user[i].numberscore}%`;
+
+                if(table_user[i].id === idRandom){
+                    div.classList.add('table-content-user')
+                }
+                if(condition == 3 && table_user[i].nameUser == userLocal && table_user[i].id == idLocal){
+                    div.classList.add('table-content-user')
+                }
+                fragment.appendChild(position);
+                fragment.appendChild(user);
+                fragment.appendChild(score);
+        
+                div.appendChild(fragment);
+                node.appendChild(div)
+            };     
+        };
+    }else{
+        document.querySelector('.first').textContent = 'Aún nadie ha respondido éste quiz, sé el primero!'
+    };
 };
 
 document.getElementById('send').addEventListener('click', e => {
     e.preventDefault();
     if(document.getElementById('name').value.length < 1) return document.querySelector('.err').textContent = 'Debes ingresar un nombre antes de continuar';
-    else nameUser = document.getElementById('name').value;
+    else{
+        nameUser = document.getElementById('name').value;
+        localStorage.setItem('userQuiz', nameUser);
+        localStorage.setItem('idQuiz', idRandom);
+    } 
     e.path[2].style.opacity = '0';
     document.querySelector('.container').style.animation = 'aparecer .7s forwards';
     containerContent.style.display = 'block'
@@ -302,7 +321,7 @@ async function getGame(callback) {
                 // cursor accederá a los valores que contiene objectStore
                 cursor.addEventListener("success", ()=>{ //Si es completado, me de devolverá una solicitud que tendrá que ser recibida mediante un .result
                     if(cursor.result){ // Como nos devolvió un .result que contiene todos los datos, entonces el if se ejecutará
-                        if(locationurl.includes(cursor.result.value.id)){
+                        if(id_doc == cursor.result.value.id){
                             bool = true;
                             data = cursor.result.value.data;
                             userQuiz = cursor.result.value.name
@@ -319,6 +338,7 @@ async function getGame(callback) {
                 });
                 
                 IDBTransaction.addEventListener("complete", () =>{ // Esto nos avisará cuando el objeto sea agregado/leido/modificado/eliminado;
+                    
                     console.log("objeto leido correctamente")
                 });
             } 
@@ -362,7 +382,7 @@ async function getTable() {
     try {
     const tableee = await database.collection('scoreboards_table').doc(id_doc).get();
     const tablee = tableee.data();
-    sortTable(tablee.table);
+    console.log(sortTable(tablee.table));
     console.info(tablee);
     return tablee.table;
     } catch (error) {
@@ -375,32 +395,5 @@ setTimeout(async()=>{
     await getGame(createQuest);
     table = await getTable();
     document.querySelector('.load-circle-top').style.display = 'none';
-    if(table.length > 0){
-        document.querySelector('.first').style.display = 'none'
-        for(let i = 0; i < table.length; i++){
-            if(i < 3){
-                const div = document.createElement('DIV');
-                div.classList.add('table-content');
-        
-                const fragment = document.createDocumentFragment();
-        
-                const position = document.createElement('SPAN');
-                const user = document.createElement('SPAN');
-                const score = document.createElement('SPAN');
-        
-                position.textContent = i + 1;
-                user.textContent = table[i].nameUser;
-                score.textContent = `${table[i].numberscore}%`;
-                fragment.appendChild(position);
-                fragment.appendChild(user);
-                fragment.appendChild(score);
-        
-                div.appendChild(fragment);
-                tableTops.appendChild(div);
-                console.log('ñe');
-            };
-        };
-    }else{
-        document.querySelector('.first').textContent = 'Aún nadie ha respondido éste quiz, sé el primero!'
-    }
+    addUserToTable(table, 3, tableTops)
 });

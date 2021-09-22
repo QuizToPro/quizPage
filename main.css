@@ -5,7 +5,34 @@
     scroll-behavior: smooth;
     box-sizing: border-box;
 }
+@keyframes disentity{
+    0%{
+        opacity: 1;
+        transform: translate(0%, 0);
+    }
+    30%{
+        transform: translate(-20%, 0);
 
+    }
+    100%{
+        opacity: 0;
+        transform: translate(100%, 0);
+    }
+}
+
+@keyframes appFrag{
+    0%{
+        opacity: 0;
+        transform: translate(100%, 0);
+    }
+    50%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
 :root{
     --blue: #09f;
     --darkBlue: #00f;
@@ -386,7 +413,9 @@ body{
 /* flex form  */
 .flex-form{
     display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
+    grid-gap: 30px;
+    align-items: center;
     justify-items: center;
 }
 
@@ -416,26 +445,26 @@ body{
     justify-items: center;
     align-items: center;
     width: 100%;
+    margin-bottom: 3em  ;
     text-align: center;
     transition: all 1s;
 }
 .questions2 > input{
     margin: 10px;
     width: 100%;
+    font-size: 18px;
+    color: var(--blue);
     border: none;
     outline: none;
     padding: 15px;
-    border-bottom: 3px solid var(--blue);  
+    border-left: 3px solid var(--blue);  
 }
 .questions2 > span{
     text-transform: uppercase;
     color: #09f;
 }
-.questions2 > input::placeholder{
-    color: var(--blue);
-}
+
 .answers{
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
     width: 80%;
@@ -450,22 +479,24 @@ body{
     margin: 10px 0;
 }
 .contentInput .answ{
-    color: var(--darkBlue);
     width: 100%;
     border: none;
     outline: none;
-    background-color: rgb(209, 233, 248);
-    padding: 15px;
-    border-left: 2px solid var(--blue);
+    color: #2af;
+    padding: 20px;
+    background-color: rgba(181, 208, 238, 0.5);
+    border-radius: 5px 0 0 5px;
     transition: all .3s;
 }
 
 .contentInput .answ:focus{
     border-color: var(--darkBlue);
-    background-color: #fff;
 }
-.contentInput .answ::placeholder{
-    color: var(--blue);
+.contentInput .answ:focus::placeholder, .questions2 > input:focus::placeholder{
+    color: transparent;
+}
+.contentInput .answ::placeholder, .questions2 > input::placeholder{
+    color: rgb(32, 137, 202);
 }
 
 .contentInput > i{
@@ -492,6 +523,10 @@ body{
 
 .menu{
     width: 45%;
+}
+
+.contentInput .wh-in{
+    background-color: var(--white);
 }
 /* add other quest */
 
@@ -579,6 +614,7 @@ body{
 }
 .select-ans > p{
     text-align: center;
+    margin-bottom: 15px;
     flex-basis: 100%;
 }
 .select-ans > span{
@@ -586,7 +622,7 @@ body{
     margin: 10px;
     background-color: var(--blue);
     color: var(--white);
-    padding: 5px 9px;
+    padding: 10px;
     border-radius: 2px;
 }
 
@@ -983,7 +1019,8 @@ footer{
 
 .questions-page span{
    color: var(--blue);
-   font-size: 18px;
+    margin: auto 20px;
+    font-size: 18px;
    flex-basis: 40%;
 }
 .questions-page #send-email{
