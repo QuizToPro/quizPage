@@ -126,7 +126,7 @@ buttonNext.addEventListener('click', () => {
 });  
 
 const createQuest = (arr, b) => { 
-    if(b)  meet = Number(meet + progress).toFixed(2);
+    if(b)  meet = meet + progress;
     console.log(arr)
     document.querySelector('.load-circle').style.display = 'none'
     let data = Object.values(arr);
