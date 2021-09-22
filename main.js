@@ -189,9 +189,9 @@ const nextPage = (url, nodo) => {
         </div>
     
         <div class="content-icons">
-        <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti https://${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
-        <div><a href="https://www.facebook.com/sharer/sharer.php?u=https://${url}" target="_blank"><i class="fab fa-facebook"></i></a> </div>
-        <div><a href="https://twitter.com/intent/tweet?text=Prueba%20mi%20nuevo%20Quiz!,%20mira%20quien%20conoce%20más%20sobre%20ti&url=https%3A%2F%2F${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
+        <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti ${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+        <div><a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank"><i class="fab fa-facebook"></i></a> </div>
+        <div><a href="https://twitter.com/intent/tweet?text=Prueba%20mi%20nuevo%20Quiz!,%20mira%20quien%20conoce%20más%20sobre%20ti&url=${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
         </div>              
     </div>`
     window.scrollTo(0, 0)
@@ -201,7 +201,7 @@ const nextPage = (url, nodo) => {
         $main.appendChild(divCopy)
         document.querySelector('.share-link').style.opacity = '1';
     }, 100) 
-    window.open(url, '_blank').focus();
+    //window.open(url, '_blank').focus();
 };
 
 function copyClipboard(){
