@@ -162,6 +162,9 @@ body{
     animation: title 1s both;
 }
 
+.user-quiz{
+    color: var(--blue);
+}
 @keyframes title{
     from{
         opacity: 0;
@@ -224,7 +227,6 @@ body{
     border-radius: 5px 5px 0 0;
     color: var(--blue);
     justify-self: center;
-    text-align: center;
     border: none;
     outline: none;
     background-color: transparent;
@@ -366,17 +368,22 @@ body{
 }
 
 .title{
+    border-radius: 10px;
+    display: flex;
     width: 100%;
     position: relative;
+    justify-content: center;
+    align-content: center;
     z-index: 10;
     margin: 15px 0;
     height: auto;
     word-wrap: break-word;
+    background-color: var(--blue);
 }
-.title h2{
-    padding-bottom: 20px;
+.title .titleQuest{
     text-align: center;
-    color: #2af;
+    padding: 20px 0;
+    color: var(--white);
     font-weight: bold;
 }
 .question-answer{
@@ -511,10 +518,29 @@ body{
 }
 
 .table-content-user{
+    position: relative;
     color: var(--white);
-    background-color: #2af;
+    background-color: rgb(165, 218, 252);
 }
-
+.fa-hand-point-right{
+    color: var(--blue);
+    font-size: 20px;
+    position: absolute;
+    top: calc(50% - 15px);
+    left: -20px;
+    animation: lookfor .5s infinite;
+}
+@keyframes lookfor{
+    0%{
+        transform: translate(0%);
+    }
+    50%{
+        transform: translate(-15%);
+    }
+    100%{
+        transform: translate(0%);
+    }
+}
 .table-content span{
     padding: 15px;
 }
@@ -522,6 +548,7 @@ body{
 .table-content-esp{
     display: grid;
     grid-template-columns: 50px repeat(2, 1fr);
+    overflow: hidden;
     justify-items: space-evenly;
 }
 .table-content-esp span{
@@ -533,7 +560,6 @@ body{
 .table-end__content, .table-end__content-top{
     border-radius: 5px;
     border: 2px solid rgb(78, 186, 236);
-    overflow: hidden;
 }
 .modal-content{
     overflow: hidden;

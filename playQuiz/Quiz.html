@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiTrivia | Responde a tus conocidos!</title> 
+    <meta name="author" content="R.R-Company" />
+    <meta name="copyright" content="R&R" />
+    <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MiTrivia - Responde a tus conocidos</title>
     <script src="https://kit.fontawesome.com/b15ad0e7fc.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!">
     <link rel="shortcut icon" href="../assets/logo/logo.favicon" type="image/x-icon">
 </head>
 <body>
@@ -32,7 +35,8 @@
         </div>
         <div class="div-name">
             <form action="">
-                <input type="text" placeholder="Ingresa tu nombre" spellcheck="false" name="" maxlength="12" id="name">
+                <span class="user-quiz"></span>
+                <input type="text" placeholder="Ingresa tu nombre" autocomplete="off" spellcheck="false" name="" maxlength="12" id="name">
                 <button id="send">Continuar <i class="fas fa-arrow-right"></i></button>
                 <div><span class="err"></span></div>
 
@@ -54,9 +58,7 @@
                     <div class="title"><h2 class="titleQuest"></h2>
                         <div class="load3"></div>
                     </div>                   
-                    <!-- <div class="load-content">
-                        <div class="load"></div>
-                    </div> -->
+                   
                     <div class="question-answer">
                        
                     </div>
@@ -78,16 +80,18 @@
             </div>
         </article>
         <div class="puntuaciones hide">
+
             <div class="modal-closes">
                 <span class="close-modal">x</span>
             </div>
+
             <div class="table-end">
                 <h2 class="top">TOP 10</h2>
                 <div class="table-end__content">
                     <div class="table-content-esp"><span>N°</span><span>Nombre</span><span>Puntuaciones</span></div>
-
                 </div>
-            </div>   
+            </div>
+
         </div>
     </section>
     <footer>
@@ -97,10 +101,9 @@
                 <li> <a href="http://instagram.com/theapsu3" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 <li> <a href="https://api.whatsapp.com/send?phone=584247218207" target="_blank" ><i class="fab fa-whatsapp" ></i></a></li>
                 <li> <a href="https://www.facebook.com/Duque.Ricardo2004" target="_blank"><i class="fab fa-facebook-f"></i></a> </li>
-                <li> <a href="https://web.telegram.org/" target="_blank"><i class="fab fa-telegram-plane"></i></a></li>
+                <li> <a href="https://t.me/RR_Company" target="_blank"><i class="fab fa-telegram-plane"></i></a></li>
                 <li> <a href="https://linkedin.com/in/duque-duque-367a49131" target="_blank"><i class="fab fa-linkedin"></i></a></li>
                 <li> <a href="https://twitter.com/?lang=es" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                <li> <a href="https://workana.com/" target="_blank"><i class="fas fa-user-friends"></i></a></li>
             </ul>
         </div>
         <div class="questions-page">          
@@ -109,7 +112,7 @@
         </div>
         <div class="language">
             <div>
-                <span> Web Designed by: <b>R&R</b> - </span>
+                <span> Web Designed by: <b>R.R-Company</b> - </span>
                 <span>MiTrivia</span>
             </div>
            <div>
@@ -129,7 +132,21 @@
       <!-- TODO: Add SDKs for Firebase products that you want to use
            https://firebase.google.com/docs/web/setup#available-libraries -->
       <!-- <script src="/__/firebase/init.js"></script> -->
-      <script src="../assets/config.js"> </script>
-        <script src="Quiz.js"></script>
+      <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+      apiKey: "AIzaSyDmLieqhU5d3x8omc0gJfYcBpYzEvTxvo0",
+      authDomain: "mitrivia77-97762.firebaseapp.com",
+      databaseURL: "https://mitrivia77-97762-default-rtdb.firebaseio.com",
+      projectId: "mitrivia77-97762",
+      storageBucket: "mitrivia77-97762.appspot.com",
+      messagingSenderId: "349194604948",
+      appId: "1:349194604948:web:870f0fc5a666e34ccaff81"
+      };
+        // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      </script>
+      
+    <script src="Quiz.js"></script>
 </body>
 </html>

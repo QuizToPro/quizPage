@@ -17,6 +17,7 @@ if (!locationurl.includes('=')) {
     window.location = linkwebpage;
 }
 
+const userQuiz2 = document.querySelector('.user-quiz');
 const tableTops = document.querySelector('.table-end__content-top')
 const tableEnd = document.querySelector('.table-end__content')
 const puntuacionesBTN = document.getElementById('punt');
@@ -131,6 +132,7 @@ buttonNext.addEventListener('click', () => {
 });  
 
 const createQuest = (arr, b) => { 
+    userQuiz2.innerHTML = `Estás respondiendo el quiz de: <b>${userQuiz}</b>`
     if(b)  meet = meet + progress;
     console.log(arr)
     document.querySelector('.load-circle').style.display = 'none'
@@ -263,9 +265,15 @@ function addUserToTable(table_user, condition, node){
 
                 if(table_user[i].id === idRandom){
                     div.classList.add('table-content-user')
+                    const handIcon = document.createElement('I');
+                    handIcon.classList.add('far', 'fa-hand-point-right');
+                    div.appendChild(handIcon);
                 }
                 if(condition == 3 && table_user[i].nameUser == userLocal && table_user[i].id == idLocal){
                     div.classList.add('table-content-user')
+                    const handIcon = document.createElement('I');
+                    handIcon.classList.add('far', 'fa-hand-point-right');
+                    div.appendChild(handIcon);
                 }
                 fragment.appendChild(position);
                 fragment.appendChild(user);

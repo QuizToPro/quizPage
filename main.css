@@ -52,21 +52,31 @@ body{
     right: 10px;
     bottom: 10px;
     z-index: 100;
-    background: -webkit-linear-gradient(left, rgb(29, 201, 231),rgb(56, 82, 235));
+    background: -webkit-linear-gradient(left, rgb(29, 201, 231),rgb(68, 171, 255));
     color: var(--white);
     transform: translate(100%);
     opacity: 0;
 }
-.err > p{
+.err p{
     padding: 15px;
 }
-.err > span{
+.err span{
     cursor: pointer;
     margin: 3px 5px;
 }
+.err .fa-info-circle{
+    font-size: 25px;
+    align-self: center;
+    margin-left: 10px;
+}
+.info{
+    border: 1px solid var(--blue);
+    background: var(--white);
+    color: var(--blue);
+}
 
 .show{
-    animation: mostrarErr 5s both;
+    animation: mostrarErr 7s both;
 }
 
 @keyframes mostrarErr{
@@ -278,8 +288,9 @@ body{
     text-align: center;
 }
 
-.content p{
+.content h2{
     position: relative;
+    font-size: 25px;
     z-index: 10;
     text-align: center;
     padding: 10px;
@@ -332,6 +343,7 @@ body{
 
 
 .u-qz{
+    background-color: rgba(34, 170, 255, 0.39);
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -343,7 +355,7 @@ body{
 
 .u-qz:hover > span, .p-qz:hover > span{
     background: -webkit-linear-gradient(left, var(--blue), rgb(34, 111, 255));
-    font-size: 25px;
+    font-size: 20px;
     color: #fff;
 }
 
@@ -352,14 +364,13 @@ body{
     overflow: hidden;
     opacity: 1;
     transition: opacity, font-size .2s;
-    font-size: 20px;
     padding: 5px;
-   
 }
 
 /* div quiz personalizado */
 
 .p-qz{
+    background-color: #2af;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -370,18 +381,18 @@ body{
 }
 
 .p-qz > span{
-    font-size: 20px;
     padding: 5px;
-    color: var(--blue);
+    color: var(--white);
     opacity: 1;
     overflow: hidden;
     transition: opacity, font-size .4s;
 }
-.q{
-    text-align: center;
+.q{ 
+    border-radius: 5px;
+    margin: 10px;
     display: flex;
+    justify-content: space-evenly;
     height: 100%;
-    flex-direction: column;
 }
 .q:hover > i{
     color: #fff;
@@ -396,8 +407,8 @@ body{
 }
 .q > i{
     padding: 15px;
-    font-size: 80px;
-    color: #ccc;
+    font-size: 70px;
+    color: rgb(228, 248, 253);
     transition: color .4s;
 }
 
@@ -484,7 +495,7 @@ body{
     outline: none;
     color: #2af;
     padding: 20px;
-    background-color: rgba(181, 208, 238, 0.5);
+    background-color: rgba(212, 228, 247, 0.5);
     border-radius: 5px 0 0 5px;
     transition: all .3s;
 }
@@ -526,7 +537,8 @@ body{
 }
 
 .contentInput .wh-in{
-    background-color: var(--white);
+    color: var(--white);
+    background-color: #2af;
 }
 /* add other quest */
 
@@ -813,13 +825,18 @@ body{
     display: flex;
     flex-direction: column;
 }
-
+.ask-content{
+    display: flex;
+    justify-content: space-between;
+}
 .ask-content span{
     padding: 10px;
     font-size: 20px;
     color: var(--blue);
 }
-
+.skip{
+    cursor: pointer;
+}
 .questions-content .container-sugered-quest{
     display: grid;
     grid-template-columns: 1fr 60px;
@@ -1100,45 +1117,11 @@ footer{
     justify-content: space-between;
     flex-basis: 100%;
     padding: 15px;
-    text-align: right;
 }
 .language span{
-    color: transparent;
-    background: var(--blue);
-    -webkit-background-clip: text;
+    text-align: left;
+    color: var(--blue);
     font-weight: bold;
-    animation: cgbg 3s infinite;
-}
-
-@keyframes cgbg{
-    0%{
-        background: var(--blue);
-        -webkit-background-clip: text;
-    }
-    10%{
-        background: #09f;
-        -webkit-background-clip: text;
-    }
-    30%{
-        background: #25f;
-        -webkit-background-clip: text;
-    }
-    50%{
-        background: #00f;
-        -webkit-background-clip: text;
-    }
-    70%{
-        background: rgb(7, 7, 155);
-        -webkit-background-clip: text;
-    }
-    80%{
-        background: rgb(14, 127, 202);
-        -webkit-background-clip: text;
-    }
-    100%{
-        background: #2aff;
-        -webkit-background-clip: text;
-    }
 }
 
 .language label{
@@ -1160,7 +1143,10 @@ footer{
         width: 100%;
     }
     .content{   
-        font-size: 17px;
+        font-size: 20px;
+    }
+    .content h2{
+        font-size: 18px;
     }
     .nar{
         top: 0;

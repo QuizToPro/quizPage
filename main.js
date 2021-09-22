@@ -35,7 +35,6 @@ const addObject = (name, json) => {
     objectStore.add({json, name});
 };
 
-
 const err = document.querySelector('.err');
 const selectLanguage = document.getElementById('select-language');
 const titleQuiz = document.querySelector('.title-quiz');
@@ -51,6 +50,7 @@ const $q = document.querySelectorAll('.q'); //Aquí me traigo ambas secciones de
 const $userInput = document.getElementById('user');
 const idioma = localStorage.getItem('lang'); // Podría ser inglés u español
 const askQ = {}
+let deletedQuest = 0;
 let questionsQ;
 let clicked = false;
 let get_pre_Game;
@@ -150,7 +150,7 @@ firebase.auth().signInAnonymously()
         .then((docRef) => {
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
-            const pathToPlayQuiz = (collectionName === 'quiz_sugeridos') ? `https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id==${docRef.id}` : `https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=${docRef.id}`;
+            const pathToPlayQuiz = (collectionName === 'quiz_sugeridos') ? `./playQuiz/Quiz.html?id==${docRef.id}` : `./playQuiz/Quiz.html?id=${docRef.id}`;
                 database.collection('scoreboards_table').doc(docRef.id).set({
                     table:[],
                     uid:uid_person,
@@ -189,9 +189,9 @@ const nextPage = (url, nodo) => {
         </div>
     
         <div class="content-icons">
-        <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti ${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
-        <div><a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank"><i class="fab fa-facebook"></i></a> </div>
-        <div><a href="https://twitter.com/intent/tweet?text=Prueba%20mi%20nuevo%20Quiz!,%20mira%20quien%20conoce%20más%20sobre%20ti&url=${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
+        <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti https://${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+        <div><a href="https://www.facebook.com/sharer/sharer.php?u=https://${url}" target="_blank"><i class="fab fa-facebook"></i></a> </div>
+        <div><a href="https://twitter.com/intent/tweet?text=Prueba%20mi%20nuevo%20Quiz!,%20mira%20quien%20conoce%20más%20sobre%20ti&url=https%3A%2F%2F${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
         </div>              
     </div>`
     window.scrollTo(0, 0)
@@ -201,7 +201,6 @@ const nextPage = (url, nodo) => {
         $main.appendChild(divCopy)
         document.querySelector('.share-link').style.opacity = '1';
     }, 100) 
-    
 };
 
 function copyClipboard(){
@@ -215,10 +214,10 @@ function copyClipboard(){
     });
 };
 
-const showErrPop = msg => {    
-    if(err.classList.contains('show')) err.classList.remove('show');
-    setTimeout(() => err.classList.add('show'), 1)
-    err.children[0].textContent = msg;
+const showErrPop = (msg, className) => {    
+    if(err.classList.contains('show')) err.classList.remove('show', 'info');
+    setTimeout(() => err.classList.add('show', className), 1)
+    document.querySelector('.msj').textContent = msg;
 };
 
 document.querySelector('.close-err').addEventListener('click', e => {
@@ -250,18 +249,19 @@ $btnStart.addEventListener('click', e => {
 //Funcion que me crea el evento sugerido en caso de ser seleccionado
 
 const createQuestSugered = (ask, containerQuest) => { //Title seria la pregunta, las opciones serían a b y c
-    const fragment = document.createDocumentFragment()
     const divContentQuest = document.createElement('DIV');
         divContentQuest.classList.add('content-quest'); //Contenedor de todo
     const spanAskText = document.createElement('SPAN'); //Va a tener el texto de la pregunta    
+    const skipQuest = document.createElement('SPAN'); //X que me permite saltar la pregunta
     const divAsk = document.createElement('DIV'); //Contenedor de la pregunta
     const divQuest = document.createElement('DIV'); //Será mi contenedor de la pregunta 
-    
     divAsk.classList.add('ask-content')
     divQuest.classList.add('questions-content');
     spanAskText.textContent = ask;
+    skipQuest.textContent = 'X'
+    skipQuest.classList.add('skip')
     divAsk.appendChild(spanAskText);
-
+    divAsk.appendChild(skipQuest);
     containerQuest.forEach(quest => {
         if(quest != undefined){
             const contentSpanQuest = document.createElement('DIV');
@@ -279,7 +279,6 @@ const createQuestSugered = (ask, containerQuest) => { //Title seria la pregunta,
     divContentQuest.appendChild(divAsk)
     divContentQuest.appendChild(divQuest);
     return divContentQuest;
-    // spanQuestText.textContent = 
 };
 
 
@@ -424,7 +423,6 @@ const setLanguaje = lang => {
         fragment.appendChild(span1);
         fragment.appendChild(span2);
         fragment.appendChild(span3);
-        fragment.style.animation = 'appFrag .5s forwards'
         return fragment;
     }
 }
@@ -574,6 +572,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
             buttonAdd.style.display = 'inline-block';
             divAnswer.appendChild(createQuest(entity[i].textContent.slice(0, 1), entity));
             document.querySelector('.questions2').style.animation = 'appFrag 1s forwards'
+            showErrPop('Para seleccionar una respuesta correcta debes tocar el icono de Check al final de cada campo', 'info')
             checkIcon();
             contador++;
             id++;
@@ -598,6 +597,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
         divQuestions.addEventListener('click', e => {
             let bool = false;
             get_pre_Game = async(preguntaSugerida)=>{ 
+                divLoad.style.opacity = '1';
+                divLoad.style.animation = 'loop 1s linear infinite';
                 console.log("inicio")
                 const gameRef = database.collection('plantilla_quiz_sugeridos').doc(preguntaSugerida);
                 const doc = await gameRef.get();
@@ -654,6 +655,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                         if(bool == false){
                             get_pre_Game(preguntaSugerida)
                             .then((pre_game)=>{
+                                divLoad.removeAttribute('style')
                                 addObject(preguntaSugerida, pre_game)
                                 const fragment = document.createDocumentFragment()
                                 let pregunta;
@@ -664,10 +666,19 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                                 };
 
                                 divAnswer.appendChild(fragment);
-                                //añadir un super for que por cada objeto en pregame muestre su pregunta y respuesta en el frontend, para luego insertar niceValue
-                                        //mision secundaria: guardar cada una de las 4 respuestas de pregame en el indexed db, asi get_pre_Game solo ocurra si no existe la plantilla json en la base de datos local xd
-                                //por ultimo, al oprimir el boton final, asignar nicevalues y descomentar las 2 lineas de codigo de abajo        
-                                                                        
+                                const skip = document.querySelectorAll('.skip')
+                                showErrPop('Puedes saltar una pregunta presionando la "X"', 'info')
+                                
+                                for(let i = 0; i < skip.length; i++){
+                                    skip[i].addEventListener('click', e => {
+                                        if(deletedQuest < 5){
+                                            deletedQuest++
+                                            e.path[3].removeChild(e.path[2])
+                                        }else{
+                                            showErrPop('No puedes omitir más preguntas')
+                                        }
+                                    })
+                                }                              
                                 divMoreQuest.appendChild(spanSend);
                                 checkIcon(false)
                             })
@@ -678,22 +689,31 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                                 fragment.appendChild(createQuestSugered(ask.pregunta, [ask.A, ask.B, ask.C, ask.D]));
                             };
                             divAnswer.appendChild(fragment);
+                            const skip = document.querySelectorAll('.skip')
+                            showErrPop('Puedes saltar una pregunta presionando la "X"', 'info')
+                                for(let i = 0; i < skip.length; i++){
+                                    skip[i].addEventListener('click', e => {
+                                        if(deletedQuest < 5){
+                                            deletedQuest++
+                                            e.path[3].removeChild(e.path[2])
+                                        }else{
+                                            showErrPop('No puedes omitir más preguntas')
+                                        }          
+                                    })
+                                }
                             divMoreQuest.appendChild(spanSend);
                             checkIcon(false)
                         
                         }
                     } //Como última vuelta nos dara null por lo cual se ejecutará el else
-                });    
-
-                    
-                    
+                });                     
                     clicked = true; 
                 };
             }
             
         });
     };
-    
+  
     //Evento para enviar los datos
     document.querySelector('.more-quest').addEventListener('click', e => {
         if(e.target.tagName == 'SPAN'){
@@ -747,6 +767,11 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                     };
                 }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
             }else{
+                console.log('creando sugerido')
+                const contentQuest = document.querySelectorAll('.content-quest');
+                const selectedAns = document.querySelectorAll('.container-sugered-quest-select');
+
+                if(selectedAns.length < contentQuest.length) return showErrPop('Comprueba que todas las respuestas estén seleccionadas')
                 const responses = document.querySelectorAll('.selected-answer');
                 questionsQ.forEach(item => {
                     responses.forEach(res => {
