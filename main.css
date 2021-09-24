@@ -922,7 +922,11 @@ body{
     padding: 20px; 
 }
 .container-sugered-quest i{
-    color: var(--white);
+    color: transparent;
+}
+
+.questions-content .container-sugered-quest-select i{ 
+    color: #fff;
 }
 .toogle-quest{ /*   Cuando se seleccione una respuesta  */
     border: 1px solid var(--blue);
