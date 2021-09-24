@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="R.R-Company" />
     <meta name="copyright" content="R&R" />
-    <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con un genial test!">
+    <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>MiTrivia - Responde a tus conocidos</title>
     <script src="https://kit.fontawesome.com/b15ad0e7fc.js" crossorigin="anonymous"></script>
@@ -14,10 +14,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="../assets/logo/logo.favicon" type="image/x-icon">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7350283401625750"
-     crossorigin="anonymous"></script>
+    <script data-ad-client="ca-pub-7350283401625750" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
+    <script>
+        if(localStorage.getItem('lang') === null){
+            localStorage.setItem('lang', navigator.language);
+            history.go();
+        }
+    </script>
     <div class="sign-txt">
         <p>¿</p>
         <p>?</p>
@@ -40,12 +45,12 @@
                 <span class="user-quiz"></span>
                 <input type="text" placeholder="Ingresa tu nombre" autocomplete="off" spellcheck="false" name="" maxlength="12" id="name">
                 <button id="send">Continuar <i class="fas fa-arrow-right"></i></button>
-                <div><span class="err"></span></div>
+                <div class="err-content"><span class="err"></span></div>
 
                 <div class="table tops">
                     <h2 class="top">TOP 3 <i class="fas fa-trophy"></i></h2>
                     <div class="table-end__content-top">
-                        <div class="table-content-esp"><span>N°</span><span>Nombre</span><span>Puntuaciones</span></div>
+                        <div class="table-content-esp"><span>N°</span><span class="name-board">Nombre</span><span class="score-board">Puntuaciones</span></div>
                         <div class="load-circle-top"></div>
                         <p class="first"></p>
                     </div>
@@ -74,8 +79,8 @@
                     <p id="content-percent"><span id="percent"></span></p>
                     <p id="content-meet"><span id="meet"></span></p>
                     <div class="modal-content__btns">
-                        <span class="btn-opt"><i class="fas fa-redo"></i> Repetir</span>
-                        <button id="create">Crear mi Quiz</button>
+                        <span class="btn-opt" id="repeat"><i class="fas fa-redo"></i> Repetir</span>
+                        <a href="https://mitrivia77-97762.web.app/" id="create">Crear mi Quiz</a>
                         <span class="btn-opt" id="punt">Ver puntuaciones <i class="fas fa-chevron-down"aria-hidden="true"></i></span>
                     </div>
                 </div>
@@ -98,7 +103,7 @@
     </section>
     <footer>
         <div id="contact">
-            <span class="contact-section"> <b>Contacto</b> </span>
+            <span class="contact-section"><b id="contact-text">Contacto</b> </span>
             <ul id="contact-list">
                 <li> <a href="http://instagram.com/theapsu3" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 <li> <a href="https://api.whatsapp.com/send?phone=584247218207" target="_blank" ><i class="fab fa-whatsapp" ></i></a></li>
@@ -109,7 +114,7 @@
             </ul>
         </div>
         <div class="questions-page">          
-            <span>Haznos saber qué podríamos mejorar!, apreciamos mucho las opiniones de nuestros usuarios.</span>
+            <span id="email-text">Haznos saber qué podríamos mejorar!, apreciamos mucho las opiniones de nuestros usuarios.</span>
             <a id="send-email" href="https://mail.google.com/mail/?view=cm&fs=1&to=mitrivia77@gmail.com" target="_blank">Envianos un correo</a>
         </div>
         <div class="language">
@@ -118,7 +123,7 @@
                 <span>MiTrivia</span>
             </div>
            <div>
-            <label for="">Selecciona tu idioma</label>
+            <label for="" id="select-lg-txt">Selecciona tu idioma</label>
             <select name="" id="select-language">
                 <option value="">Lenguaje</option>
                 <option value="es">Español</option>

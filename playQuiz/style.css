@@ -14,9 +14,10 @@
 body{
     background: -webkit-linear-gradient(#2af, #0d9aA9) ;
     position: relative;
-    
 }
-
+.err-content{
+    text-align: center;
+}
 .sign-txt{
     position: absolute;
     top: 0;
@@ -187,7 +188,6 @@ body{
     box-shadow: 5px 5px 20px rgba(83, 83, 83, .5);
     transition: opacity .2s;
     z-index: 1;  
-    
 }
 .first{
     color: var(--darkBlue);
@@ -222,11 +222,8 @@ body{
     display: grid;
     grid-template-rows: 50px 50px;
     padding: 30px;
-    
-    
 }
 .div-name form #name {
-    text-align: center;
     width: 50%;
     border-radius: 5px 5px 0 0;
     color: var(--blue);
@@ -240,10 +237,10 @@ body{
 }
 .div-name form #name::placeholder{
     color: var(--blue);
+    text-align: center;
 }
 .div-name form #name:focus{
     background: rgb(220, 237, 248);
-    
 }
 
 .div-name form #send{
@@ -642,6 +639,7 @@ body{
     color: rgb(2, 111, 201);
 }
 .modal-content__btns #create{
+    text-decoration: none;
     font-size: 18px;
     border: none;
     cursor: pointer;

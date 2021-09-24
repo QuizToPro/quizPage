@@ -30,9 +30,9 @@ const getIDBData = (mode, msg) => {
     return objectStore;
 }
 
-const addObject = (name, json) => {
+const addObject = (name, json, lang) => {
     const objectStore = getIDBData("readwrite", "objeto agregado correctamente");
-    objectStore.add({json, name});
+    objectStore.add({json, name, lang});
 };
 
 const err = document.querySelector('.err');
@@ -54,7 +54,7 @@ let deletedQuest = 0;
 let questionsQ;
 let clicked = false;
 let get_pre_Game;
-let user;
+let user, skip;
 let numAns = 0; //La seleccion de la cantidad de respuestas que podrá realizar el usuario
 let id = 0; //Es el contador de id de cada div question
 let contador = 0; //Contador que me permite identificar la respuesta seleccionada
@@ -83,16 +83,21 @@ if(idioma == 'es' || idioma == 'es-ES'){
     titleQuiz.textContent = 'Crea tu Quiz';
     concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
     $btnStart.textContent = '¡Comenzar!';
-    $sugered.textContent = 'Crea un quiz con  preguntas sugeridas!'
+    $sugered.textContent = 'Crea un quiz con  preguntas sugeridas!';
     $personalized.textContent = 'Crea un quiz con  preguntas personalizadas!';
 }else{
     titleQuiz.textContent = 'Create your Quiz';
-    concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great test!';
+    concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great Quiz!';
     $btnStart.textContent = '¡Start!';
-    $sugered.textContent = 'Create a quiz with our suggested questions!'
+    $sugered.textContent = 'Create a quiz with our suggested questions!';
     $personalized.textContent = 'Create a quiz with your persolanized questions!';
-    $userInput.placeholder = 'Enter your name'
-};
+    $userInput.placeholder = 'Enter your name';
+    document.getElementById('contact-text').textContent = 'Contact';
+    document.getElementById('email-text').textContent = 'Let us know in what things maybe would us upgrade!, the opinions from the users are welcome';
+    document.getElementById('select-lg-txt').textContent = 'Select your language';
+    document.getElementById('send-email').textContent = 'Send email';
+
+}; 
 
 
     
@@ -168,7 +173,7 @@ firebase.auth().signInAnonymously()
         })
         .catch((error) => {
             console.error("Error adding document: ", error);
-            showErrPop('Ha ocurrido un error, reintentalo de nuevo');
+            (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Ha ocurrido un error, reintalo de nuevo') : showErrPop('An error has occurred, retry it again')
             reject(error,docRef.id);
         });
 })};
@@ -234,14 +239,15 @@ selectLanguage.addEventListener('change', e => {
 
 $btnStart.addEventListener('click', e => {
     let username = document.getElementById('user').value;
-    if(username < 1) return showErrPop('Debes ingresar un nombre antes de continuar');
+    if(username < 1) return (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Debes ingresar un nombre antes de continuar') : showErrPop('You have to enter a name before to continue')
     user = username;
     $container.style.animation = 'disappear .5s forwards';
     setTimeout(() => {
         $container.style.display = 'none';
-
+        
         $uQz.classList.add('menu')
         $pQz.classList.add('menu')
+        $q.forEach(q => q.style.animation = 'visible .5s both')
     }, 500);
   
 });
@@ -257,7 +263,7 @@ const createQuestSugered = (ask, containerQuest) => { //Title seria la pregunta,
     const divQuest = document.createElement('DIV'); //Será mi contenedor de la pregunta 
     divAsk.classList.add('ask-content')
     divQuest.classList.add('questions-content');
-    spanAskText.textContent = ask;
+    spanAskText.textContent = `${ask}:`;
     skipQuest.textContent = 'X'
     skipQuest.classList.add('skip')
     divAsk.appendChild(spanAskText);
@@ -268,9 +274,9 @@ const createQuestSugered = (ask, containerQuest) => { //Title seria la pregunta,
             const spanQuestText = document.createElement('SPAN'); //Va a tener el texto de las respuestas
             const check = document.createElement('I');
             check.classList.add('fas', 'fa-check');
-            spanQuestText.textContent = quest
-            spanQuestText.classList.add('q-text')
-            contentSpanQuest.classList.add('container-sugered-quest')
+            spanQuestText.textContent = quest;
+            spanQuestText.classList.add('q-text');
+            contentSpanQuest.classList.add('container-sugered-quest');
             contentSpanQuest.appendChild(spanQuestText);
             contentSpanQuest.appendChild(check);
             divQuest.appendChild(contentSpanQuest);
@@ -519,30 +525,23 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
     }
     
     divQuestions.appendChild(fragment)
+
     divMoreQuest.classList.add('more-quest');
     buttonAdd.classList.add('add-quest-btn');
-    buttonAdd.textContent = 'Agregar otra pregunta ';
-    buttonAdd.style.display = 'none';
-
-    buttonAdd.classList.add('add-quest-btn');
-    buttonAdd.textContent = 'Agregar otra pregunta';
+    (idioma == 'es' || idioma == 'es-ES') ? buttonAdd.textContent = 'Agregar otra pregunta' : buttonAdd.textContent = 'Add other question'
     buttonAdd.appendChild(iIcon)
     buttonAdd.title = 'Agregar pregunta'
     buttonAdd.style.display = 'none';
 
+    (idioma == 'es' || idioma == 'es-ES') ? spanSend.textContent = 'Crear quiz' : spanSend.textContent = 'Create quiz'
     spanSend.id = 'send';
-    spanSend.textContent = 'Crear quiz'
     spanSend.appendChild(sendIcon)
     divLoad.classList.add('load-send');
 
-    if(idioma == 'en'){
-        buttonAdd.textContent = 'Add other question';
-    }
 
     if(showBtn != false){
         divMoreQuest.appendChild(buttonAdd);
         divMoreQuest.appendChild(spanSend);
-       
     }
 
     // divMoreQuest.appendChild(spanSend); //Agergar boton en sugerido
@@ -572,11 +571,11 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
             buttonAdd.style.display = 'inline-block';
             divAnswer.appendChild(createQuest(entity[i].textContent.slice(0, 1), entity));
             document.querySelector('.questions2').style.animation = 'appFrag 1s forwards'
-            showErrPop('Para seleccionar una respuesta correcta debes tocar el icono de Check al final de cada campo', 'info')
             checkIcon();
             contador++;
             id++;
             deleteP.removeChild(deleteP.children[0]);
+            (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Para seleccionar una respuesta correcta debes tocar el icono de Check al final de cada campo', 'info') :  showErrPop('To select a correct response you to have touch the check icon to end of field', 'info');
         });
     };
     if(showBtn == true){
@@ -600,7 +599,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                 divLoad.style.opacity = '1';
                 divLoad.style.animation = 'loop 1s linear infinite';
                 console.log("inicio")
-                const gameRef = database.collection('plantilla_quiz_sugeridos').doc(preguntaSugerida);
+                const gameRef = (idioma == 'es' || idioma == 'es-ES') ? database.collection('plantilla_quiz_sugeridos').doc(preguntaSugerida) : database.collection('plantilla_quiz_sugeridos_en').doc(preguntaSugerida)
+
                 const doc = await gameRef.get();
                 const data = doc.data()
                 const Game = Object.values(data.Game)
@@ -641,22 +641,21 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                 cursor.addEventListener("success", ()=>{ //Si es completado, me de devolverá una solicitud que tendrá que ser recibida mediante un .result
 
                     if(cursor.result){ // Como nos devolvió un .result que contiene todos los datos, entonces el if se ejecutará
-                        if(cursor.result.value.name == preguntaSugerida){
-                     
+                        if(cursor.result.value.name == preguntaSugerida && cursor.result.value.lang == idioma){
+                            
+                            console.log('holi')
                             bool = true;
                             askQ.pregunta = cursor.result.value.name
                             questionsQ = cursor.result.value.json
-                            console.log(askQ)
-                            console.log(questionsQ)
                         }
-                        
                         cursor.result.continue(); //Aquí le diremos que continue leyendo después de cada uno
                     }else{
                         if(bool == false){
+                            console.log('No estoy funcionando, que raro')
                             get_pre_Game(preguntaSugerida)
                             .then((pre_game)=>{
                                 divLoad.removeAttribute('style')
-                                addObject(preguntaSugerida, pre_game)
+                                addObject(preguntaSugerida, pre_game, idioma)
                                 const fragment = document.createDocumentFragment()
                                 let pregunta;
                                 let arrQuest = []
@@ -666,19 +665,18 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                                 };
 
                                 divAnswer.appendChild(fragment);
-                                const skip = document.querySelectorAll('.skip')
-                                showErrPop('Puedes saltar una pregunta presionando la "X"', 'info')
-                                
+                                skip = document.querySelectorAll('.skip')           
                                 for(let i = 0; i < skip.length; i++){
                                     skip[i].addEventListener('click', e => {
                                         if(deletedQuest < 5){
                                             deletedQuest++
                                             e.path[3].removeChild(e.path[2])
                                         }else{
-                                            showErrPop('No puedes omitir más preguntas')
+                                            (idioma == 'es' || idioma == 'es-ES') ? showErrPop('No puedes omitir más preguntas') : showErrPop('You can not skip more questions')
                                         }
                                     })
                                 }                              
+                                (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Puedes saltar una pregunta presionando la "X"', 'info') : showErrPop('You can skip a question touching on the "X"', 'info');
                                 divMoreQuest.appendChild(spanSend);
                                 checkIcon(false)
                             })
@@ -689,18 +687,20 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                                 fragment.appendChild(createQuestSugered(ask.pregunta, [ask.A, ask.B, ask.C, ask.D]));
                             };
                             divAnswer.appendChild(fragment);
-                            const skip = document.querySelectorAll('.skip')
-                            showErrPop('Puedes saltar una pregunta presionando la "X"', 'info')
+                            skip = document.querySelectorAll('.skip')                             
                                 for(let i = 0; i < skip.length; i++){
                                     skip[i].addEventListener('click', e => {
                                         if(deletedQuest < 5){
                                             deletedQuest++
                                             e.path[3].removeChild(e.path[2])
                                         }else{
-                                            showErrPop('No puedes omitir más preguntas')
+                                            (idioma == 'es' || idioma == 'es-ES') ? showErrPop('No puedes omitir más preguntas') : showErrPop('You can not skip more questions')
+                                    
                                         }          
                                     })
                                 }
+                            (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Puedes saltar una pregunta presionando la "X"', 'info') : showErrPop('You can skip a question touching on the "X"', 'info');
+                        
                             divMoreQuest.appendChild(spanSend);
                             checkIcon(false)
                         
@@ -723,7 +723,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                 let inputValue = document.querySelectorAll('.answ');
                 let questionValue = document.querySelectorAll('.question');
                 if(contador < 2 && showBtn == true){
-                    return (idioma != "en") ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question after continue');  
+                    return (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Debes completar al menos dos preguntas antes de continuar') : showErrPop('You need complete two question before continue');  
                 };
                 
                 inputValue.forEach(item => {
@@ -736,42 +736,28 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                 });
         
                 if(empty == false){
-                    if(idioma != "en"){
-                        (document.querySelectorAll('.selected').length < contador) ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : CreateObjectGame().then((Game)=>{
+                    
+                        (document.querySelectorAll('.selected').length < contador) ? ( (idioma == 'es' || idioma == 'es-ES') ? showErrPop('No puedes dejar campos de respuestas sin seleccionar') : showErrPop('You can not let empty fields of responses without select') )  : CreateObjectGame().then((Game)=>{
                             console.log("PROMESAAA");
                             upToFirebase(Game, divLoad, divMoreQuest, user).then( (url) =>nextPage(url, divContent))
                             .catch((error, docRef)=>{
                                 divLoad.removeAttribute('style');
                                 divMoreQuest.style.visibility = 'visible';
                                 console.error(error);
-                                showErrPop('Ha ocurrido un error, reintalo de nuevo')
+                                (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Ha ocurrido un error, reintalo de nuevo') : showErrPop('An error has occurred, retry it again')
                                 database.collection('quiz_personalizados').doc(docRef).delete()
                                 database.collection('scoreboards_table').doc(docRef).delete()
                                 }   
                             )
                         });       
-                    }else{
-                        (document.querySelectorAll('.selected').length < contador) ? showErrPop('You can not let empty fields of responses without selected') : CreateObjectGame().then((Game)=>{
-                            console.log("PROMESSSS")
-                            upToFirebase(Game, divLoad, divMoreQuest, user).then((url)=>nextPage(url, divContent))
-                            .catch((error, docRef)=>{
-                                divLoad.removeAttribute('style')
-                                divMoreQuest.style.visibility = 'visible';
-                                console.error(error);
-                                showErrPop('Ha ocurrido un error, reintalo de nuevo')
-                                database.collection('quiz_personalizados').doc(docRef).delete()
-                                database.collection('scoreboards_table').doc(docRef).delete()
-                                }            
-                            )
-                        });       
-                    };
-                }else return showErrPop('Comprueba que todos los campos estén completos antes de continuar');  
+                       
+                }else return (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Comprueba que todos los campos estén completos antes de continuar') : showErrPop('Check that all fields are complete before continuing')
             }else{
                 console.log('creando sugerido')
                 const contentQuest = document.querySelectorAll('.content-quest');
                 const selectedAns = document.querySelectorAll('.container-sugered-quest-select');
 
-                if(selectedAns.length < contentQuest.length) return showErrPop('Comprueba que todas las respuestas estén seleccionadas')
+                if(selectedAns.length < contentQuest.length) return (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Comprueba que todas las respuestas están seleccionadas') : showErrPop('Check that all answers are selected')
                 const responses = document.querySelectorAll('.selected-answer');
                 questionsQ.forEach(item => {
                     responses.forEach(res => {
@@ -790,7 +776,8 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
                     console.log(err)
                     divLoad.removeAttribute('style');
                     divMoreQuest.style.visibility = 'visible';
-                    showErrPop('Ha ocurrido un error, reintalo de nuevo')
+                    (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Ha ocurrido un error, reintalo de nuevo') : showErrPop('An error has occurred, retry it again')
+                                
                 })
             }
         }
@@ -833,7 +820,7 @@ function CreateObjectGame () {
         if(item.value < 1) {
             empty = true; //Se vuelve true si consigue un input sin llenar
             reject()
-            return showErrPop('Comprueba que todos los campos estén completos antes de continuar');
+            return (idioma == 'es' || idioma == 'es-ES') ? showErrPop('Comprueba que todos los campos estén completos antes de continuar') : showErrPop('Check that all fields are complete before continuing')
         };
     });
 

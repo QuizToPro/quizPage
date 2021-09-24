@@ -1,13 +1,60 @@
 'use strict'
 
-const linkwebpage = 'mitrivia77-97762.web.app/'
- //Valor ingresado el usuario cuando responde el quiz
+const name = document.getElementById('name');
+const createQuiz = document.getElementById('create');
+const repeat = document.getElementById('repeat');
+const idioma = localStorage.getItem('lang');
+const linkwebpage = 'mitrivia77-97762.web.app/';
+const puntuacionesBTN = document.getElementById('punt');
+const sendBTN = document.getElementById('send');
 const locationurl = window.location.href
 const puntuaciones = document.querySelector('.puntuaciones').classList
 const closeModal = document.querySelector('.close-modal');
 const idRandom = Math.ceil(Math.random()*10000)
-let idLocal;
-let userLocal;
+const userQuiz2 = document.querySelector('.user-quiz');
+const tableTops = document.querySelector('.table-end__content-top')
+const tableEnd = document.querySelector('.table-end__content')
+const database = firebase.firestore();
+const selectLanguage = document.getElementById('select-language');
+
+let ispersonalizedquiz = undefined;
+const id_doc = (locationurl.split('=')[1] == false) ? (ispersonalizedquiz = false,
+    locationurl.split('=')[2]) : (ispersonalizedquiz = true, locationurl.split('=')[1]);
+
+const meetText = document.getElementById('meet');
+const percentText = document.getElementById('percent');
+const load = document.querySelector('.load3');
+const buttonNext = document.getElementById('next');
+const containerContent = document.querySelector('.container-content');
+const localContent = indexedDB.open('local-content', 1);
+const modal_content = document.querySelector('.modal');
+let click = false;
+let uid_person = undefined; 
+let similary = false;
+let loadBar = 0;
+let progress = 0;
+let contador = 0;
+let meet = 0;
+let key = false;
+let table = undefined;
+
+let userQuiz, idLocal, userLocal, nameUser, content, quest, idQuest, results; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
+
+if(idioma == 'en'){
+    document.querySelector('.description').textContent = 'Find out who knows more about you';
+    document.querySelector('.score-board').textContent = 'Score';
+    document.querySelector('.name-board').textContent = 'Name'
+    document.getElementById('contact-text').textContent = 'Contact';
+    document.getElementById('send-email').textContent = 'Send email';
+    document.getElementById('email-text').textContent = 'Let us know in what things maybe would us upgrade!, the opinions from the users are welcome';
+    document.getElementById('select-lg-txt').textContent = 'Select your language';
+    sendBTN.textContent = 'Next'
+    repeat.textContent = 'Repeat'
+    createQuiz.textContent = 'Create my Quiz'
+    name.placeholder = 'Enter your name'
+    puntuacionesBTN.innerHTML = 'Show scores <i class="fas fa-chevron-up"aria-hidden="true"></i>'
+} 
+
 if (localStorage.getItem('idQuiz') != undefined) idLocal = localStorage.getItem('idQuiz')
 if (localStorage.getItem('userQuiz') != undefined) userLocal = localStorage.getItem('userQuiz')
 
@@ -17,48 +64,25 @@ if (!locationurl.includes('=')) {
     window.location = linkwebpage;
 }
 
-const userQuiz2 = document.querySelector('.user-quiz');
-const tableTops = document.querySelector('.table-end__content-top')
-const tableEnd = document.querySelector('.table-end__content')
-const puntuacionesBTN = document.getElementById('punt');
-const database = firebase.firestore();
-let ispersonalizedquiz = undefined;
-const id_doc = (locationurl.split('=')[1] == false) ? (ispersonalizedquiz = false,
-     locationurl.split('=')[2]) : (ispersonalizedquiz = true, locationurl.split('=')[1]);
-console.info(id_doc[1] == false)
-console.log(id_doc)
-let click = false;
-let uid_person = undefined; 
-let userQuiz, nameUser, content, quest, idQuest, results; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
-let similary = false;
-let loadBar = 0;
-let progress = 0;
-let contador = 0;
-let meet = 0;
-let key = false;
-let table = undefined;
-const meetText = document.getElementById('meet');
-const percentText = document.getElementById('percent');
-const load = document.querySelector('.load3');
-const buttonNext = document.getElementById('next');
-const containerContent = document.querySelector('.container-content');
-const localContent = indexedDB.open('local-content', 1);
-const modal_content = document.querySelector('.modal');
+selectLanguage.addEventListener('change', e => {
+    localStorage.setItem('lang', selectLanguage.value);
+    history.go();
+});
 
 puntuacionesBTN.addEventListener('click', e => {
     if(puntuaciones.contains('hide')) {
-        puntuacionesBTN.innerHTML = 'Ocultar puntuaciones <i class="fas fa-chevron-up"aria-hidden="true"></i>'
+        (idioma == 'es' || idioma == 'es-ES') ? puntuacionesBTN.innerHTML = 'Ocultar puntuaciones <i class="fas fa-chevron-up"aria-hidden="true"></i>' : puntuacionesBTN.innerHTML = 'Hide scores <i class="fas fa-chevron-up"aria-hidden="true"></i>'
         puntuaciones.remove('hide');
     } 
     else {
-        puntuacionesBTN.innerHTML = 'Ver puntuaciones <i class="fas fa-chevron-down"aria-hidden="true"></i>'
+        (idioma == 'es' || idioma == 'es-ES') ? puntuacionesBTN.innerHTML = 'Ver puntuaciones <i class="fas fa-chevron-up"aria-hidden="true"></i>' : puntuacionesBTN.innerHTML = 'Show scores <i class="fas fa-chevron-up"aria-hidden="true"></i>'
         puntuaciones.add('hide');
     } 
 })
 
 closeModal.addEventListener('click', () => {
     puntuaciones.add('hide');
-    puntuacionesBTN.innerHTML = 'Ver puntuaciones <i class="fas fa-chevron-down"aria-hidden="true"></i>'
+    (idioma == 'es' || idioma == 'es-ES') ? puntuacionesBTN.innerHTML = 'Ver puntuaciones <i class="fas fa-chevron-up"aria-hidden="true"></i>' : puntuacionesBTN.innerHTML = 'Show scores <i class="fas fa-chevron-up"aria-hidden="true"></i>'
 })
 
 localContent.addEventListener('upgradeneeded', () => {
@@ -86,10 +110,6 @@ const addObject = () => {
     const objectStore = getIDBData("readwrite", "objeto agregado correctamente");
     objectStore.add({data: content, name: userQuiz, id: id_doc});
 };
-
-document.getElementById('create').addEventListener('click', () => {
-    window.location.href = '../index.html'
-});
 
 firebase.auth().signInAnonymously()
   .then((user) => {
@@ -132,7 +152,7 @@ buttonNext.addEventListener('click', () => {
 });  
 
 const createQuest = (arr, b) => { 
-    userQuiz2.innerHTML = `Estás respondiendo el quiz de: <b>${userQuiz}</b>`
+    (idioma == 'es' || idioma == 'es-ES') ? userQuiz2.innerHTML = `Estás respondiendo el quiz de: <b>${userQuiz}</b>` : userQuiz2.innerHTML = `You are answering the quiz of: <b>${userQuiz}</b>`
     if(b)  meet = meet + progress;
     console.log(arr)
     document.querySelector('.load-circle').style.display = 'none'
@@ -284,13 +304,14 @@ function addUserToTable(table_user, condition, node){
             };     
         };
     }else{
-        document.querySelector('.first').textContent = 'Aún nadie ha respondido éste quiz, sé el primero!'
+       (idioma == 'es' || idioma == 'es-ES') ? document.querySelector('.first').textContent = 'Aún nadie ha respondido éste quiz, sé el primero!' :  document.querySelector('.first').textContent = 'No one has answered this quiz yet, be the first!'
     };
 };
 
-document.getElementById('send').addEventListener('click', e => {
+sendBTN.addEventListener('click', e => {
     e.preventDefault();
-    if(document.getElementById('name').value.length < 1) return document.querySelector('.err').textContent = 'Debes ingresar un nombre antes de continuar';
+    const name = document.getElementById('name');
+    if(name.value.length < 1) return (idioma == 'es' || idioma == 'es-ES') ? document.querySelector('.err').textContent = 'Debes ingresar un nombre antes de continuar' : document.querySelector('.err').textContent = 'You must enter a name before continuing'
     else{
         nameUser = document.getElementById('name').value;
         localStorage.setItem('userQuiz', nameUser);
@@ -305,15 +326,26 @@ document.getElementById('send').addEventListener('click', e => {
 });
 
 const setScorePhrase = () => {
-    results = {
-        zero: `Parece que casi no conoces a <b>${userQuiz}</b> :(` , // de 0% a 20%
-        twenty: `Vaya!, deberías hablar más con <b>${userQuiz}</b>` , // de 20% a 40%
-        fourty: `Conoces lo suficiente a <b>${userQuiz}</b>, pero podrías acercarte más :)`, // 40% a 60%
-        sixty: `Eres muy cercano a <b>${userQuiz}</b>, acertaste la mayoría!`, //60% a 80%
-        eighty: `Parece que <b>${userQuiz}</b> tiene gente que la conoce muy bien! acertaste en la gran cantidad`, // de 80% a 99%
-        houndred: `Perfecto! lograste acertar en todas las preguntas, conoces muy bien a <b>${userQuiz}</b>!`  // 100% 
-    }      
-}
+    if(idioma == 'es' || idioma == 'es-ES'){
+        results = {
+            zero: `Parece que casi no conoces a <b>${userQuiz}</b> :(` , // de 0% a 20%
+            twenty: `Vaya!, deberías hablar más con <b>${userQuiz}</b>` , // de 20% a 40%
+            fourty: `Conoces lo suficiente a <b>${userQuiz}</b>, pero podrías acercarte más :)`, // 40% a 60%
+            sixty: `Eres muy cercano a <b>${userQuiz}</b>, acertaste la mayoría!`, //60% a 80%
+            eighty: `Parece que <b>${userQuiz}</b> tiene gente que la conoce muy bien! acertaste en la gran cantidad`, // de 80% a 99%
+            houndred: `Perfecto! lograste acertar en todas las preguntas, conoces muy bien a <b>${userQuiz}</b>!`  // 100% 
+        };  
+    }else{
+        results = {
+            zero: `It seems you hardly know about <b>${userQuiz}</b> :(` , // de 0% a 20%
+            twenty: `Wow, you should talk more to <b>${userQuiz}</b>` , // de 20% a 40%
+            fourty: `You know enough about <b>${userQuiz}</b>, but could you come closer more :)`, // 40% a 60%
+            sixty: `You know <b>${userQuiz}</b> well!`, //60% a 80%
+            eighty: `It seems that <b>${userQuiz}</b> Ricardo has people who know her very well! you got the right big number`, // de 80% a 99%
+            houndred: `Perfect! you manage to get all the questions right, you know <b>${userQuiz}</b> very well!`  // 100% 
+        };  
+    };
+};
 
 async function getGame(callback) {
     try{

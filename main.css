@@ -5,6 +5,56 @@
     scroll-behavior: smooth;
     box-sizing: border-box;
 }
+
+.title-page{
+    position: absolute;
+    left: 0;
+    z-index: 200;
+    margin: 8px;
+    text-shadow: 3px 3px 9px rgba(83, 83, 83, .5);
+    align-content: center;
+    display: inline-flex;
+}
+
+.title-page p{
+    padding: 15px;
+    font-size: 35px;
+    color: var(--white);
+    animation: appear-h1 1s both;
+    animation-delay:1000ms;
+}
+@keyframes appear-h1{
+    from{
+        opacity: 0;
+        transform: translate(0%, -100%);
+    }
+    to{
+        opacity: 1;
+        transform: translate(0%, 0%);
+    }
+}
+.title-page p strong{
+    color: var(--darkBlue);
+}
+.description{
+    width: 50%;
+    border-left: 2px solid var(--white);
+    padding: 15px;
+    font-size: 25px;
+    color: var(--white);
+    animation: title 1s both;
+}
+@keyframes title{
+    from{
+        opacity: 0;
+        transform: translate(-100%, 0);
+    }
+    to{
+        opacity: 1;
+        transform: translate(0%, 0);
+    }
+}
+
 @keyframes disentity{
     0%{
         opacity: 1;
@@ -174,9 +224,9 @@ body{
 .main .content-wave{
     position: absolute;
     width: 100%;
-    height: 200px;
+    height: 218px;
     top: 0;
-    background: -webkit-linear-gradient(rgb(1, 38, 253), rgb(29, 201, 231) );
+    background: -webkit-linear-gradient(rgb(40, 71, 245), rgb(29, 201, 231) );
 }
 .main .content-wave .wave1{
     position: absolute;
@@ -232,7 +282,7 @@ body{
     left: 0;
     position: relative;
     width: 100%;
-    height: 250px;
+    height: 220px;
 }
 .container{
     position: relative;
@@ -283,12 +333,12 @@ body{
     color: transparent;
 }
 
-.content h1{
+.content h2{
     color: var(--blue);
     text-align: center;
 }
 
-.content h2{
+.content h1{
     position: relative;
     font-size: 25px;
     z-index: 10;
@@ -343,9 +393,9 @@ body{
 
 
 .u-qz{
+    display: none;
     background-color: rgba(34, 170, 255, 0.39);
     cursor: pointer;
-    display: flex;
     justify-content: center;
     align-items: center;
     width: 0%;
@@ -370,9 +420,9 @@ body{
 /* div quiz personalizado */
 
 .p-qz{
+    display: none;
     background-color: #2af;
     cursor: pointer;
-    display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
@@ -388,9 +438,9 @@ body{
     transition: opacity, font-size .4s;
 }
 .q{ 
+    overflow: hidden;
     border-radius: 5px;
     margin: 10px;
-    display: flex;
     justify-content: space-evenly;
     height: 100%;
 }
@@ -414,10 +464,10 @@ body{
 
 @keyframes hidden {
     from{
-        opacity: 1;
+        width: 45%;
     }
     to{
-        opacity: 0;
+        width: 0%;
     }
 }
 
@@ -533,9 +583,17 @@ body{
 }
 
 .menu{
-    width: 45%;
+    display: flex;
+    width: 0%;
 }
-
+@keyframes visible{
+    from{
+        width: 0%;
+    }
+    to{
+        width: 45%;
+    }
+}
 .contentInput .wh-in{
     color: var(--white);
     background-color: #2af;
@@ -817,41 +875,46 @@ body{
 
 /* Contenedo de peguntas  */
 .content-quest{
-    margin: 20px 0;
+    padding: 10px;
     display: flex;
+    border-bottom: 1px solid #ccc;
     flex-direction: column;
 }
 .questions-content{
     display: flex;
     flex-direction: column;
 }
-.ask-content{
+.content-quest .ask-content{
+    color: var(--blue);
+    font-weight: bold;
+    text-transform: uppercase;
     display: flex;
     justify-content: space-between;
 }
 .ask-content span{
     padding: 10px;
     font-size: 20px;
-    color: var(--blue);
 }
 .skip{
     cursor: pointer;
 }
+
 .questions-content .container-sugered-quest{
     display: grid;
     grid-template-columns: 1fr 60px;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 0 5px 5px 0;
     position: relative;
     margin: 5px;
     cursor: pointer;
-    border: 1px solid #ccc;
+    background-color: #eee;
+    border-left: 4px solid var(--blue);
     font-size: 17px;
 }
 .questions-content .container-sugered-quest:hover{
     border-color: var(--blue);  
 }
-.container-sugered-quest-select{
+.questions-content .container-sugered-quest-select{
     color: var(--white);
     background-color: var(--blue);
 }
@@ -1145,7 +1208,7 @@ footer{
     .content{   
         font-size: 20px;
     }
-    .content h2{
+    .content h1{
         font-size: 18px;
     }
     .nar{
@@ -1153,7 +1216,25 @@ footer{
         height: 200px;
     }
     .menu{
-        width: 100%;
+        width: 0%;
+    }
+    @keyframes visible{
+        from{
+            width: 0%;
+        }
+        to{
+            width: 100%;
+        }
+    }
+    @keyframes hidden {
+        from{
+            width: 100%;
+            opacity: 1;
+        }
+        to{
+            opacity: 0;
+            width: 100%;
+        }
     }
     .main{
         justify-content: center;
@@ -1191,5 +1272,12 @@ footer{
     }
     #send, .add-quest-btn{
         border-radius: 5px;
+    }
+    .title-page p{
+        font-size: 25px;
+    }
+    .title-page .description{
+        font-size: 20px;
+        width: 100%;
     }
 }
