@@ -34,7 +34,20 @@ const addObject = (name, json, lang) => {
     const objectStore = getIDBData("readwrite", "objeto agregado correctamente");
     objectStore.add({json, name, lang});
 };
+const upBtn = document.querySelector('.up');
+const divInfo = document.querySelector('.game-description-content_container')
 
+const observer = new IntersectionObserver( entries => {
+    if(entries[0].isIntersecting) upBtn.style.animation = 'appUp .5s ease-in forwards'
+    else upBtn.style.animation = 'disUp .5s ease-in forwards'
+    
+},{
+    threshold: .2
+})
+
+observer.observe(divInfo)
+
+const nav = document.querySelector('.nav')
 const err = document.querySelector('.err');
 const selectLanguage = document.getElementById('select-language');
 const titleQuiz = document.querySelector('.title-quiz');
@@ -879,3 +892,16 @@ function CreateObjectGame () {
         };
     });
 };
+
+
+upBtn.addEventListener('click', () => {
+    window.scrollTo(0, 0)
+})
+
+document.querySelector('.fa-bars').addEventListener('click', () => {
+    nav.classList.toggle('showNav')
+})
+
+document.querySelector('.close-nav').addEventListener('click', () => {
+    nav.classList.toggle('showNav')
+})

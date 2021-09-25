@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7350283401625750"
-     crossorigin="anonymous"></script> <!--ADSENSE NUEVO-->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7350283401625750" crossorigin="anonymous"></script> <!--ADSENSE NUEVO-->
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,10 +21,26 @@
     <link rel="stylesheet" href="main.css">
     <link rel="shortcut icon" href="assets/logo/logo.favicon" type="image/x-icon">
     <title>MiTrivia - Conoce quienes saben más de ti</title>
-    
-   
+
 </head>
 <body>
+
+    <nav id="nav">
+        <div class="title-div">
+            <span>Mi<b>TRIVIA</b></span>
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav">
+            <span class="close-nav">X</span>
+            <ul class="nav-opt">
+                <li><a href="#des">Cómo jugar</a></li>
+                <li><a href="#quiz">Qué es un quiz</a></li>
+                <li><a href="#contact">Contacto</a></li>
+            </ul>
+        </div>
+       
+    </nav>
+
     <div class="err">
         <i class="fas fa-info-circle"></i>
         <p class="msj"></p>
@@ -48,39 +63,166 @@
             history.go();
         }else modal.style.display = 'none';
     </script>
-    
-    <section class="main">
-        <div class="title-page">
-            <p>MI<br><strong>TRIVIA</strong></p>
-            <span class="description">Descubre quien conoce más sobre ti</span>
-        </div>
-        <div class="content-wave">
+    <section class="wrapper">
 
-            <div class="wave wave1"></div>
-            <div class="wave wave2"></div>
-        </div>
-        <div class="nar"></div>
-        <article class="container">
-            <div class="content">
-                <h2 class="title-quiz">Crea tu Quiz</h2>
-                <h1><strong class="concept">¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!</strong></h1>
-                <input type="text" placeholder="Ingresa tu nombre" name="" spellcheck="false" autocomplete="off" id="user">
-                <button id="btn-start"></button>
+        <section class="main">
+
+            <div class="title-page">
+                <p>MI<br><strong>TRIVIA</strong></p>
+                <span class="description">Descubre quien conoce más sobre ti</span>
             </div>
-        </article>
-        <div class="u-qz q">
-            <i class="fas fa-chevron-circle-left"></i>
-            <span id="s"></span>
-        </div>
-        <div class="p-qz q">
-            <span id="p"></span>
-            <i class="fas fa-chevron-circle-right"></i>
-        </div>
-        <!-- <div class="share-link">
-            
-        </div> -->
+            <div class="content-wave">
+    
+                <div class="wave wave1"></div>
+                <div class="wave wave2"></div>
+            </div>
+            <div class="nar"></div>
+            <article class="container">
+                <div class="content">
+                    <h2 class="title-quiz">Crea tu Quiz</h2>
+                    <h1><strong class="concept">¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!</strong></h1>
+                    <input type="text" placeholder="Ingresa tu nombre" name="" spellcheck="false" autocomplete="off" id="user">
+                    <button id="btn-start"></button>
+                </div>
+            </article>
+            <div class="u-qz q">
+                <i class="fas fa-chevron-circle-left"></i>
+                <span id="s"></span>
+            </div>
+            <div class="p-qz q">
+                <span id="p"></span>
+                <i class="fas fa-chevron-circle-right"></i>
+            </div>
+         
+            <i class="fas fa-long-arrow-alt-down"></i>
+        </section>
+
+        <div class="game-description-content">
+
+            <div  class="game-description-content_container">
+
+                <div class="game-description-content__play">
+                    <h3 id="des">¿Cómo jugar?</h3>
+                    <p>
+                        El <strong>juego</strong>  consiste en hacer tu propio "cuestionario" / preguntas sobre ti, éstas las puedes pasar a tus amigos y jugar con ellos y pasar un rato de diversion;
+                        Entonces, ¿Cómo creo mi Quiz?, te explicamos:
+                    </p>
+
+                    <div class="game-description-content__instructions">
+                        <ul>
+
+                            <li>
+                                <h3>1 | Ingresa tu nombre</h3>
+                                <div class="list">
+                                    <ul>
+                                        <li>
+                                            Primero debes ingresar tu nombre, éste saldrá en el apartado de respuestas, así tus amigos podrán identificar de quien se trata el Quiz 
+                                        </li>
+                                    </ul>                
+                                </div>
+                            </li>
+
+                            <li>
+                                <h3>2 | Selecciona tipo de Quiz</h3> 
+                                <div class="list">
+                                    <ul>
+                                        <li>Al ingresar tu nombre aparecerá un menu donde tendrás que escoger que tipo de Quiz prefieres:
+                                            <div class="list__type-quest">
+                                                <ul>
+                                                    <li> Quiz predefinido</li>
+                                                    <li> Quiz personalizado por ti</li>
+                                                </ul>
+                                            </div>
+                                            
+                                        </li>
+                                       
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li>
+                                <h3>3 | Llena los campos</h3>
+                                <div class="list">
+                                    <ul>
+                                        <li>
+                                            Si escogiste el Quiz sugerido, ya estará todo hecho, tu solo tendrás que seleccionar las respuestas. <br><br> En caso contrario si elegiste un Quiz personalizado
+                                            tendrás la libertad de escribir tu pregunta y tus posibles respuestas, en el momento que esté todo hecho puedes escoger las respuestas correctas con el icono de "check"
+                                            que está posicionado al final de cada campo
+                                        </li>
+                                    </ul>
+                                </div>      
+                            </li>
+
+                            <li>
+                                <h3>4 | Comparte tu quiz</h3>
+                                <div class="list">
+                                    <ul>
+                                        <li>Por ultimo crea tu quiz y a divertirte con tus amigos! :) </li>
+                                        <li>Comparte tu link mediante las opciones que están presentes</li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+               
+               
+                <div class="game-description-content__information">
+                    <div class="game-description-content__information-quiz">
+                        <h3 id="quiz">¿Qué es un Quiz?</h3>
+                        <p>
+                            El Quiz es una herramienta que sirve para evaluar y medir el <strong>conocimiento</strong>  que tiene una persona sobre un tema en concreto. Incluso,  puede usarse para determinar ciertos aspectos de la personalidad de una persona.
         
+                            Se diferencia de un examen o cuestionario por su carácter menos formal, ya que suele ser más <strong>lúdico y dinámico</strong>. Los quizzes se caracterizan además, por usar respuestas que son exclusivamente para marcar, en algunos casos pueden tener un tiempo límite para responderlas.
+                            
+                            Pero lo que más seduce de un quiz, es la inmediatez en que son mostrados los resultados. 
+                        </p>
+                    </div>
+
+                    <div class="grid-section">
+                        <div class="grid-section-comparation">
+                            <h3>¿No es lo mismo un quiz a un exámen?</h3>
+                            <p>La respuesta es no. <strong>Un examen es mucho más formal y puede requerir mayor preparación por parte de los estudiantes</strong>, mientras que un quiz se utiliza de manera puntual y no suele ser tan largo.
+        
+                                Es menos formal y no tiene esa percepción terrible ante los jóvenes como sí lo podría generar un exámen u otro método de evaluación.</p>
+                        </div>
+
+                        <div class="grid-section-info">
+                            <div>
+                                <h3>Ventajas de un Quiz</h3>
+                                <p>Veamos a continuación algunas ventajas que tenemos al aplicar un quiz:</p>
+                            </div>
+                            <div>
+                                <h4>Rápido:</h4>
+                                <p>Podemos utilizarlo rápidamente sin hacer muchos preparativos, a diferencia del examen que requiere un protocolo más grande.</p>
+                            </div>
+                           <div>
+                               <h4>Informal:</h4>
+                               <p>Es una evaluación menos formal, colocándole una percepción distinta al estudiante y estimulando a que apruebe siempre y cuando tenga los conocimientos.</p>
+                           </div>
+                           <div>
+                               <h4>Versátil:</h4>
+                               <p>Una de las grandes ventajas de un quiz es que se puede emplear de múltiples maneras. Podemos combinarla con diferentes elementos para darle un toque <strong>especial</strong> y estimular a la <strong>inteligencia e imaginación</strong> de los que están sentados en sus escritorios.</p>
+                           </div>
+                        </div>                      
+
+                    </div>
+                    
+            </div>
+    
+            
+              
+
+            </div>
+            
+        </div>
+        <div class="up">
+            <i class="fas fa-arrow-up"></i>
+        </div>
     </section>
+    
     <footer>
         <div id="contact">
             <span class="contact-section"> <b id="contact-text">Contacto</b> </span>
@@ -98,9 +240,10 @@
             <a id="send-email" href="https://mail.google.com/mail/?view=cm&fs=1&to=mitrivia77@gmail.com" target="_blank">Envianos un correo</a>
         </div>
         <div class="language">
-            <div>
+            <div class="container-contact-link">
                 <span> Web Designed by: <b>R.R-Company</b> - </span>
                 <span>MiTrivia</span>
+                <a href="#">Sobre nosotros</a>
             </div>
            <div>
             <label for="" id="select-lg-txt">Selecciona tu idioma</label>

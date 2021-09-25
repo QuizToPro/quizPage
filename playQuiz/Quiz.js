@@ -1,5 +1,6 @@
 'use strict'
 
+const nav = document.querySelector('.nav')
 const name = document.getElementById('name');
 const createQuiz = document.getElementById('create');
 const repeat = document.getElementById('repeat');
@@ -437,3 +438,11 @@ setTimeout(async()=>{
     document.querySelector('.load-circle-top').style.display = 'none';
     addUserToTable(table, 3, tableTops)
 });
+
+document.querySelector('.fa-bars').addEventListener('click', () => {
+    nav.classList.toggle('showNav')
+})
+
+document.querySelector('.close-nav').addEventListener('click', () => {
+    nav.classList.toggle('showNav')
+})
