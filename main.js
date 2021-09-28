@@ -1,6 +1,4 @@
-'use strict'
-
-// const { rejects } = require("assert");
+'use strict' 
 
 const database = firebase.firestore();
 // TODO: Replace the following with your app's Firebase project configuration
