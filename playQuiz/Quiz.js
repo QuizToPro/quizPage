@@ -17,6 +17,8 @@ const tableEnd = document.querySelector('.table-end__content')
 const database = firebase.firestore();
 const selectLanguage = document.getElementById('select-language');
 
+repeat.addEventListener('click', ()=>{window.location.reload(true)})
+
 let ispersonalizedquiz = undefined;
 const id_doc = (locationurl.split('=')[1] == false) ? (ispersonalizedquiz = false,
     locationurl.split('=')[2]) : (ispersonalizedquiz = true, locationurl.split('=')[1]);
