@@ -47,7 +47,6 @@ const observer = new IntersectionObserver( entries => {
 
 observer.observe(divInfo)
 
-const nav = document.querySelector('.nav')
 const err = document.querySelector('.err');
 const selectLanguage = document.getElementById('select-language');
 const titleQuiz = document.querySelector('.title-quiz');
@@ -893,15 +892,6 @@ function CreateObjectGame () {
     });
 };
 
-
 upBtn.addEventListener('click', () => {
     window.scrollTo(0, 0)
-})
-
-document.querySelector('.fa-bars').addEventListener('click', () => {
-    nav.classList.toggle('showNav')
-})
-
-document.querySelector('.close-nav').addEventListener('click', () => {
-    nav.classList.toggle('showNav')
 })

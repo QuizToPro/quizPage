@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7350283401625750" crossorigin="anonymous"></script> ADSENSE NUEVO -->
-    <script data-ad-client="ca-pub-7350283401625750" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7350283401625750" crossorigin="anonymous"></script> <!--ADSENSE NUEVO-->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!, donde puedes crear divertidos juegos de personalidad, gustos.. entre otras categorias">
@@ -14,56 +14,54 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;900&family=Nerko+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="templates/nav.css">
+    <link rel="stylesheet" href="templates/footer.css">
     <link rel="shortcut icon" href="assets/logo/logo.favicon" type="image/x-icon">
     <title>MiTrivia - Conoce quienes saben más de ti</title>
 
 </head>
 <body>
-
-    <nav id="nav">
-        <div class="title-div">
-            <span>Mi<b>TRIVIA</b></span>
-            <i class="fas fa-bars"></i>
-        </div>
-        <div class="nav">
-            <span class="close-nav">X</span>
-            <ul class="nav-opt">
-                <li><a href="#des">Cómo jugar</a></li>
-                <li><a href="#quiz">Qué es un quiz</a></li>
-                <li><a href="#contact">Contacto</a></li>
-            </ul>
-        </div>
-       
-    </nav>
-
-    <div class="err">
-        <i class="fas fa-info-circle"></i>
-        <p class="msj"></p>
-        <span class="close-err">x</span>
-    </div>
-
-    <div class="modal">
-        <div class="select-lang">
-            <div class="content-lang">
-                <p>Selecciona el idioma en que quieres ver la página / Select your prefer language</p>
-                <button class="es">Español</button>
-                <button class="en">English</button>
-            </div>  
-        </div>
-    </div>
-    <script>
-        const modal = document.querySelector('.modal');
-        if(localStorage.getItem('lang') === null){
-            localStorage.setItem('lang', navigator.language);
-            history.go();
-        }else modal.style.display = 'none';
-    </script>
     <section class="wrapper">
+        <nav id="nav">
+            <div class="title-div">
+                <span>Mi<b>TRIVIA</b></span>
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="nav">
+                <ul class="nav-opt">
+                    <li><a href="./index.html">Inicio</a></li>
+                    <li><a href="contact/contact.html">Contacto</a></li>
+                    <li><a href="about-us/about-us.html">Sobre nosotros</a></li>
+                </ul>
+                <span class="close-nav">X</span>
+            </div>
+           
+        </nav>
+    
+        <div class="err">
+            <i class="fas fa-info-circle"></i>
+            <p class="msj"></p>
+            <span class="close-err">x</span>
+        </div>
+    
+        <div class="modal">
+            <div class="select-lang">
+                <div class="content-lang">
+                    <p>Selecciona el idioma en que quieres ver la página / Select your prefer language</p>
+                    <button class="es">Español</button>
+                    <button class="en">English</button>
+                </div>  
+            </div>
+        </div>
+
+        <script>
+            const modal = document.querySelector('.modal');
+            if(localStorage.getItem('lang') === null){
+                localStorage.setItem('lang', navigator.language);
+                history.go();
+            }else modal.style.display = 'none';
+        </script>
 
         <section class="main">
 
@@ -225,7 +223,7 @@
     
     <footer>
         <div id="contact">
-            <span class="contact-section"> <b id="contact-text">Contacto</b> </span>
+            <span class="contact-section"> <b id="contact-text">Redes sociales</b> </span>
             <ul id="contact-list">
                 <li> <a href="http://instagram.com/theapsu3" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 <li> <a href="https://api.whatsapp.com/send?phone=584247218207" target="_blank" ><i class="fab fa-whatsapp" ></i></a></li>
@@ -255,17 +253,19 @@
            </div>
         </div>     
     </footer>
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
-        <!-- TODO: Add SDKs for Firebase products that you want to use
-             https://firebase.google.com/docs/web/setup#available-libraries -->
-        <!-- <script src="/__/firebase/init.js"></script> -->
-        <script src="assets/config.js"></script>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="templates/nav.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+    <!-- <script src="/__/firebase/init.js"></script> -->
+    <script src="assets/config.js"></script>
 
     <script src="main.js"></script>
-
-    <script type="text/javascript"> var infolinks_pid = 3345700; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+    <script type="text/javascript"> var infolinks_pid = 3345700; var infolinks_wsid = 0; </script>
+    <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
 </body>
 </html>

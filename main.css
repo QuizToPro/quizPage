@@ -5,58 +5,10 @@
     scroll-behavior: smooth;
     box-sizing: border-box;
 }
+.nav-opt > li:nth-child(1) > a{
+   font-weight: bold;
+}
 
-#nav{
-    padding: 10px;
-    background-color: rgb(40, 71, 245);
-    display: flex;
-    justify-content: space-between;
-}
-.title-div{
-    display: flex;
-    justify-content: space-between;
-}
-.title-div i{
-    display: none;
-    color: var(--white);
-}
-.title-div span{
-    color: var(--white);
-    font-size: 20px;
-}
-.title-div span b{
-    color: #09f;
-}
-.nav-opt{
-    display: flex;
-}
-.nav-opt > li{
-    margin: 0 15px;
-    list-style: none;
-}
-.nav .close-nav{
-    display: none;
-}
-.nav-opt > li > a{
-    position: relative;
-    font-weight: bold;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
-    color: var(--white);
-    text-decoration: none;
-}
-.nav-opt > li > a::before{
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    width: 0%;
-    transition: width .2s ease-in-out;
-    background-color: var(--white);
-}
-.nav-opt > li > a:hover::before{
-    width: 100%;
-}
 /* Seccion de descripcion de la pagina */
 .wrapper{
     position: relative;
@@ -272,54 +224,7 @@
 }
 /* ///////////////////////////////////  */
 
-.title-page{
-    position: absolute;
-    left: 0;
-    z-index: 190;
-    margin: 8px;
-    text-shadow: 3px 3px 9px rgba(83, 83, 83, .5);
-    align-content: center;
-    display: inline-flex;
-}
 
-.title-page p{
-    padding: 15px;
-    font-size: 35px;
-    color: var(--white);
-    animation: appear-h1 1s both;
-    animation-delay:1000ms;
-}
-@keyframes appear-h1{
-    from{
-        opacity: 0;
-        transform: translate(0%, -100%);
-    }
-    to{
-        opacity: 1;
-        transform: translate(0%, 0%);
-    }
-}
-.title-page p strong{
-    color: var(--darkBlue);
-}
-.description{
-    width: 50%;
-    border-left: 2px solid var(--white);
-    padding: 15px;
-    font-size: 25px;
-    color: var(--white);
-    animation: title 1s both;
-}
-@keyframes title{
-    from{
-        opacity: 0;
-        transform: translate(-100%, 0);
-    }
-    to{
-        opacity: 1;
-        transform: translate(0%, 0);
-    }
-}
 
 @keyframes disentity{
     0%{
@@ -700,6 +605,15 @@ body{
     opacity: 1;
     transition: opacity, font-size .2s;
     padding: 5px;
+}
+.title-page{
+    position: absolute;
+    left: 0;
+    z-index: 190;
+    margin: 8px;
+    text-shadow: 3px 3px 9px rgba(83, 83, 83, .5);
+    align-content: center;
+    display: inline-flex;
 }
 
 /* div quiz personalizado */
@@ -1369,167 +1283,10 @@ body{
 
 /* FOOTER  */
 
-footer{
-    display: flex;
-    background-color:rgb(34, 130, 255);
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-.container-contact-link a{
-    color: var(--white);
-}
-.questions-page{
-    width: 50%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-}
-
-.questions-page span{
-   color: var(--white);
-    margin: auto 20px;
-    font-size: 18px;
-   flex-basis: 40%;
-}
-.questions-page #send-email{
-    padding: 5px 9px;
-    text-decoration: none;
-    border: 1px solid var(--white);
-    outline: none;
-    cursor: pointer;
-    border-radius: 2px;
-    color: var(--blue);
-    background-color: var(--white);
-}
-.questions-page #send-email:hover{
-    color: var(--white);
-    background-color: var(--blue);
-}
-.contact-section, #copy-section{
-    text-align: center;
-    flex-basis: 100%;
-}
-
-#contact{
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    color: var(--white);
-    justify-content: center;
-}
-
-#contact > span{
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 20px;
-}
-
-#contact-list{
-    padding: 8px;
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-}
-#contact-list li{
-    list-style: none;
-}
-#contact-list li a{
-    color: var(--white);
-    font-size: 18px;
-    padding: 20px;
-    transition: color, font-size .1s ease-in;
-}
-
-#contact-list li:nth-child(1):hover > a{
-    color: rgb(219, 93, 20);
-}
-#contact-list li:nth-child(2):hover > a{
-    color: rgb(12, 194, 52);
-}
-#contact-list li:nth-child(3):hover > a{
-    color: #0cf;
-}
-#contact-list li:nth-child(4):hover > a{
-    color: #00f;
-}
-#contact-list li:nth-child(5):hover > a{
-    color: #0fc;
-}
-#contact-list li:nth-child(6):hover > a{
-    color: #00c0f9;
-}
-#contact-list li:nth-child(7):hover > a{
-    color: rgba(100, 100, 77, 0.933);
-}
-
-.language{
-    display: flex;
-    justify-content: space-between;
-    flex-basis: 100%;
-    padding: 15px;
-}
-.language span{
-    text-align: left;
-    color: var(--white);
-    font-weight: bold;
-}
-
-.language label{
-    font-size: 15px;
-    color: var(--white);
-    text-transform: uppercase;
-    font-weight: bold;
-}
-.language #select-language{
-    font-size: 15px;
-    color: var(--blue);
-    border: 1px solid var(--darkBlue);
-}
-
 /* media query  */
 
 @media screen and (max-width: 500px){
-    .title-div i{
-        display: inline-block;
-    }
-    #nav{
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        flex-direction: column;
-        z-index: 200;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        
-    }
-    #nav .nav{
-        width: 100%;
-        height: fit-content;
-        z-index: 200;
-        background-color: rgb(40, 71, 245); 
-        position: fixed;
-        top: -100%;
-        left: 0;
-        transition: top .3s ease-out;
-    }
-    #nav .showNav{
-        top: 0;
-    }
-    .nav .close-nav{
-        display: block;
-        padding: 10px;
-        color: var(--white);
-    }
-    .nav .nav-opt{
-        justify-content: space-evenly;
-        padding: 15px;
-    }
-    .nav .nav-opt li{
-        margin: 10px 0;
-    }
+    
     .c-ur-q{
         width: 100%;
     }
@@ -1595,17 +1352,9 @@ footer{
     .text-section{
         font-size: 18px;
     }
-    .questions-page{
-        width: 100%;
-    }
+
     #send, .add-quest-btn{
         border-radius: 5px;
     }
-    .title-page p{
-        font-size: 25px;
-    }
-    .title-page .description{
-        font-size: 20px;
-        width: 100%;
-    }
+    
 }
