@@ -4,7 +4,7 @@ const name = document.getElementById('name');
 const createQuiz = document.getElementById('create');
 const repeat = document.getElementById('repeat');
 const idioma = localStorage.getItem('lang');
-const linkwebpage = 'mitrivia77-97762.web.app/';
+const linkwebpage = 'https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=w4wz2dFzGISmAySDPyme';
 const puntuacionesBTN = document.getElementById('punt');
 const sendBTN = document.getElementById('send');
 const locationurl = window.location.href
@@ -61,7 +61,7 @@ if (localStorage.getItem('userQuiz') != undefined) userLocal = localStorage.getI
 // if(localStorage.getItem('url') == locationurl) alert('Ya haz completado éste quiz');
 
 if (!locationurl.includes('=')) {
-    window.location = linkwebpage;
+    window.location.href = linkwebpage;
 }
 
 selectLanguage.addEventListener('change', e => {
@@ -341,7 +341,7 @@ const setScorePhrase = () => {
             twenty: `Wow, you should talk more to <b>${userQuiz}</b>` , // de 20% a 40%
             fourty: `You know enough about <b>${userQuiz}</b>, but could you come closer more :)`, // 40% a 60%
             sixty: `You know <b>${userQuiz}</b> well!`, //60% a 80%
-            eighty: `It seems that <b>${userQuiz}</b> Ricardo has people who know her very well! you got the right big number`, // de 80% a 99%
+            eighty: `It seems that <b>${userQuiz}</b> has people who know her very well! you got the right big number`, // de 80% a 99%
             houndred: `Perfect! you manage to get all the questions right, you know <b>${userQuiz}</b> very well!`  // 100% 
         };  
     };

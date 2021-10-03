@@ -625,7 +625,7 @@ body{
         padding: 30px;
         position: absolute;
         transition: all .5s;
-        z-index: 100;
+        z-index: 210;
     }
     .close-modal{
         display: inline-block;
