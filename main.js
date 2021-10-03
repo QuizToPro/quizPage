@@ -896,3 +896,7 @@ function CreateObjectGame () {
 upBtn.addEventListener('click', () => {
     window.scrollTo(0, 0)
 })
+
+setTimeout(() => {
+    document.querySelector('.fa-long-arrow-alt-down').classList.add('disarrow')
+}, 7500)

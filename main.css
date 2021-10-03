@@ -407,6 +407,7 @@ body{
     left: 20px;
     animation: moveArrow .5s ease-in-out forwards;
     animation-iteration-count: 15;
+    transition: opacity .5s;
 }
 @keyframes moveArrow{
     0%{
@@ -418,6 +419,9 @@ body{
     100%{
         transform: translateY(0%);
     }
+}
+.main .disarrow{
+    opacity: 0;
 }
 .main .content-wave{
     position: relative;
