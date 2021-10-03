@@ -4,6 +4,9 @@
     --white: #fff;
 }
 
+#home{
+    cursor: pointer;
+}
 .main{
     min-height: 100vh;
 }

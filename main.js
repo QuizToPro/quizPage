@@ -7,6 +7,9 @@ const database = firebase.firestore();
 console.log(database)
 let localData;
 
+document.getElementById('home').addEventListener('click', () => {
+    window.location.href = 'https://mitrivia77-97762.web.app/'
+})
 const sugeredContent = indexedDB.open('sugered-content', 1)
 
 sugeredContent.addEventListener('upgradeneeded', () => {

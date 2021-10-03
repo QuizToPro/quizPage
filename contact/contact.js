@@ -16,3 +16,7 @@ async function handleSubmit(e){
         alert('Form sended')
     }
 }
+
+document.getElementById('home').addEventListener('click', () => {
+    window.location.href = 'https://mitrivia77-97762.web.app/'
+})

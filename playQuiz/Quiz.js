@@ -17,8 +17,6 @@ const tableEnd = document.querySelector('.table-end__content')
 const database = firebase.firestore();
 const selectLanguage = document.getElementById('select-language');
 
-repeat.addEventListener('click', ()=>{window.location.reload(true)})
-
 let ispersonalizedquiz = undefined;
 const id_doc = (locationurl.split('=')[1] == false) ? (ispersonalizedquiz = false,
     locationurl.split('=')[2]) : (ispersonalizedquiz = true, locationurl.split('=')[1]);
@@ -439,3 +437,7 @@ setTimeout(async()=>{
     document.querySelector('.load-circle-top').style.display = 'none';
     addUserToTable(table, 3, tableTops)
 });
+
+document.getElementById('home').addEventListener('click', () => {
+    window.location.href = 'https://mitrivia77-97762.web.app/'
+})

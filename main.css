@@ -5,6 +5,36 @@
     scroll-behavior: smooth;
     box-sizing: border-box;
 }
+.cookie{
+    background-color: rgb(18, 180, 221);
+    position: fixed;
+    color: var(--white);
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 210;
+}
+.cookie .cookie-content{
+    padding: 10px;
+    text-align: center;
+}
+.cookie .cookie-content p{
+    margin: 10px 0;
+}
+.cookie .cookie-content p a{
+    color: var(--white);
+}
+.cookie .cookie-content .btn-cookie{
+    margin: 0 5px;
+    padding: 5px 9px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+}
+.cookie .cookie-content .accept-cookie{
+    background-color: var(--blue);
+    color: var(--white);
+}
 .nav-opt > li:nth-child(1) > a{
    font-weight: bold;
 }
@@ -134,8 +164,6 @@
     font-size: 15px;
     line-height: 18px;
 }
-
-
 .game-description-content__instructions .list .list__type-quest > ul > li{
     padding: 5px;
     color: #e7f2ff;
@@ -143,17 +171,11 @@
     font-size: 15px;
 
 }
-
-
-
-
-
 .game-description-content__information{
     padding: 20px 0;
     /* background-color:var(--blue); */
 
 }
-
 .game-description-content__information .game-description-content__information-quiz{
     display: flex;
     justify-content: center;
@@ -178,15 +200,12 @@
     padding: 20px;
     color: var(--blue);
 }
-
-
 .grid-section{
     margin: 20px auto;
     width: 90%;
     display: grid;
     grid-gap: 10px;
 }
-
 .grid-section h3, .grid-section h4{
     color: rgb(56, 136, 240);
     font-weight: bold;
@@ -201,15 +220,12 @@
     color: var(--blue);
     background-color: var(--white);
 }
-
 .grid-section-comparation:hover, .grid-section-info:hover{
     background-color:#eee;
 }
-
 .grid-section-comparation h3, .grid-section-comparation p{
     padding: 15px;
 }
-
 .grid-section-info p{
     color: var(--blue);
     padding: 10px;
@@ -217,14 +233,11 @@
 .grid-section-info div{
     padding: 15px;
 }
-
 .grid-section-info div h3{
     font-weight: bold;
     font-size: 20px;
 }
 /* ///////////////////////////////////  */
-
-
 
 @keyframes disentity{
     0%{
@@ -295,11 +308,9 @@ body{
     background: var(--white);
     color: var(--blue);
 }
-
 .show{
     animation: mostrarErr 7s both;
 }
-
 @keyframes mostrarErr{
     0%{
         opacity: 0;
@@ -329,7 +340,6 @@ body{
     z-index: 100;
     animation: appearModal 1s forwards;
 }
-
 @keyframes appearModal {
     from{
         opacity: 0;
@@ -346,7 +356,6 @@ body{
         opacity: 0;
     }
 }
-
 .select-lang{
     display: flex;
     align-items:center;
@@ -386,7 +395,6 @@ body{
     position: relative;
     display: flex;
     justify-content: center;
-    align-content: center;
     flex-wrap: wrap;
     width: 100%;
     min-height: 100vh;
@@ -412,7 +420,7 @@ body{
     }
 }
 .main .content-wave{
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 225px;
     top: 0;
@@ -429,7 +437,6 @@ body{
     animation: move1 4s linear infinite;
     z-index: 2;
 }
-
 @keyframes move1{
     0%{
         background-position-x: 0;
@@ -438,7 +445,6 @@ body{
         background-position-x: 1000px ;
     }
 }
-
 .main .content-wave .wave2{
     position: absolute;
     bottom: 0;
@@ -452,7 +458,6 @@ body{
     z-index: 1;
     opacity: .5;
 }
-
 @keyframes move2{
     0%{
         background-position-x: 0;
@@ -461,18 +466,10 @@ body{
         background-position-x: -1000px ;
     }
 }
-
 .main_split{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     height: 100vh;
-}
-.nar{
-    top:0;
-    left: 0;
-    position: relative;
-    width: 100%;
-    height: 220px;
 }
 .container{
     position: relative;
@@ -522,12 +519,10 @@ body{
 #user:focus::placeholder{
     color: transparent;
 }
-
 .content h2{
     color: var(--blue);
     text-align: center;
 }
-
 .content h1{
     position: relative;
     font-size: 25px;
@@ -536,7 +531,6 @@ body{
     padding: 10px;
     color: rgb(106, 204, 250);
 }
-
 @keyframes disappear{
     0%{
         opacity: 1;
@@ -547,13 +541,10 @@ body{
         transform: scale(0);
     }
 }
-
 .title-quest{
     text-align: center;
     color: var(--blue);
 }
-
-
 
 /* div quiz sugerido  */
 
@@ -569,7 +560,6 @@ body{
         transform:rotateX(0deg);
     }
 }
-
 @keyframes removeSection{
     0%{
         transform: translate(-50%, -50%);
@@ -579,9 +569,6 @@ body{
         transform: translate(100%, -50%);
     }
 }
-
-
-
 .u-qz{
     display: none;
     background-color: rgba(34, 170, 255, 0.39);
@@ -592,13 +579,11 @@ body{
     overflow: hidden;
     transition: width 1s;
 }
-
 .u-qz:hover > span, .p-qz:hover > span{
     background: -webkit-linear-gradient(left, var(--blue), rgb(34, 111, 255));
     font-size: 20px;
     color: #fff;
 }
-
 .u-qz > span{
     color: var(--blue);
     overflow: hidden;
@@ -628,7 +613,6 @@ body{
     width: 0%;
     transition: width 1s;
 }
-
 .p-qz > span{
     padding: 5px;
     color: var(--white);
@@ -660,7 +644,6 @@ body{
     color: rgb(228, 248, 253);
     transition: color .4s;
 }
-
 @keyframes hidden {
     from{
         width: 45%;
@@ -669,7 +652,6 @@ body{
         width: 0%;
     }
 }
-
 /* flex form  */
 .flex-form{
     display: grid;
@@ -686,19 +668,15 @@ body{
     position: relative;
     opacity: 1;
 }
-
 .c-ur-q > .more-quest{
     opacity: .5;
 }
-
 .title > p{
     text-align: center;
     text-transform: uppercase;
     font-size: 20px;
     font-weight: bold;
 }
-
-
 .questions2{
     display: flex;
     flex-direction: column;
@@ -723,13 +701,11 @@ body{
     text-transform: uppercase;
     color: #09f;
 }
-
 .answers{
     display: flex;
     flex-direction: column;
     width: 80%;
 }
-
 .contentInput{
     display: grid;
     width: 100%;
@@ -748,7 +724,6 @@ body{
     border-radius: 5px 0 0 5px;
     transition: all .3s;
 }
-
 .contentInput .answ:focus{
     border-color: var(--darkBlue);
 }
@@ -758,7 +733,6 @@ body{
 .contentInput .answ::placeholder, .questions2 > input::placeholder{
     color: rgb(32, 137, 202);
 }
-
 .contentInput > i{
     border: none;
     outline: none;
@@ -780,7 +754,6 @@ body{
     justify-content: center;
     height: 100%;
 }
-
 .menu{
     display: flex;
     width: 0%;
@@ -805,7 +778,6 @@ body{
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
-
 .more-quest .add-quest-btn{
     flex-basis: 40%;
     border: none;
@@ -816,7 +788,6 @@ body{
     cursor: pointer;
     background-color: var(--white);
     transition: all .2s;
-
 }
 .add-quest-btn i {
     padding-left: 8px;
@@ -833,7 +804,6 @@ body{
     border-bottom-color: transparent;
     border-right-color: transparent;
 }
-
 @keyframes loop{
     0%{  
         transform: rotate(0deg);
@@ -843,12 +813,10 @@ body{
         transform: rotate(360deg);
     }
 }
-
 #send, .add-quest-btn{
     border-radius: 15px;
     padding: 5px 9px;
 }
-
 #send{
     justify-content: center;
     align-items: center;
@@ -873,7 +841,6 @@ body{
 #send > i{
     padding-left: 8px;
 }
-
 .select-ans{
     display: flex;
     flex-wrap: wrap;
@@ -894,10 +861,7 @@ body{
     padding: 10px;
     border-radius: 2px;
 }
-
 /* preguntas sugeridas */
-
-
 .questions-sug{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
@@ -907,7 +871,6 @@ body{
     grid-gap: 10px;
     width: 100%;
 }
-
 .section-select{
     position: relative;
     z-index: 100;
@@ -920,7 +883,6 @@ body{
     border-radius: 5px;
     transition: all .7s;
 }
-
 @keyframes moveLeft{
     0%{
         transform: translate(0%);
@@ -936,7 +898,6 @@ body{
         opacity: 0;
     }
 }
-
 @keyframes moveUp{
     0%{
         transform: translateY(0%);
@@ -1005,13 +966,11 @@ body{
     backdrop-filter: blur(5px);
     height: 100%;
 }
-
 #selected{
     background-color: transparent;
     backdrop-filter: blur(5px);
     height: 100%;
 }
-
 .content-sections{
     overflow: hidden;
     z-index: 10;
@@ -1023,13 +982,11 @@ body{
     border-radius: 10px;
     outline: none;
 }
-
 .img-section{
     width: 100%;
     height: 100%;
     object-fit: fill;
 }
-
 .text-section{
     display: flex;
     justify-content: center;
@@ -1062,8 +1019,6 @@ body{
     background-color: #090;
     color: var(--white);
 }
-
-
 .img-select{
     top: 0;
     left: 0;
@@ -1071,7 +1026,6 @@ body{
     height: 200px;
     object-fit: cover;
 }
-
 /* Contenedo de peguntas  */
 .content-quest{
     padding: 10px;
@@ -1097,7 +1051,6 @@ body{
 .skip{
     cursor: pointer;
 }
-
 .questions-content .container-sugered-quest{
     display: grid;
     grid-template-columns: 1fr 60px;
@@ -1147,7 +1100,6 @@ body{
     z-index: 100;
     transition: opacity 1s;
 }
-
 .content-icons{
     width: 100%;
     display: flex;
@@ -1162,7 +1114,6 @@ body{
     justify-content: space-evenly;
     border-radius: 5px;
 }
-
 .share-link .content-links p{
     padding: 10px 0;
     font-size: 25px;
@@ -1170,7 +1121,6 @@ body{
     flex-basis: 100%;
     text-align: center;
 }
-
 .share-link .content-links #text-link{
     border: 1px solid var(--blue);
     padding: 10px;
@@ -1188,7 +1138,6 @@ body{
     width: 100%;
     grid-template-columns: 1fr minmax(50px, 80px);
 }
-
 .alert-copy{
     opacity: 0;
     display: none;
@@ -1203,7 +1152,6 @@ body{
     width: 50%;
     background: var(--blue);
 }
-
 @keyframes aparecerCopy{
     0%{
         opacity: 0;
@@ -1218,7 +1166,6 @@ body{
         opacity: 0;
     }
 }
-
 .alert-copy::before{
     content: '';
     position: absolute;
@@ -1229,7 +1176,6 @@ body{
     border-left: 15px solid transparent;
     border-bottom: 15px solid var(--blue);
     border-right: 15px solid transparent;
-
 }
 .alert-copy > span{
     padding: 10px;
@@ -1264,7 +1210,6 @@ body{
     color: #fff;
     background-color: rgb(12, 194, 52);
 }
-
 .content-icons div:nth-child(2) i{
     color: #00f;
 }
@@ -1272,7 +1217,6 @@ body{
     color: #fff;
     background-color: #00f ;
 }
-
 .content-icons div:nth-child(3) i{
     color: #0cf;
 }
@@ -1285,6 +1229,9 @@ body{
 
 /* media query  */
 
+#home{
+    cursor: pointer;
+}
 @media screen and (max-width: 500px){
     
     .c-ur-q{
@@ -1298,7 +1245,7 @@ body{
     }
     .nar{
         top: 0;
-        height: 200px;
+        height: 250px;
     }
     .menu{
         width: 0%;
@@ -1333,9 +1280,6 @@ body{
     #user::placeholder{
         font-size: 18px;
     }
-    .q{
-        transform: translateY(40px);
-    }
     .q > i{
         font-size: 30px;
     }
@@ -1356,5 +1300,4 @@ body{
     #send, .add-quest-btn{
         border-radius: 5px;
     }
-    
 }

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <script data-ad-client="ca-pub-7350283401625750" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!, donde puedes crear divertidos juegos de personalidad, gustos.. entre otras categorias">
@@ -10,6 +9,7 @@
     <meta name="copyright" content="R&R" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="https://kit.fontawesome.com/b15ad0e7fc.js" crossorigin="anonymous"></script>
+    <script data-ad-client="ca-pub-7350283401625750" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
@@ -22,22 +22,35 @@
 </head>
 <body>
     <section class="wrapper">
-        <nav id="nav">
-            <div class="title-div">
-                <span>Mi<b>TRIVIA</b></span>
-                <i class="fas fa-bars"></i>
-            </div>
-            <div class="nav">
-                <ul class="nav-opt">
-                    <li><a href="./index.html"><i class="fas fa-home"></i> Inicio</a></li>
-                    <li><a href="contact/contact.html"><i class="far fa-address-card"></i> Contacto</a></li>
-                    <li><a href="about-us/about-us.html"><i class="fas fa-question-circle"></i> Sobre nosotros</a></li>
-                </ul>
-                <span class="close-nav">X</span>
-            </div>
-           
-        </nav>
-    
+        <header>
+            <nav id="nav">
+                <div class="title-div">
+                    <span id="home">Mi<b>TRIVIA</b></span>
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="nav">
+                    <ul class="nav-opt">
+                        <li><a href="./index.html"><i class="fas fa-home"></i> Inicio</a></li>
+                        <li><a href="contact/contact.html"><i class="far fa-address-card"></i> Contacto</a></li>
+                        <li><a href="about-us/about-us.html"><i class="fas fa-question-circle"></i> Sobre nosotros</a></li>
+                    </ul>
+                    <span class="close-nav">X</span>
+                </div>
+               
+            </nav>
+        </header>   
+        <div class="cookie">
+            <div class="cookie-content">
+                <h3>AVISO DE COOKIES</h3>
+                <p>
+                    Ésta página usa cookies propias para mejorar la experiencia del usuario, de ésta manera te mostraremos un
+                    contenido de tú interes <a href="https://policies.google.com/technologies/cookies?hl=es" target="_blank">Leer más</a>
+                </p>
+                <button class="accept-cookie btn-cookie">Aceptar</button>
+                <button class="decline-cookie btn-cookie">Rechazar</button>
+            </div>          
+        </div>
+
         <div class="err">
             <i class="fas fa-info-circle"></i>
             <p class="msj"></p>
@@ -55,11 +68,18 @@
         </div>
 
         <script>
+
             const modal = document.querySelector('.modal');
+            const $cookieDiv = document.querySelector('.cookie');
+            if(localStorage.getItem('cookie') === 'true'){
+                console.log('soy')
+                $cookieDiv.style.display = 'none'
+            }
             if(localStorage.getItem('lang') === null){
                 localStorage.setItem('lang', navigator.language);
                 history.go();
             }else modal.style.display = 'none';
+
         </script>
 
         <section class="main">
@@ -73,7 +93,6 @@
                 <div class="wave wave1"></div>
                 <div class="wave wave2"></div>
             </div>
-            <div class="nar"></div>
             <article class="container">
                 <div class="content">
                     <h2 class="title-quiz">Crea tu Quiz</h2>
@@ -299,6 +318,7 @@
       </script>
 
     <script src="main.js"></script>
+    <script src="templates/cookie.js"></script>
     <script type="text/javascript"> var infolinks_pid = 3345700; var infolinks_wsid = 0; </script>
     <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
 </body>

@@ -9,6 +9,10 @@
     font-weight: bold;
 }
 
+#home{
+    cursor: pointer;
+}
+
 .container-form{
     position: relative;
     height: 100vh;

@@ -1,12 +1,7 @@
 
-.nar{
-    top:0;
-    left: 0;
-    position: relative;
-    width: 100%;
-    height: 50px;
+#home{
+    cursor: pointer;
 }
-
 .main .content-wave{
     position: relative;
     width: 100%;
