@@ -18,6 +18,7 @@ const database = firebase.firestore();
 const selectLanguage = document.getElementById('select-language');
 
 let ispersonalizedquiz = undefined;
+
 const id_doc = (locationurl.split('=')[1] == false) ? (ispersonalizedquiz = false,
     locationurl.split('=')[2]) : (ispersonalizedquiz = true, locationurl.split('=')[1]);
 
@@ -28,6 +29,9 @@ const buttonNext = document.getElementById('next');
 const containerContent = document.querySelector('.container-content');
 const localContent = indexedDB.open('local-content', 1);
 const modal_content = document.querySelector('.modal');
+
+
+
 let click = false;
 let uid_person = undefined; 
 let similary = false;
@@ -41,6 +45,7 @@ let table = undefined;
 let userQuiz, idLocal, userLocal, nameUser, content, quest, idQuest, results; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
 
 if(idioma == 'en'){
+
     document.querySelector('.description').textContent = 'Find out who knows more about you';
     document.querySelector('.score-board').textContent = 'Score';
     document.querySelector('.name-board').textContent = 'Name'
@@ -48,6 +53,7 @@ if(idioma == 'en'){
     document.getElementById('send-email').textContent = 'Send email';
     document.getElementById('email-text').textContent = 'Let us know in what things maybe would us upgrade!, the opinions from the users are welcome';
     document.getElementById('select-lg-txt').textContent = 'Select your language';
+
     sendBTN.textContent = 'Next'
     repeat.textContent = 'Repeat'
     createQuiz.textContent = 'Create my Quiz'
@@ -61,7 +67,7 @@ if (localStorage.getItem('userQuiz') != undefined) userLocal = localStorage.getI
 // if(localStorage.getItem('url') == locationurl) alert('Ya haz completado éste quiz');
 
 if (!locationurl.includes('=')) {
-    window.location = linkwebpage;
+    window.location = 'https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=w4wz2dFzGISmAySDPyme';
 }
 
 selectLanguage.addEventListener('change', e => {
@@ -341,7 +347,7 @@ const setScorePhrase = () => {
             twenty: `Wow, you should talk more to <b>${userQuiz}</b>` , // de 20% a 40%
             fourty: `You know enough about <b>${userQuiz}</b>, but could you come closer more :)`, // 40% a 60%
             sixty: `You know <b>${userQuiz}</b> well!`, //60% a 80%
-            eighty: `It seems that <b>${userQuiz}</b> Ricardo has people who know her very well! you got the right big number`, // de 80% a 99%
+            eighty: `It seems that <b>${userQuiz}</b> has people who know her very well! you got the right big number`, // de 80% a 99%
             houndred: `Perfect! you manage to get all the questions right, you know <b>${userQuiz}</b> very well!`  // 100% 
         };  
     };
