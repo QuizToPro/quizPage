@@ -4,7 +4,7 @@ const name = document.getElementById('name');
 const createQuiz = document.getElementById('create');
 const repeat = document.getElementById('repeat');
 const idioma = localStorage.getItem('lang');
-const linkwebpage = 'mitrivia77-97762.web.app/';
+const linkwebpage = 'https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=w4wz2dFzGISmAySDPyme';
 const puntuacionesBTN = document.getElementById('punt');
 const sendBTN = document.getElementById('send');
 const locationurl = window.location.href
@@ -67,7 +67,7 @@ if (localStorage.getItem('userQuiz') != undefined) userLocal = localStorage.getI
 // if(localStorage.getItem('url') == locationurl) alert('Ya haz completado éste quiz');
 
 if (!locationurl.includes('=')) {
-    window.location = 'https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=w4wz2dFzGISmAySDPyme';
+    window.location.href = linkwebpage;
 }
 
 selectLanguage.addEventListener('change', e => {
