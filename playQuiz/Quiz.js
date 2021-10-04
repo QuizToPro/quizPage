@@ -247,6 +247,11 @@ const createQuest = (arr, b) => {
         if(meet > 80 && meet <= 99) meetText.innerHTML = results.eighty;
         if(meet >= 100) meetText.innerHTML = results.houndred;
         percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet.toFixed(2)}%`;
+
+        repeat.addEventListener('click', () => {
+            window.location.reload()
+        })
+
         setTimeout(() => {
             modal.style.display = 'none'
             document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
