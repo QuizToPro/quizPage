@@ -105,7 +105,7 @@ if(idioma == 'es' || idioma == 'es-ES'){
     $sugered.textContent = 'Create a quiz with our suggested questions!';
     $personalized.textContent = 'Create a quiz with your persolanized questions!';
     $userInput.placeholder = 'Enter your name';
-    document.getElementById('contact-text').textContent = 'Contact';
+    document.getElementById('contact-text').textContent = 'Social Networks';
     document.getElementById('email-text').textContent = 'Let us know in what things maybe would us upgrade!, the opinions from the users are welcome';
     document.getElementById('select-lg-txt').textContent = 'Select your language';
     document.getElementById('send-email').textContent = 'Send email';

@@ -4,7 +4,7 @@ const name = document.getElementById('name');
 const createQuiz = document.getElementById('create');
 const repeat = document.getElementById('repeat');
 const idioma = localStorage.getItem('lang');
-const linkwebpage = 'https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=w4wz2dFzGISmAySDPyme';
+const linkwebpage = 'https://mitrivia77-97762.web.app/';
 const puntuacionesBTN = document.getElementById('punt');
 const sendBTN = document.getElementById('send');
 const locationurl = window.location.href
