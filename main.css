@@ -523,11 +523,11 @@ body{
 #user:focus::placeholder{
     color: transparent;
 }
-.content h2{
+.content h1{
     color: var(--blue);
     text-align: center;
 }
-.content h1{
+.content h2{
     position: relative;
     font-size: 25px;
     z-index: 10;
