@@ -402,7 +402,7 @@ async function getGame(callback) {
                     // console.log('Falso')
                     // console.log(id_doc)
                     //const gameRef = database.collection('quiz_sugeridos').doc(id_doc)
-                    console.info(ispersonalizedquiz)
+                    // console.info(ispersonalizedquiz)
                     const gameRef = (ispersonalizedquiz === false) ? database.collection('quiz_sugeridos').doc(id_doc) : database.collection('quiz_personalizados').doc(id_doc)
                     const doc = await gameRef.get();
                     const data = doc.data()    
@@ -435,7 +435,7 @@ function sortTable(table) {
 
 async function getTable() {
     try {
-    const tableee = await database.collection('scoreboards_table').doc(id_doc).get();
+    const tableee = await database.collection('scoreboards_table').doc(id_doc).orderBy('numberscore').get();
     const tablee = tableee.data();
     // console.log(sortTable(tablee.table));
     console.info(tablee);
