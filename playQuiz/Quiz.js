@@ -106,7 +106,7 @@ const getIDBData = (mode, msg) => {
     const objectStore = IDBTransaction.objectStore("data"); //Aquí accedemos a los objetos que contiene "nombres";
     IDBTransaction.addEventListener("complete", () =>{ // Esto nos avisará cuando el objeto sea agregado/leido/modificado/eliminado;
         
-        console.log(msg)
+        // console.log(msg)
     });
 
     return objectStore;
@@ -119,14 +119,14 @@ const addObject = () => {
 
 firebase.auth().signInAnonymously()
   .then((user) => {
-      console.log(user)
+    //   console.log(user)
     // Signed in..
     uid_person = user.user.uid;
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-    console.log(error)
+    // console.log(error)
     window.location.reload()
     // ...
   });
@@ -160,10 +160,10 @@ buttonNext.addEventListener('click', () => {
 const createQuest = (arr, b) => { 
     (idioma == 'es' || idioma == 'es-ES') ? userQuiz2.innerHTML = `Estás respondiendo el quiz de: <b>${userQuiz}</b>` : userQuiz2.innerHTML = `You are answering the quiz of: <b>${userQuiz}</b>`
     if(b)  meet = meet + progress;
-    console.log(arr)
+    // console.log(arr)
     document.querySelector('.load-circle').style.display = 'none'
     let data = Object.values(arr);
-    console.log(data)
+    // console.log(data)
     buttonNext.style.visibility = 'hidden';
     if(key == false) {
         progress = 100 / data.length;
@@ -193,11 +193,11 @@ const createQuest = (arr, b) => {
                     div.appendChild(span);
                     fragment.appendChild(div);
                     similary = true;
-                    console.log(c)
+                    // console.log(c)
                 };
             }else if(c != data[contador].pregunta){           
                 span.textContent = c;
-                console.log(c)
+                // console.log(c)
                 div.appendChild(span);      
                 fragment.appendChild(div);
             };
@@ -227,16 +227,27 @@ const createQuest = (arr, b) => {
             numberscore,
             id: idRandom
         };
-        console.log(table)
+        // console.log(table)
         table.push(userscore)
 
         const tableWithActualUser = [...table];
         sortTable(tableWithActualUser)
-        console.log(tableWithActualUser)
+        // console.log(tableWithActualUser)
         // tableWithActualUser is table with actual user
         // table is without the user
+        // console.log("SEACABO")
 
-        console.log("SEACABO")
+        
+        database.collection('scoreboards_table').doc(id_doc).update({
+            table,
+        }).then(()=>{
+            console.info('User score saved sucessfully');
+            addUserToTable(table, 10, tableEnd);
+        }).catch((error)=>{
+            console.error(error);
+            console.error('No se pudo guardar puntuaciones usuario');
+        });
+        // console.log("SEACABO2")
         modal_content.style.display = 'block';
         const modal = document.querySelector('.container-content');
         modal.style.animation = 'desaparecer .5s forwards';
@@ -257,15 +268,7 @@ const createQuest = (arr, b) => {
             document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
         }, 500);
 
-        database.collection('scoreboards_table').doc(id_doc).update({
-            table,
-        }).then(()=>{
-            console.info('User score saved sucessfully');
-            addUserToTable(table, 10, tableEnd);
-        }).catch((error)=>{
-            console.error(error);
-            console.error('No se pudo guardar puntuaciones usuario');
-        });
+
         localStorage.setItem('url', locationurl);
     };
     similary = false;
@@ -274,7 +277,7 @@ const createQuest = (arr, b) => {
 function addUserToTable(table_user, condition, node){
     if(table_user.length > 0){
         document.querySelector('.first').style.display = 'none'
-        console.log(table_user)
+        // console.log(table_user)
         for(let i = 0; i < table_user.length; i++){
             if(i < condition){
                 const div = document.createElement('DIV');
@@ -289,7 +292,7 @@ function addUserToTable(table_user, condition, node){
                 score.classList.add('ml')
 
                 position.textContent = i + 1;
-                console.log(table_user[i])
+                // console.log(table_user[i])
                
                 user.textContent = table_user[i].nameUser;
                 score.textContent = `${table_user[i].numberscore}%`;
@@ -390,14 +393,14 @@ async function getGame(callback) {
                 
                 IDBTransaction.addEventListener("complete", () =>{ // Esto nos avisará cuando el objeto sea agregado/leido/modificado/eliminado;
                     
-                    console.log("objeto leido correctamente")
+                    // console.log("objeto leido correctamente")
                 });
             } 
             res();
             async function getGame2(b){
                 if( b == false) {
-                    console.log('Falso')
-                    console.log(id_doc)
+                    // console.log('Falso')
+                    // console.log(id_doc)
                     //const gameRef = database.collection('quiz_sugeridos').doc(id_doc)
                     console.info(ispersonalizedquiz)
                     const gameRef = (ispersonalizedquiz === false) ? database.collection('quiz_sugeridos').doc(id_doc) : database.collection('quiz_personalizados').doc(id_doc)
@@ -410,7 +413,7 @@ async function getGame(callback) {
                     addObject()
                     return callback(content);
                 }else{
-                    console.log('True')
+                    // console.log('True')
                 }
             };
             return
@@ -418,13 +421,14 @@ async function getGame(callback) {
     }catch (err){
         console.error(error);
         console.error('There was a problem geting the game, lets try again  '); 
+       
         await getGame(createQuest) 
     }
 };
 
 function sortTable(table) {
     table.sort((b, a) => {
-        console.log(a.numberscore - b.numberscore)
+        // console.log(a.numberscore - b.numberscore)
         return a.numberscore - b.numberscore;
     })
 }
@@ -433,7 +437,7 @@ async function getTable() {
     try {
     const tableee = await database.collection('scoreboards_table').doc(id_doc).get();
     const tablee = tableee.data();
-    console.log(sortTable(tablee.table));
+    // console.log(sortTable(tablee.table));
     console.info(tablee);
     return tablee.table;
     } catch (error) {
@@ -443,10 +447,12 @@ async function getTable() {
 };
 
 setTimeout(async()=>{
+
     await getGame(createQuest);
     table = await getTable();
+
     document.querySelector('.load-circle-top').style.display = 'none';
-    addUserToTable(table, 3, tableTops)
+     addUserToTable(table, 3, tableTops)
 });
 
 document.getElementById('home').addEventListener('click', () => {
