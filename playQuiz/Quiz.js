@@ -435,10 +435,11 @@ function sortTable(table) {
 
 async function getTable() {
     try {
-    const tableee = await database.collection('scoreboards_table').doc(id_doc).orderBy('numberscore').get();
+    const tableee = await database.collection('scoreboards_table').doc(id_doc).get();
     const tablee = tableee.data();
     // console.log(sortTable(tablee.table));
     console.info(tablee);
+    sortTable(tablee.table)
     return tablee.table;
     } catch (error) {
         console.error(error);
