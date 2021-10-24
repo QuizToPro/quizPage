@@ -169,9 +169,11 @@ firebase.auth().signInAnonymously()
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
             const pathToPlayQuiz = (collectionName === 'quiz_sugeridos') ? `https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id==${docRef.id}` : `https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=${docRef.id}`;
+            const time = new Date().getTime()
                 database.collection('scoreboards_table').doc(docRef.id).set({
                     table:[],
                     uid:uid_person,
+                    time,
                 })  
             .then((a)=>{
                 console.info(a)

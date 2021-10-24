@@ -63,7 +63,7 @@ body{
 }
 
 .main{
-    overflow: hidden;
+    overflow: auto;
     min-height: 100vh;
 }
 
@@ -493,7 +493,7 @@ body{
 .table-content-esp{
     display: grid;
     grid-template-columns: 50px repeat(2, 1fr);
-    overflow: hidden;
+    overflow: auto;
     justify-items: space-evenly;
 }
 .table-content-esp span{

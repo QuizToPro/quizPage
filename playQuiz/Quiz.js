@@ -222,10 +222,13 @@ const createQuest = (arr, b) => {
         contador++;
     }else{
         const numberscore = Number(meet).toFixed(2);
+        const time = new Date().getTime()
         const userscore = {
             nameUser,
             numberscore,
-            id: idRandom
+            id: idRandom,
+            time,
+            
         };
         // console.log(table)
         table.push(userscore)
@@ -242,7 +245,7 @@ const createQuest = (arr, b) => {
             table,
         }).then(()=>{
             console.info('User score saved sucessfully');
-            addUserToTable(table, 13, tableEnd);
+            addUserToTable(table, 17, tableEnd);
         }).catch((error)=>{
             console.error(error);
             console.error('No se pudo guardar puntuaciones usuario');
@@ -404,6 +407,7 @@ async function getGame(callback) {
                     //const gameRef = database.collection('quiz_sugeridos').doc(id_doc)
                     // console.info(ispersonalizedquiz)
                     const gameRef = (ispersonalizedquiz === false) ? database.collection('quiz_sugeridos').doc(id_doc) : database.collection('quiz_personalizados').doc(id_doc)
+                    console.log(gameRef)
                     const doc = await gameRef.get();
                     const data = doc.data()    
                     const Game = Object.values(data.Game)
@@ -453,7 +457,7 @@ setTimeout(async()=>{
     table = await getTable();
 
     document.querySelector('.load-circle-top').style.display = 'none';
-     addUserToTable(table, 7, tableTops)
+     addUserToTable(table, 10, tableTops)
 });
 
 document.getElementById('home').addEventListener('click', () => {
