@@ -242,7 +242,7 @@ const createQuest = (arr, b) => {
             table,
         }).then(()=>{
             console.info('User score saved sucessfully');
-            addUserToTable(table, 10, tableEnd);
+            addUserToTable(table, 13, tableEnd);
         }).catch((error)=>{
             console.error(error);
             console.error('No se pudo guardar puntuaciones usuario');
@@ -453,7 +453,7 @@ setTimeout(async()=>{
     table = await getTable();
 
     document.querySelector('.load-circle-top').style.display = 'none';
-     addUserToTable(table, 3, tableTops)
+     addUserToTable(table, 7, tableTops)
 });
 
 document.getElementById('home').addEventListener('click', () => {
