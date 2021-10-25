@@ -12,6 +12,7 @@ const puntuaciones = document.querySelector('.puntuaciones').classList
 const closeModal = document.querySelector('.close-modal');
 const idRandom = Math.ceil(Math.random()*10000)
 const userQuiz2 = document.querySelector('.user-quiz');
+const asnweredTotal = document.querySelector('.ans');
 const tableTops = document.querySelector('.table-end__content-top')
 const tableEnd = document.querySelector('.table-end__content')
 const database = firebase.firestore();
@@ -42,7 +43,7 @@ let meet = 0;
 let key = false;
 let table = undefined;
 
-let userQuiz, idLocal, userLocal, nameUser, content, quest, idQuest, results; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
+let userQuiz, idLocal, userLocal, nameUser, content, quest, idQuest, results, answered; //nameUser: nombre del usuario que responde, content: variable que guarda el contenido del json, quest: contenedor de cada pregunta y respuestas, idQuest: sirve como comparador entre respuesta correcta o incorrecta
 
 if(idioma == 'en'){
 
@@ -245,7 +246,7 @@ const createQuest = (arr, b) => {
             table,
         }).then(()=>{
             console.info('User score saved sucessfully');
-            addUserToTable(table, 17, tableEnd);
+            addUserToTable(table, 15, tableEnd);
         }).catch((error)=>{
             console.error(error);
             console.error('No se pudo guardar puntuaciones usuario');
@@ -444,6 +445,7 @@ async function getTable() {
     // console.log(sortTable(tablee.table));
     console.info(tablee);
     sortTable(tablee.table)
+
     return tablee.table;
     } catch (error) {
         console.error(error);
@@ -457,7 +459,11 @@ setTimeout(async()=>{
     table = await getTable();
 
     document.querySelector('.load-circle-top').style.display = 'none';
-     addUserToTable(table, 10, tableTops)
+    if(table.length > 10) {
+        asnweredTotal.classList.add('answered-people')
+        asnweredTotal.innerHTML = `Personas que han respondido: <b>${table.length}</b> <i class="fas fa-star"></i> `
+    } 
+    addUserToTable(table, 10, tableTops)
 });
 
 document.getElementById('home').addEventListener('click', () => {
