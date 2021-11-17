@@ -16,6 +16,7 @@ const tableTops = document.querySelector('.table-end__content-top')
 const tableEnd = document.querySelector('.table-end__content')
 const database = firebase.firestore();
 const selectLanguage = document.getElementById('select-language');
+const plaiedTimes = document.getElementById('plaied-times');
 
 let ispersonalizedquiz = undefined;
 
@@ -66,9 +67,9 @@ if (localStorage.getItem('userQuiz') != undefined) userLocal = localStorage.getI
 
 // if(localStorage.getItem('url') == locationurl) alert('Ya haz completado éste quiz');
 
-if (!locationurl.includes('=')) {
-    window.location.href = linkwebpage;
-}
+// if (!locationurl.includes('=')) {
+//     window.location.href = linkwebpage;
+// }
 
 selectLanguage.addEventListener('change', e => {
     localStorage.setItem('lang', selectLanguage.value);
@@ -245,7 +246,7 @@ const createQuest = (arr, b) => {
             table,
         }).then(()=>{
             console.info('User score saved sucessfully');
-            addUserToTable(table, 17, tableEnd);
+            addUserToTable(table, 50, tableEnd);
         }).catch((error)=>{
             console.error(error);
             console.error('No se pudo guardar puntuaciones usuario');
@@ -279,8 +280,14 @@ const createQuest = (arr, b) => {
 
 function addUserToTable(table_user, condition, node){
     if(table_user.length > 0){
+        if(table_user.length > 15){
+            plaiedTimes.innerHTML = `Han jugado éste quiz <b>${table_user.length}</b> veces <i class="fas fa-star"></i></h2>`
+        }else if(table_user.length > 50){
+            plaiedTimes.innerHTML = `Han jugado éste quiz <b>${table_user.length}</b> veces <i class="fas fa-star"></i> <i class="fas fa-star"></i></h2>`
+        }else if(table_user.length > 100){
+            plaiedTimes.innerHTML = `Han jugado éste quiz <b>${table_user.length}</b> veces <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></h2>`
+        }
         document.querySelector('.first').style.display = 'none'
-        // console.log(table_user)
         for(let i = 0; i < table_user.length; i++){
             if(i < condition){
                 const div = document.createElement('DIV');
@@ -416,8 +423,6 @@ async function getGame(callback) {
                     setScorePhrase()      
                     addObject()
                     return callback(content);
-                }else{
-                    // console.log('True')
                 }
             };
             return
@@ -441,8 +446,6 @@ async function getTable() {
     try {
     const tableee = await database.collection('scoreboards_table').doc(id_doc).get();
     const tablee = tableee.data();
-    // console.log(sortTable(tablee.table));
-    console.info(tablee);
     sortTable(tablee.table)
     return tablee.table;
     } catch (error) {
@@ -457,7 +460,7 @@ setTimeout(async()=>{
     table = await getTable();
 
     document.querySelector('.load-circle-top').style.display = 'none';
-     addUserToTable(table, 10, tableTops)
+     addUserToTable(table, 15, tableTops)
 });
 
 document.getElementById('home').addEventListener('click', () => {

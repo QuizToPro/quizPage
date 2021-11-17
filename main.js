@@ -3,8 +3,6 @@
 const database = firebase.firestore();
 // TODO: Replace the following with your app's Firebase project configuration
 
-
-console.log(database)
 let localData;
 
 document.getElementById('home').addEventListener('click', () => {
@@ -76,28 +74,13 @@ let cantidad_de_respuestas = undefined;
 let uid_person = undefined;
 let preguntaSugerida = undefined;
     
-if(idioma != "es-ES" && idioma != "en" && idioma != "es"){
-    document.querySelector('.es').addEventListener('click', () => {
-        localStorage.setItem('lang', 'es');
-        modal.style.animation = 'disappearModal 1s forwards';
-        setTimeout(() => modal.style.display = 'none', 1000);
-        history.go();
-    });
-    
-    document.querySelector('.en').addEventListener('click', () => {
-        localStorage.setItem('lang', 'en');
-        modal.style.animation = 'disappearModal 1s forwards';
-        setTimeout(() => modal.style.display = 'none', 1000);
-        history.go();
-    });
-};
 
 if(idioma == 'es' || idioma == 'es-ES'){
     titleQuiz.textContent = 'Crea tu Quiz';
     concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
     $btnStart.textContent = '¡Comenzar!';
-    $sugered.textContent = 'Crea un quiz con  preguntas sugeridas!';
-    $personalized.textContent = 'Crea un quiz con  preguntas personalizadas!';
+    $sugered.textContent = 'Crear un quiz con  preguntas sugeridas!';
+    $personalized.textContent = 'Crear un quiz con  preguntas personalizadas!';
 }else{
     titleQuiz.textContent = 'Create your Quiz';
     concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great Quiz!';
@@ -111,24 +94,6 @@ if(idioma == 'es' || idioma == 'es-ES'){
     document.getElementById('send-email').textContent = 'Send email';
 
 }; 
-
-
-    
-if(idioma != "es-ES" && idioma != "en" && idioma != "es"){
-    document.querySelector('.es').addEventListener('click', () => {
-        localStorage.setItem('lang', 'es');
-        modal.style.animation = 'disappearModal 1s forwards';
-        setTimeout(() => modal.style.display = 'none', 1000);
-        history.go();
-    });
-    
-    document.querySelector('.en').addEventListener('click', () => {
-        localStorage.setItem('lang', 'en');
-        modal.style.animation = 'disappearModal 1s forwards';
-        setTimeout(() => modal.style.display = 'none', 1000);
-        history.go();
-    });
-};
 
 firebase.auth().signInAnonymously()
   .then((user) => {
@@ -209,17 +174,17 @@ const nextPage = (url, nodo) => {
         </div>
     
         <div class="content-icons">
-        <div><a href="https://api.whatsapp.com/send?text=Prueba mi nuevo Quiz!, mira quien conoce más sobre ti ${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+        <div><a href="https://api.whatsapp.com/send?text=Juega mi nuevo Quiz!, ¿quién conoce más sobre mi? ${url}" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
         <div><a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank"><i class="fab fa-facebook"></i></a> </div>
-        <div><a href="https://twitter.com/intent/tweet?text=Prueba%20mi%20nuevo%20Quiz!,%20mira%20quien%20conoce%20más%20sobre%20ti&url=${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
+        <div><a href="https://twitter.com/intent/tweet?text=Juega%20mi%20nuevo%20Quiz!,%20¿Quién%20conoce%20más%20sobre%20mi?&url=${url}" target="_blank"><i class="fab fa-twitter"></i></a> </div>
         </div>              
     </div>`
     window.scrollTo(0, 0)
     setTimeout(() =>{
-        $main.style.height = '100vh'
         divCopy.innerHTML = codeCopy;
         $main.appendChild(divCopy)
         document.querySelector('.share-link').style.opacity = '1';
+        document.querySelector('.c-ur-q').style.display = 'none'
     }, 100) 
 };
 
@@ -259,7 +224,10 @@ $btnStart.addEventListener('click', e => {
     $container.style.animation = 'disappear .5s forwards';
     setTimeout(() => {
         $container.style.display = 'none';
-        
+
+        $uQz.removeAttribute("id")
+        $pQz.removeAttribute("id")
+
         $uQz.classList.add('menu')
         $pQz.classList.add('menu')
         $q.forEach(q => q.style.animation = 'visible .5s both')
@@ -501,35 +469,35 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
 
         if(idioma == 'en'){
             divPersonality.innerHTML = `
-            <div class="content-sections" data-value="Personalidad"><span class="text-section c">¡Describes your Personality!</span><img class="img-section" src="https://www.synergie.es/wp-content/uploads/2020/11/test-personalidad.jpg"></div>
+            <div class="content-sections" data-value="Personalidad"><span class="text-section c">¡Describes your Personality!</span><img alt="¡Describes your Personality!" class="img-section" src="https://www.synergie.es/wp-content/uploads/2020/11/test-personalidad.jpg"></div>
                 `
 
             divStyleClothes.innerHTML = `
-                    <div class="content-sections" data-value="Estilo_De_Vestir"><span class="text-section v">¿How is your clothing style?</span><img class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
+                    <div class="content-sections" data-value="Estilo_De_Vestir"><span class="text-section v">¿How is your clothing style?</span><img alt="¿How is your clothing style?" class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
                 `
                         
             divFood.innerHTML = `
-                    <div class="content-sections" data-value="Comida"><span class="text-section f">¿How is your favorite food?</span><img class="img-section" src="https://cdn.pixabay.com/photo/2020/12/23/06/34/strawberry-5854081_960_720.png"></div>
+                    <div class="content-sections" data-value="Comida"><span class="text-section f">¿How is your favorite food?</span><img alt="¿How is your favorite food?" class="img-section" src="https://cdn.pixabay.com/photo/2020/12/23/06/34/strawberry-5854081_960_720.png"></div>
                 `
                      
             divTravel.innerHTML = `
-                    <div class="content-sections" data-value="Viajes"><span class="text-section t">¿How would your ideal trips be?</span><img class="img-section" src="https://p4.wallpaperbetter.com/wallpaper/672/343/818/1920x1080-px-aircraft-humor-imagination-minimalistic-paper-plane-wall-anime-full-metal-alchemist-hd-art-wallpaper-preview.jpg"></div>
+                    <div class="content-sections" data-value="Viajes"><span class="text-section t">¿How would your ideal trips be?</span><img alt="¿How would your ideal trips be?" class="img-section" src="https://p4.wallpaperbetter.com/wallpaper/672/343/818/1920x1080-px-aircraft-humor-imagination-minimalistic-paper-plane-wall-anime-full-metal-alchemist-hd-art-wallpaper-preview.jpg"></div>
                 `
         }else{
             divPersonality.innerHTML = `
-            <div class="content-sections" data-value="Personalidad"><span class="text-section c">¡Describe tu Personalidad!</span><img class="img-section" src="https://www.synergie.es/wp-content/uploads/2020/11/test-personalidad.jpg"></div>
+            <div class="content-sections" data-value="Personalidad"><span class="text-section c">¡Describe tu Personalidad!</span><img alt="¡Describe tu Personalidad!" class="img-section" src="https://www.synergie.es/wp-content/uploads/2020/11/test-personalidad.jpg"></div>
                 `
 
             divStyleClothes.innerHTML = `
-                    <div class="content-sections" data-value="Estilo_De_Vestir"><span class="text-section v">¿Como es tú Estilo de vestir?</span><img class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
+                    <div class="content-sections" data-value="Estilo_De_Vestir"><span class="text-section v">¿Como es tú Estilo de vestir?</span><img alt="¿Como es tú Estilo de vestir?" class="img-section" src="https://querido-dinero.imgix.net/1302/La-verdad-de-la-ropa-gen%C3%A9rica-vs.-la-de-marca_Portada.png?w=1200&h=628&fit=crop&crop=faces&auto=format,compress&lossless=1"></div>
                 `
                         
             divFood.innerHTML = `
-                    <div class="content-sections" data-value="Comida"><span class="text-section f">¿Cómo es tu Comida Favorita?</span><img class="img-section" src="https://cdn.pixabay.com/photo/2020/12/23/06/34/strawberry-5854081_960_720.png"></div>
+                    <div class="content-sections" data-value="Comida"><span class="text-section f">¿Cómo es tu Comida Favorita?</span><img alt="¿Cómo es tu Comida Favorita?" class="img-section" src="https://cdn.pixabay.com/photo/2020/12/23/06/34/strawberry-5854081_960_720.png"></div>
                 `
                      
             divTravel.innerHTML = `
-                    <div class="content-sections" data-value="Viajes"><span class="text-section t">¿Como serían tus Viajes ideales?</span><img class="img-section" src="https://p4.wallpaperbetter.com/wallpaper/672/343/818/1920x1080-px-aircraft-humor-imagination-minimalistic-paper-plane-wall-anime-full-metal-alchemist-hd-art-wallpaper-preview.jpg"></div>
+                    <div class="content-sections" data-value="Viajes"><span class="text-section t">¿Como serían tus Viajes ideales?</span><img alt="¿Como serían tus Viajes ideales?" class="img-section" src="https://p4.wallpaperbetter.com/wallpaper/672/343/818/1920x1080-px-aircraft-humor-imagination-minimalistic-paper-plane-wall-anime-full-metal-alchemist-hd-art-wallpaper-preview.jpg"></div>
                 `
         }
         
@@ -801,7 +769,7 @@ const contentHTML = (title, showBtn, languaje) => { //title es el tipo de quiz q
 
 const createQuiz = selected => {
     
-    if(selected.id == 'p'){
+    if(selected.classList.contains('p-qz')){
         (idioma != 'en') ? contentHTML('¡Estás creando tu quiz personalizado!', true, idioma) : contentHTML("You're creating your personalized quiz!", true, idioma);
         
     }else{
@@ -810,8 +778,8 @@ const createQuiz = selected => {
 };
 
 for(let i = 0; i < $q.length; i++){
-    $q[i].addEventListener('click', () => {
-
+    $q[i].addEventListener('click', e => {
+        console.log(e, $q[i])
         $uQz.style.animation = 'hidden .7s forwards';
         $pQz.style.animation = 'hidden .7s forwards';
 
@@ -819,7 +787,7 @@ for(let i = 0; i < $q.length; i++){
             $uQz.style.display = 'none'
             $pQz.style.display = 'none'
 
-        createQuiz($q[i].children[0]);
+        createQuiz($q[i]);
         }, 700);
 
     });
