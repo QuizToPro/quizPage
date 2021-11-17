@@ -464,5 +464,5 @@ setTimeout(async()=>{
 });
 
 document.getElementById('home').addEventListener('click', () => {
-    window.location.href = 'https://mitrivia77-97762.web.app/'
+    window.location.href = 'mitrivia.site'
 })

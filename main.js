@@ -6,7 +6,7 @@ const database = firebase.firestore();
 let localData;
 
 document.getElementById('home').addEventListener('click', () => {
-    window.location.href = 'https://mitrivia77-97762.web.app/'
+    window.location.href = 'mitrivia.site/'
 })
 const sugeredContent = indexedDB.open('sugered-content', 1)
 
@@ -133,7 +133,7 @@ firebase.auth().signInAnonymously()
         .then((docRef) => {
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
-            const pathToPlayQuiz = (collectionName === 'quiz_sugeridos') ? `https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id==${docRef.id}` : `https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=${docRef.id}`;
+            const pathToPlayQuiz = (collectionName === 'quiz_sugeridos') ? `mitrivia.site/playQuiz/Quiz.html?id==${docRef.id}` : `mitrivia.site/playQuiz/Quiz.html?id=${docRef.id}`;
             const time = new Date().getTime()
                 database.collection('scoreboards_table').doc(docRef.id).set({
                     table:[],
