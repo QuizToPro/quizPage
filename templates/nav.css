@@ -14,7 +14,7 @@
 
 #nav{
     position: relative;
-    padding: 30px 10px;
+    padding: 15px;
     background-color:rgb(40, 71, 245);
     display: flex;
     z-index: 200;
@@ -37,6 +37,8 @@
 }
 .nav-opt{
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .nav-opt > li{
     margin: 0 15px;
@@ -120,7 +122,7 @@
 
 .title-page p{
     padding: 15px;
-    font-size: 35px;
+    font-size: 25px;
     color: var(--white);
     animation: appear-h1 1s both;
     animation-delay:1000ms;

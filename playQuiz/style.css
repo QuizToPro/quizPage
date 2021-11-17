@@ -118,12 +118,15 @@ body{
         transform: translate(0%, 0);
     }
 }
-
+#plaied-times{
+    color: #2af;
+    padding: 10px;
+    text-align: center;
+}
 .div-name{
     position: relative;
     margin: 60px auto;
     width: 70%;
-    height: 400px;
     opacity: 1;
     background-color: var(--white);
     border-radius: 5px;

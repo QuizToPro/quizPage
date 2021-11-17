@@ -1,6 +1,8 @@
-const $accept = document.querySelector('.accept-cookie')
-const $decline = document.querySelector('.decline-cookie')
+const $accept = document.querySelector('.accept-cookie');
+const $decline = document.querySelector('.decline-cookie');
+const $cookieDiv = document.querySelector('.cookie')
 let $accepted = false;
+
 
 if(localStorage.getItem('cookie') === null){
     function setCookie(name, value, expires){
@@ -22,8 +24,9 @@ if(localStorage.getItem('cookie') === null){
             };
         };
     });
-};
+}
 
 $decline.addEventListener('click', () => {
-    $cookieDiv.style.display = 'none'
-})
+    console
+    $cookieDiv.style.display = 'none';
+});
