@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "mitrivia77-97762"
+  },
+    "targets": {
+    "mitrivia77-97762": {
+      "hosting": {
+        "mitriviaurl": [
+          "mitrivia.site"
+        ]
+      }
+    }
   }
 }
