@@ -512,11 +512,10 @@ body{
 
 #user{
     text-align: center;
-    border: none;
+    border: 1px solid #2af;
     outline: none;
     font-size: 22px;
     padding: 5px;
-    outline: 1px solid var(--blue);
     border-radius: 5px;
     color: var(--blue);
     width: 100%;
@@ -585,6 +584,7 @@ body{
 
 #card{
     display: none;
+    user-select: none;
 }
 .card-img-top{
     height: 19rem;

@@ -6,7 +6,7 @@ const database = firebase.firestore();
 let localData;
 
 document.getElementById('home').addEventListener('click', () => {
-    window.location.href = 'https://mitrivia77-97762.web.app/'
+    window.location.href = 'https://mitrivia.site/'
 })
 const sugeredContent = indexedDB.open('sugered-content', 1)
 
@@ -75,13 +75,7 @@ let uid_person = undefined;
 let preguntaSugerida = undefined;
     
 
-if(idioma == 'es' || idioma == 'es-ES'){
-    titleQuiz.textContent = 'Crea tu Quiz';
-    concept.textContent = '¿Quieres saber quien de tus conocidos sabe más de ti?, ponlos aprueba con éste genial test!';
-    $btnStart.textContent = '¡Comenzar!';
-    $sugered.textContent = 'Crear un quiz con  preguntas sugeridas!';
-    $personalized.textContent = 'Crear un quiz con  preguntas personalizadas!';
-}else{
+if(idioma == 'en'){
     titleQuiz.textContent = 'Create your Quiz';
     concept.textContent = 'Do you want to know who of your acquaintances knows the most about you? Put them to the test with this great Quiz!';
     $btnStart.textContent = '¡Start!';
@@ -133,7 +127,7 @@ firebase.auth().signInAnonymously()
         .then((docRef) => {
             console.log(docRef);
             console.log("Document written with ID: ", docRef.id);
-            const pathToPlayQuiz = (collectionName === 'quiz_sugeridos') ? `https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id==${docRef.id}` : `https://mitrivia77-97762.web.app/playQuiz/Quiz.html?id=${docRef.id}`;
+            const pathToPlayQuiz = (collectionName === 'quiz_sugeridos') ? `https://mitrivia.site/playQuiz/Quiz.html?id==${docRef.id}` : `https://mitrivia.site/playQuiz/Quiz.html?id=${docRef.id}`;
             const time = new Date().getTime()
                 database.collection('scoreboards_table').doc(docRef.id).set({
                     table:[],

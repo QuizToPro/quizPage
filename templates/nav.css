@@ -37,8 +37,6 @@
 }
 .nav-opt{
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 .nav-opt > li{
     margin: 0 15px;
