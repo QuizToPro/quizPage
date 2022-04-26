@@ -67,9 +67,10 @@ if (localStorage.getItem('userQuiz') != undefined) userLocal = localStorage.getI
 
 // if(localStorage.getItem('url') == locationurl) alert('Ya haz completado éste quiz');
 
-// if (!locationurl.includes('=')) {
-//     window.location.href = linkwebpage;
-// }
+ if (!locationurl.includes('=')) {
+     alert('No se pudo encontrar el quiz :(');
+          window.location.href = linkwebpage;
+ }
 
 selectLanguage.addEventListener('change', e => {
     localStorage.setItem('lang', selectLanguage.value);
@@ -247,11 +248,7 @@ const createQuest = (arr, b) => {
         }).then(()=>{
             console.info('User score saved sucessfully');
             addUserToTable(table, 50, tableEnd);
-        }).catch((error)=>{
-            console.error(error);
-            console.error('No se pudo guardar puntuaciones usuario');
-        });
-        // console.log("SEACABO2")
+             // console.log("SEACABO2")
         modal_content.style.display = 'block';
         const modal = document.querySelector('.container-content');
         modal.style.animation = 'desaparecer .5s forwards';
@@ -274,6 +271,11 @@ const createQuest = (arr, b) => {
 
 
         localStorage.setItem('url', locationurl);
+        }).catch((error)=>{
+            console.error(error);
+            console.error('No se pudo guardar puntuaciones usuario');
+        });
+       
     };
     similary = false;
 };
@@ -417,6 +419,12 @@ async function getGame(callback) {
                     console.log(gameRef)
                     const doc = await gameRef.get();
                     const data = doc.data()    
+                    if (data == undefined) {
+                        alert('No se pudo encontrar el quiz :(, asegurate de estar ingresando al enlace correctamente');
+                        return window.location.href = linkwebpage
+                    }
+            
+                    
                     const Game = Object.values(data.Game)
                     content = Game;
                     userQuiz = data.userQuiz;
