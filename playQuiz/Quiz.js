@@ -247,35 +247,34 @@ const createQuest = (arr, b) => {
             table,
         }).then(()=>{
             console.info('User score saved sucessfully');
-            addUserToTable(table, 50, tableEnd);
-             // console.log("SEACABO2")
-        modal_content.style.display = 'block';
-        const modal = document.querySelector('.container-content');
-        modal.style.animation = 'desaparecer .5s forwards';
-        if(meet <= 20) meetText.innerHTML = results.zero;
-        if(meet > 20 && meet <= 40) meetText.innerHTML = results.twenty;
-        if(meet > 40 && meet <= 60) meetText.innerHTML = results.fourty;
-        if(meet > 60 && meet <= 80) meetText.innerHTML = results.sixty;
-        if(meet > 80 && meet <= 99) meetText.innerHTML = results.eighty;
-        if(meet >= 100) meetText.innerHTML = results.houndred;
-        percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet.toFixed(2)}%`;
-
-        repeat.addEventListener('click', () => {
-            window.location.reload()
-        })
-
-        setTimeout(() => {
-            modal.style.display = 'none'
-            document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
-        }, 500);
-
-
-        localStorage.setItem('url', locationurl);
         }).catch((error)=>{
             console.error(error);
             console.error('No se pudo guardar puntuaciones usuario');
         });
-       
+        addUserToTable(table, 50, tableEnd);
+        // console.log("SEACABO2")
+   modal_content.style.display = 'block';
+   const modal = document.querySelector('.container-content');
+   modal.style.animation = 'desaparecer .5s forwards';
+   if(meet <= 20) meetText.innerHTML = results.zero;
+   if(meet > 20 && meet <= 40) meetText.innerHTML = results.twenty;
+   if(meet > 40 && meet <= 60) meetText.innerHTML = results.fourty;
+   if(meet > 60 && meet <= 80) meetText.innerHTML = results.sixty;
+   if(meet > 80 && meet <= 99) meetText.innerHTML = results.eighty;
+   if(meet >= 100) meetText.innerHTML = results.houndred;
+   percentText.innerHTML = `Conoces a <b>${userQuiz}</b> en un ${meet.toFixed(2)}%`;
+
+   repeat.addEventListener('click', () => {
+       window.location.reload()
+   })
+
+   setTimeout(() => {
+       modal.style.display = 'none'
+       document.querySelector('.modal').style.animation = 'aparecerModal 1.2s forwards';
+   }, 500);
+
+
+   localStorage.setItem('url', locationurl);
     };
     similary = false;
 };
